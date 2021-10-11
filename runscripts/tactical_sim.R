@@ -27,8 +27,8 @@ sites <- spsample(win, n = Nsites, type = 'random')
 origin_point = c(-520847.3,3751061)
 distance.tmp <- rbind(origin_point, coordinates(sites)) |> 
  dist() |> as.matrix()
-distance_from_origin <- distance.tmp[1, -1] / 1000
-dist_matrix <- distance.tmp[-1,-1] / 1000
+d <- distance.tmp[1, -1] / 1000
+dmat <- distance.tmp[-1,-1] / 1000
 
 # Associate dates to sites
 Ndates = 400 #total number of dates
@@ -47,7 +47,7 @@ dispersalmodel <- nimbleCode({
 		# Model
 		mu[k] <- beta0 + (s[k]+beta1)*d[k]
 		alpha[k] ~ dnorm(mean=mu[k],sd=sigma)
-		delta[k] ~ dgamma(shape=gamma.a,rate=gamma.b)
+		delta[k] ~ dgamma(shape=omega,rate=phi)
 		alpha2[k] <- alpha[k] - delta[k] - 1 
 	}
 	for (i in 1:Ndates){
@@ -55,8 +55,8 @@ dispersalmodel <- nimbleCode({
 	}
 	#fixed parameterts
 	beta0 <- 3000
-	gamma.a <- 3
-	gamma.b <- 0.01
+	omega <- 3
+	phi <- 0.01
 	beta1 <- -0.7
 	sigma <- 100
 	etasq <- 0.2
@@ -69,7 +69,7 @@ dispersalmodel <- nimbleCode({
 
 ## Simulate Parameters ----
 set.seed(123)
-simModel <- nimbleModel(code = dispersalmodel,constants = list(Ndates = Ndates,d = distance_from_origin, dmat = dist_matrix,Nsites = Nsites, id.sites = id.sites))
+simModel <- nimbleModel(code = dispersalmodel,constants = list(Ndates = Ndates,d = d, dmat = dmat,Nsites = Nsites, id.sites = id.sites))
                        
 simModel$simulate('s')
 simModel$simulate('mu')
@@ -87,7 +87,7 @@ DateInfo = data.frame(SiteID=id.sites,cra=dates$cra,cra_error=dates$cra_error,me
 SiteInfo = data.frame(SiteID=1:nrow(coords),Easting=coords$x,Northing=coords$y,alpha=simModel$alpha,s=simModel$s)
 
 # Save simulation output ----
-save(SiteInfo,DateInfo,win.sf,dist_matrix,distance_from_origin,file=here('results','tactical_sim_res.RData'))
+save(SiteInfo,DateInfo,win.sf,dmat,d,file=here('results','tactical_sim_res.RData'))
 
 # ggplot(win.sf) + geom_sf() + geom_point(data=SiteInfo,aes(x=Easting,y=Northing,col=s)) + scale_color_gradient2()
 # ggplot(win.sf) + geom_sf() + geom_point(data=SiteInfo,aes(x=Easting,y=Northing,col=alpha)) + scale_color_gradient2(low = 'blue',mid ='white',high = 'red',midpoint = 2500)
