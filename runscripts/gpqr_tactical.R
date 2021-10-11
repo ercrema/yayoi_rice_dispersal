@@ -128,7 +128,7 @@ seeds <- c(12, 34, 56, 78)
 niter = 1000000
 nburnin = 500000
 thin = 50
-chain_output <- parLapply(cl = cl, X = seeds, fun = runFun, d = d,
+chain_output <- parLapply(cl = cl, X = seeds, fun = runFun, dat = dat,
 constants = constants, theta = theta.init, alpha.init = alpha.init, delta.init = delta.init, niter = niter, nburnin = nburnin,thin = thin)
 stopCluster(cl)
 # Convert into a mcmc.list object for diagnostic (see below)
