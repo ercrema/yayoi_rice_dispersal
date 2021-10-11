@@ -84,7 +84,16 @@ dates <- data.frame(cra = round(uncalibrate(round(simModel$Y))$ccCRA), cra_error
 dates$med  <-  medCal(calibrate(dates$cra,dates$cra_error))
 
 DateInfo = data.frame(SiteID=id.sites,cra=dates$cra,cra_error=dates$cra_error,med=dates$med)
-SiteInfo = data.frame(SiteID=1:nrow(coords),Easting=coords$x,Northing=coords$y,alpha=simModel$alpha,s=simModel$s)
+SiteInfo = data.frame(SiteID=1:nrow(coords),Easting=coords$x,Northing=coords$y,Earliest=NA,Latest=NA,Diff=NA,alpha=simModel$alpha,s=simModel$s)
+
+for (i in 1:Nsites)
+{
+	tmp.dates <- subset(DateInfo,SiteID==SiteInfo$SiteID[i])
+	SiteInfo$Earliest[i] = max(tmp.dates$med)
+	SiteInfo$Latest[i] = min(tmp.dates$med)
+	SiteInfo$Diff[i] = SiteInfo$Earliest[i] - SiteInfo$Latest[i]
+}
+
 
 # Save simulation output ----
 save(SiteInfo,DateInfo,win.sf,dmat,d,file=here('results','tactical_sim_res.RData'))
