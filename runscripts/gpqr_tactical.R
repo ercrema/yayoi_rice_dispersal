@@ -3,6 +3,7 @@ library(nimbleCarbon)
 library(rcarbon)
 library(here)
 library(parallel)
+library(coda)
 
 ## Data Setup ----
 # Load Simulated Data
