@@ -54,7 +54,7 @@ dist_org  <-  spDistsN1(sites,origin_point,longlat=TRUE) #distance from nabatake
 # Create list with constants and data
 
 ## Data
-d  <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error)
+dat  <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error)
 
 ## Constants
 data(intcal20)
@@ -69,6 +69,6 @@ constants$C14BP  <- intcal20$C14Age
 constants$C14err  <- intcal20$C14Age.sigma
 
 # Save everything on a R image file ----
-save(constants,d,SiteInfo,DateInfo,file=here('data','c14rice.RData'))
+save(sites,constants,dat,SiteInfo,DateInfo,file=here('data','c14rice.RData'))
 
 
