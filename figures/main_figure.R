@@ -4,12 +4,14 @@ library(maptools)
 library(rgeos)
 library(ggplot2)
 library(here)
+library(viridis)
 library(rcarbon)
 library(gridExtra)
 library(ggspatial)
 
 # Load Data & Results ----
 load(here('data','c14rice.RData'))
+load(here('results','gpqr_res.RData'))
 
 # Figure 1 (Site Distribution and SPD of charred rice dates) ----
 
@@ -60,5 +62,55 @@ pdf(file=here('figures','figure1.pdf'),width = 7.2, height = 3.7,pointsize=10)
 grid.arrange(f1a,f1b,ncol=2)
 dev.off()
 
+# Figure 3 (Posterior Mean of dispersal rate deviations and arrival time) ----
+post.gpqr <- gpqr_uniform_sample[[1]] #Extract posterior from chain #1
+nmcmc  <- nrow(post.gpqr) #number of MCMC samples
+post.s  <- post.gpqr[,grep('s\\[',colnames(post.gpqr))]
+post.arrival <- matrix(NA,nmcmc,constants$N.sites)
+post.rate <- matrix(NA,nmcmc,constants$N.sites)
+for (i in 1:nmcmc)
+{
+	post.rate[i,] = - 1 / (post.gpqr[i,'betaD'] + post.s[i,])
+	post.arrival[i,]  <- BPtoBCAD(post.gpqr[i,'intercept'] + (post.gpqr[i,'betaD'] + post.s[i,]) * constants$dist_org)
+}
+
+sites@data$s.m <- apply(post.s,2,median)
+sites@data$arrival.m  <- apply(post.arrival,2,median)
+sites@data$rate.m  <- apply(post.rate,2,median)
+
+sites.sf <- as(sites,'sf')
+
+f2a <- ggplot() +
+	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
+	geom_sf(data=sites.sf,mapping = aes(fill=s.m),pch=21,col='darkgrey',size=2) + 
+	xlim(129,143) + 
+	ylim(31,42) +
+	labs(title='a',fill='s') + 
+	scale_fill_gradient2(low='blue',high='red',mid='white') +
+	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
 
 
+f2b <- ggplot() +
+	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
+	geom_sf(data=sites.sf,mapping = aes(fill=rate.m),pch=21,col='darkgrey',size=2) + 
+	xlim(129,143) + 
+	ylim(31,42) +
+	labs(title='b',fill='Dispersal Rate \n (km/yr)') + 
+	scale_fill_viridis(option="magma") +
+	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+
+
+
+f2c <- ggplot() +
+	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
+	geom_sf(data=sites.sf,mapping = aes(fill=arrival.m),pch=21,col='darkgrey',size=2) + 
+	xlim(129,143) + 
+	ylim(31,42) +
+	labs(title='c',fill='1th Perc.') + 
+	scale_fill_continuous(type = "viridis", breaks = c(-1000,-600,-200,200), labels = c('1000BC','600BC','200BC','200AD'),limits=c(-1000,250)) +
+	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+
+
+pdf(file=here('figures','figure2.pdf'),width=2.9,height=7)
+grid.arrange(f2a,f2b,f2c,nrow=3,padding=0)
+dev.off()
