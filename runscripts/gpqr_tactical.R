@@ -18,8 +18,8 @@ Ndates <- nrow(DateInfo)
 Nsites  <- nrow(SiteInfo)
 constants  <- list(Nsites=Nsites,Ndates=Ndates)
 constants$id.sites  <- DateInfo$SiteID
-constants$dmat  <- dmat
-constants$d  <- d
+constants$dmat  <- sim.constants$dist_mat
+constants$d  <- sim.constants$dist_org
 constants$calBP  <- intcal20$CalBP
 constants$C14BP  <- intcal20$C14Age
 constants$C14err  <- intcal20$C14Age.sigma
@@ -122,10 +122,10 @@ runFun  <- function(seed,dat,constants,theta.init,delta.init,alpha.init,niter,nb
 }
 
 # Setup and Execute MCMC in Parallel  ----
-ncores <- 4
+ncores <- 3
 cl <- makeCluster(ncores)
 # Run the model in parallel:
-seeds <- c(12, 34, 56, 78)
+seeds <- c(12, 34, 56)
 niter = 1000000
 nburnin = 500000
 thin = 50
