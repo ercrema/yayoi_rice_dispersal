@@ -10,14 +10,14 @@ library(coda)
 load(here('results','tactical_sim_res.RData'))
 
 # Data
-dat  <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error)
+dat  <- list(cra=sim.DateInfo$cra,cra_error=sim.DateInfo$cra_error)
 
 # Constants
 data(intcal20)
-Ndates <- nrow(DateInfo)
-Nsites  <- nrow(SiteInfo)
+Ndates <- nrow(sim.DateInfo)
+Nsites  <- nrow(sim.SiteInfo)
 constants  <- list(Nsites=Nsites,Ndates=Ndates)
-constants$id.sites  <- DateInfo$SiteID
+constants$id.sites  <- sim.DateInfo$SiteID
 constants$dmat  <- sim.constants$dist_mat
 constants$d  <- sim.constants$dist_org
 constants$calBP  <- intcal20$CalBP
@@ -27,9 +27,9 @@ constants$tau  <- 0.99
 
 # Fixed Inits
 buffer <- 100
-theta.init <- DateInfo$med
-delta.init <- SiteInfo$Diff + buffer
-alpha.init <- SiteInfo$Earliest + buffer/2
+theta.init <- sim.DateInfo$med
+delta.init <- sim.SiteInfo$Diff + buffer
+alpha.init <- sim.SiteInfo$Earliest + buffer/2
 
 
 # MCMC Function ----
