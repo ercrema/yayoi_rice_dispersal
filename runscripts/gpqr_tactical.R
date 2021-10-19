@@ -57,7 +57,7 @@ runFun  <- function(seed,dat,constants,theta.init,delta.init,alpha.init,niter,nb
 	gpqr <- nimbleCode({
 		for (k in 1:Nsites){
 			# Model
-			mu[k] <- beta0 + (s[k]+beta1)*d[k]
+			mu[k] <- beta0 + (s[k]-beta1)*d[k]
 			alpha[k] ~ dAsymLaplace(mu=mu[k],sigma=sigma,tau=tau)
 			delta[k] ~ dgamma(shape=omega,rate=phi)
 		}
@@ -70,7 +70,7 @@ runFun  <- function(seed,dat,constants,theta.init,delta.init,alpha.init,niter,nb
 		}
 		#priors
 		beta0 ~ dnorm(3000,sd=200);
-		beta1 ~ -rexp(1);
+		beta1 ~ dexp(1);
 		sigma ~ dexp(0.01)
 		etasq ~ dexp(10);
 		rhosq ~ dexp(1000);
@@ -86,7 +86,7 @@ runFun  <- function(seed,dat,constants,theta.init,delta.init,alpha.init,niter,nb
 	inits  <-  list(delta=delta.init,alpha=alpha.init)
 	inits$theta  <- theta.init
 	inits$beta0 <- rnorm(1,3000,200)
-	inits$beta1 <- -rexp(1,1)
+	inits$beta1 <- rexp(1,1)
 	inits$sigma  <- rexp(1,0.01)
 	inits$rhosq  <- rexp(1,1000)
 	inits$etasq  <- rexp(1,10)
