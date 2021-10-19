@@ -70,7 +70,7 @@ runFun  <- function(seed,dat,constants,theta.init,delta.init,alpha.init,niter,nb
 		}
 		#priors
 		beta0 ~ dnorm(3000,sd=200);
-		beta1 ~ dnorm(0,sd=3)
+		beta1 ~ -rexp(1);
 		sigma ~ dexp(0.01)
 		etasq ~ dexp(10);
 		rhosq ~ dexp(1000);
@@ -126,9 +126,9 @@ ncores <- 3
 cl <- makeCluster(ncores)
 # Run the model in parallel:
 seeds <- c(12, 34, 56)
-niter = 1000000
+niter = 1500000
 nburnin = 500000
-thin = 50
+thin = 100
 chain_output <- parLapply(cl = cl, X = seeds, fun = runFun, dat = dat,
 constants = constants, theta = theta.init, alpha.init = alpha.init, delta.init = delta.init, niter = niter, nburnin = nburnin,thin = thin)
 stopCluster(cl)
@@ -139,15 +139,3 @@ ess <- effectiveSize(res)
 
 ## Store Output ----
 save(res,rhat,ess,file=here('results','res_tactical.RData'))
-
-
-
-
-
-
-
-
-
-
-
-
