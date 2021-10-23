@@ -98,7 +98,7 @@ par(mfrow=c(3,2))
 postHPDplot(fitted_beta0,main=TeX('Posterior $\\beta_0$'),HPD = 0.95)
 abline(v=sim.constants$beta0,lty=2)
 
-postHPDplot(-1/fitted_beta1,main=TeX('Posterior $\\beta_1$'),HPD = 0.95)
+postHPDplot(1/fitted_beta1,main=TeX('Posterior $\\beta_1$'),HPD = 0.95)
 abline(v=-1/sim.constants$beta1,lty=2)
 
 postHPDplot(fitted_etasq,main=TeX('Posterior $\\eta^2$'),HPD = 0.95)
