@@ -9,9 +9,56 @@ library(maptools)
 library(viridis)
 library(latex2exp)
 library(gridExtra)
-
+library(quantreg)
 
 # Figure S1 (Impact of Hallstatt Plateau) ----
+# Load Observed Data
+load(here('data','c14rice.RData'))
+# Load quantile regression results
+load(here('results','quantreg_res.RData'))
+## Compute Fitted Model Confidence Intervals:
+
+# rq and median calibrated date
+rq.ci <- predict.rq(fit.rq,newdata=data.frame(dist_org=0:1300),interval='confidence')
+
+# Bayesian model 
+qr.ch1 <- quantreg_sample[[1]]
+post.alpha.quantreg <- qr.ch1[,'alpha']
+post.beta.quantreg <- qr.ch1[,'beta']
+post.alpha.beta.quantreg  <- data.frame(alpha=post.alpha.quantreg,beta=post.beta.quantreg)
+post.theta.quantreg  <- qr.ch1[,grep('theta',colnames(qr.ch1))]
+post.theta.med <- apply(post.theta.quantreg,2,median)
+post.quantreg <- apply(post.alpha.beta.quantreg,1,function(x){x[1]-x[2]*0:1300})
+post.ci <- t(apply(post.quantreg,1,quantile,c(0.025,0.5,0.975)))
+
+## Plot and compare
+# Transparency color utility function
+col.alpha <- function(x,a=1){xx=col2rgb(x)/255;return(rgb(xx[1],xx[2],xx[2],a))}
+
+pdf(file=here('figures','figureS1.pdf'),width=8.5,height=7)
+plot(NULL,xlim=c(0,1300),ylim=c(3200,900),axes=F,xlab='Distance from Nabatake Site (in km)',ylab='Cal BP')
+rect(xleft=-100,xright=1400,ybottom=2720,ytop=2350,col=col.alpha('grey',0.2),border=NA)
+abline(h=2720,lty=4)
+abline(h=2350,lty=4)
+axis(1) 
+axis(2)
+axis(4,at=BCADtoBP(c(-1000,-600,-200,200,600,1000)),labels=c('1000BC','600BC','200BC','200AD','600AD','1000AD'))
+points(constants$dist_org,SiteInfo$Earliest)
+points(constants$dist_org,post.theta.med,pch=20)
+for (i in 1:nrow(SiteInfo))
+{
+   lines(rep(constants$dist_org[i],2),c(SiteInfo$Earliest[i],post.theta.med[i]),lty=2)
+}
+lines(0:1300,rq.ci[,1],lty=1,lwd=2,col='blue')
+polygon(x=c(0:1300,1300:0),c(rq.ci[,2],rev(rq.ci[,3])),col=col.alpha('lightblue',0.4),border=NA)
+
+lines(0:1300,post.ci[,2],lty=1,lwd=2,col='indianred')
+polygon(x=c(0:1300,1300:0),c(post.ci[,1],rev(post.ci[,3])),col=col.alpha('indianred',0.2),border=NA)
+
+text(x=245,y=2400,labels='Hallstat Plateau')
+legend('bottomright',legend=c('Median Calibrated Date',TeX('Median Posterior $\\theta$'),'Quantile Regression on Median Dates','Bayesian Quantile Regression with Measurement Error'),pch=c(1,20,NA,NA),lwd=c(NA,NA,2,2),col=c(1,1,'blue','indianred'))
+box()
+dev.off()
 
 # Figure S2 (Simulated dispersal rate, local deviations, and arrival dates) ----
 # Load Spatial Data 
