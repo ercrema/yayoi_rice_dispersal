@@ -12,9 +12,9 @@ load(here('data','c14rice.RData'))
 # Add distance from origin to SiteInfo
 SiteInfo$dist_org <- constants$dist_org
 # Compute Quantile Regression
-fit.median  <- rq(Earliest ~ dist_org, tau = 0.99, data=SiteInfo,alpha=0.95)
+fit.rq <- rq(Earliest ~ dist_org, tau = 0.99, data=SiteInfo,alpha=0.95)
 # Derive estimated rate of dispersal
--1/summary(fit.median)$coefficients[2,]
+-1/summary(fit.rq)$coefficients[2,]
 ## between 0.62 to 11.4 km/year, with estimate at 4.08 km/year
 
 # Bayesian Quantile Regression -----
@@ -103,4 +103,4 @@ quantreg_sample <- coda::mcmc.list(chain_output)
 rhat <- coda::gelman.diag(quantreg_sample,multivariate = FALSE);range(rhat$psrf[,1])
 ess <- coda::effectiveSize(quantreg_sample); range(ess)
 ## Store Output ----
-save(quantreg_sample,file=here('results','quantreg_res.RData'))
+save(fit.rq,quantreg_sample,file=here('results','quantreg_res.RData'))
