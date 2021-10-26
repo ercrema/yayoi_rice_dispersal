@@ -38,21 +38,28 @@ constants$N.dates  <- nrow(subset.DateInfo)
 # Define Quantile
 constants$tau <- 0.99
 
+# Dummy extenstion of the calibration curve
+constants$calBP <- c(1000000,constants$calBP,-1000000)
+constants$C14BP <- c(1000000,constants$C14BP,-1000000)
+constants$C14err <- c(1000,constants$C14err,1000)
+
+# Constraint for ignoring inference outside calibration range
+dat$cra.constraint = rep(1,constants$N.dates)
+
 # Init (theta)
 theta.init  <- subset.DateInfo$median.dates
 
 ## Main Scipt ----
 runFun <- function(seed, dat, theta.init, constants, nburnin, thin, niter)
 {
-	options(warn=-1)
 	library(nimbleCarbon)
 	model <- nimbleCode({
 		for (i in 1:N.dates){
 			# Model
 			mu[i] <- alpha - beta*dist_org[i]
 			theta[i] ~ dAsymLaplace(mu=mu[i],sigma=sigma,tau=tau)
-
 			c14age[i] <- interpLin(z=theta[i], x=calBP[], y=C14BP[]);
+			cra.constraint[i] ~ dconstraint(c14age[i] < 50193 & c14age[i] > 95) #C14 age must be within the calibration range
 			sigmaCurve[i] <- interpLin(z=theta[i], x=calBP[], y=C14err[]);
 			sigmaDate[i] <- (cra_error[i]^2+sigmaCurve[i]^2)^(1/2);
 			cra[i] ~ dnorm(mean=c14age[i],sd=sigmaDate[i]);
@@ -60,19 +67,18 @@ runFun <- function(seed, dat, theta.init, constants, nburnin, thin, niter)
 		#priors
 		alpha ~ dnorm(3000,sd=200);
 		beta ~ dexp(1)
-		sigma ~ dexp(0.01)
+		sigma ~ dexp(0.01) #should be smaller?
 	}) 
 	set.seed(seed)
 	inits  <- list(alpha=rnorm(1,3000,200),beta=rexp(1,1),sigma=rexp(1,0.01),theta=theta.init)
 	model.asymlap <- nimbleModel(model,constants = constants,data=dat,inits=inits)
 
-	#The while loop ensures that the none of the log probabilities of theta are -Inf. This issues 
-	#a warning message that crashes the parallel processing script. Notice that if done sequentially there is no problem.
 	while(any(model.asymlap$logProb_theta==-Inf))
 	{
-	inits  <- list(alpha=rnorm(1,3000,200),beta=rexp(1,1),sigma=rexp(1,0.01),theta=theta.init)
-	model.asymlap <- nimbleModel(model,constants = constants,data=dat,inits=inits)	
+		inits  <- list(alpha=rnorm(1,3000,200),beta=rexp(1,1),sigma=rexp(1,0.01),theta=theta.init)
+		model.asymlap <- nimbleModel(model,constants = constants,data=dat,inits=inits)	
 	}
+
 	cModel.asymlap <- compileNimble(model.asymlap)
 	conf.asymlap <- configureMCMC(model.asymlap)
 	conf.asymlap$addMonitors('theta')
@@ -85,19 +91,16 @@ runFun <- function(seed, dat, theta.init, constants, nburnin, thin, niter)
 # Setup and Execution of MCMC in Parallel ----
 ncores  <-  3
 cl <- makeCluster(ncores)
-seeds  <-  c(12,45,78)
-niter  <- 1000000
-nburnin  <- 500000
-thin  <- 50
+seeds  <-  c(123,456,789)
+niter  <- 2000000 #working 1000000 and 500000
+nburnin  <- 1000000
+thin  <- 100
 
 chain_output = parLapply(cl = cl, X = seeds, fun = runFun, d = dat, constants = constants, theta = theta.init, niter = niter, nburnin = nburnin,thin = thin)
-        
+stopCluster()        
 # Convert into a mcmc.list object for diagnostic (see below)
 quantreg_sample <- coda::mcmc.list(chain_output)
-rhat <- coda::gelman.diag(quantreg_sample)
+rhat <- coda::gelman.diag(quantreg_sample,multivariate = FALSE);range(rhat$psrf[,1])
+ess <- coda::effectiveSize(quantreg_sample); range(ess)
 ## Store Output ----
 save(quantreg_sample,file=here('results','quantreg_res.RData'))
-
-
-
-
