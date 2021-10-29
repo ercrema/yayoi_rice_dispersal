@@ -105,10 +105,23 @@ load(here('results','res_tactical.RData'))
 tactical_fitted  <- res[[1]] #Extract chain #1
 fitted_s  <- tactical_fitted[,grep('s\\[',colnames(tactical_fitted))]
 fitted_alpha  <- tactical_fitted[,grep('alpha\\[',colnames(tactical_fitted))]
+fitted_beta0  <- tactical_fitted[,'beta0']
+fitted_beta1  <- tactical_fitted[,'beta1']
+fitted_etasq  <- tactical_fitted[,'etasq']
+fitted_rhosq  <- tactical_fitted[,'rhosq']
+fitted_omega  <- tactical_fitted[,'omega']
+fitted_phi  <- tactical_fitted[,'phi']
+fitted_slope <- fitted_s - fitted_beta1
+fitted_rate <- -1/fitted_slope
 
-pdf(file=here('figures','figureS3.pdf'),width=8,height=4.5)
-par(mfrow=c(1,2))
-plot(sim.SiteInfo$s,apply(fitted_s,2,mean),pch=20,xlim=c(-0.5,0.5),ylim=c(-0.5,0.5),xlab=TeX('Simulated $s_k$'),ylab=TeX('Predicted $s_k$'),main='a')
+
+pdf(file=here('figures','figureS3.pdf'),width=8,height=8)
+par(mfrow=c(2,2))
+
+# panel a : s
+rr.y = c(min(lo_s),max(hi_s))
+rr.x = range(sim.SiteInfo$s)
+plot(sim.SiteInfo$s,apply(fitted_s,2,median),pch=20,xlim=rr.x,ylim=rr.y,xlab=TeX('Simulated $s_k$'),ylab=TeX('Predicted $s_k$'),main='a')
 lo_s <- apply(fitted_s,2,quantile,0.025)
 hi_s  <- apply(fitted_s,2,quantile,0.975)
 
@@ -118,7 +131,13 @@ lines(rep(sim.SiteInfo$s[i],2),c(lo_s[i],hi_s[i]),lwd=0.5)
 }
 abline(a=0,b=1,lty=2,col=2,lwd=2)
 
-plot(sim.SiteInfo$alpha,apply(fitted_alpha,2,mean),pch=20,xlim=c(1600,3200),ylim=c(1600,3200),xlab=TeX('Simulated $\\alpha_k$'),ylab=TeX('Predicted $\\alpha_k$'),main='b')
+# panel b : alpha
+lo_alpha <- apply(fitted_alpha,2,quantile,0.025)
+hi_alpha  <- apply(fitted_alpha,2,quantile,0.975)
+rr.y = c(min(lo_alpha),max(hi_alpha))
+rr.x = range(sim.SiteInfo$alpha)
+
+plot(sim.SiteInfo$alpha,apply(fitted_alpha,2,median),pch=20,xlim=rev(rr.x),ylim=rev(rr.y),xlab=TeX('Simulated $\\alpha_k$'),ylab=TeX('Predicted $\\alpha_k$'),main='b')
 lo_alpha <- apply(fitted_alpha,2,quantile,0.025)
 hi_alpha  <- apply(fitted_alpha,2,quantile,0.975)
 
@@ -127,6 +146,40 @@ for (i in 1:nrow(sim.SiteInfo))
 lines(rep(sim.SiteInfo$alpha[i],2),c(lo_alpha[i],hi_alpha[i]),lwd=0.5)
 }
 abline(a=0,b=1,lty=2,col=2,lwd=2)
+
+
+#panel c: slope (s+beta1)
+sim.slope = sim.SiteInfo$s+sim.constants$beta1
+lo_slope <- apply(fitted_slope,2,quantile,0.025)
+hi_slope  <- apply(fitted_slope,2,quantile,0.975)
+rr.y = c(min(lo_slope),max(hi_slope))
+rr.x = range(sim.slope)
+
+plot(sim.slope,apply(fitted_slope,2,median),pch=20,xlim=rr.x,ylim=rr.y,xlab='Simulated Slope',ylab='Predicted Slope',main='c')
+
+
+for (i in 1:nrow(sim.SiteInfo))
+{
+lines(rep(sim.slope[i],2),c(lo_slope[i],hi_slope[i]),lwd=0.5)
+}
+abline(a=0,b=1,lty=2,col=2,lwd=2)
+
+
+#panel d: rate (-1/slope)
+sim.rate = -1/sim.slope
+lo_rate <- apply(fitted_rate,2,quantile,0.025)
+hi_rate  <- apply(fitted_rate,2,quantile,0.975)
+rr.y = c(min(lo_rate),max(hi_rate))
+rr.x = range(sim.rate)
+
+plot(sim.rate,apply(fitted_rate,2,median),pch=20,xlim=rr.x,ylim=rr.y,xlab='Simulated Dispersal Rate',ylab='Predicted Dispersal Rate',main='d')
+
+for (i in 1:nrow(sim.SiteInfo))
+{
+lines(rep(sim.rate[i],2),c(lo_rate[i],hi_rate[i]),lwd=0.5)
+}
+abline(a=0,b=1,lty=2,col=2,lwd=2)
+
 
 dev.off()
 
