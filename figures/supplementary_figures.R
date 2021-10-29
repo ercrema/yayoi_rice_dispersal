@@ -185,18 +185,11 @@ dev.off()
 
 # Figure S4 (Posterior vs True values of beta0,beta1,rhosq,etasq,omega, and phi) ----
 
-fitted_beta0  <- tactical_fitted[,'beta0']
-fitted_beta1  <- tactical_fitted[,'beta1']
-fitted_etasq  <- tactical_fitted[,'etasq']
-fitted_rhosq  <- tactical_fitted[,'rhosq']
-fitted_omega  <- tactical_fitted[,'omega']
-fitted_phi  <- tactical_fitted[,'phi']
-
 pdf(file=here('figures','figureS4.pdf'),width=6,height=9)
 
 par(mfrow=c(3,2))
 postHPDplot(fitted_beta0,main=TeX('Posterior $\\beta_0$'),HPD = 0.95)
-abline(v=sim.constants$beta0,lty=2)
+abline(v=qnorm(0.99,mean=sim.constants$beta0,sd=sim.constants$sigma),lty=2)
 
 postHPDplot(1/fitted_beta1,main=TeX('Posterior $\\beta_1$'),HPD = 0.95)
 abline(v=-1/sim.constants$beta1,lty=2)
