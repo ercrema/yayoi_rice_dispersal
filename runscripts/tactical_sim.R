@@ -62,10 +62,10 @@ sim.constants$dist_mat <- dist_mat
 sim.constants$id.sites <- id.sites
 # Model parameters
 sim.constants$beta0 <- 3000
-sim.constants$beta1 <- -0.8
+sim.constants$beta1 <- -0.7
 sim.constants$sigma <- 100
-sim.constants$etasq <- 0.04
-sim.constants$rhosq <- 0.00006
+sim.constants$etasq <- 0.05
+sim.constants$rhosq <- 0.00005
 sim.constants$omega <- 2
 sim.constants$phi <- 0.005
 
@@ -73,7 +73,7 @@ sim.constants$phi <- 0.005
 
 
 ## Simulate Parameters ----
-set.seed(12345)
+set.seed(123)
 simModel <- nimbleModel(code = dispersalmodel,constants = sim.constants)
                        
 simModel$simulate('s')

@@ -23,7 +23,7 @@ constants$d  <- sim.constants$dist_org
 constants$calBP  <- intcal20$CalBP
 constants$C14BP  <- intcal20$C14Age
 constants$C14err  <- intcal20$C14Age.sigma
-constants$tau  <- 0.99
+constants$tau  <- 0.90
 
 # Fixed Inits
 buffer <- 100
@@ -134,8 +134,8 @@ constants = constants, theta = theta.init, alpha.init = alpha.init, delta.init =
 stopCluster(cl)
 # Convert into a mcmc.list object for diagnostic (see below)
 res <- mcmc.list(chain_output)
-rhat <- gelman.diag(res,multivariate = F)
-ess <- effectiveSize(res) 
+rhat <- gelman.diag(res,multivariate = F);range(rhat$psrf[,1])
+ess <- effectiveSize(res) ;range(ess)
 
 ## Store Output ----
 save(res,rhat,ess,file=here('results','res_tactical.RData'))
