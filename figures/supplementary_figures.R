@@ -225,7 +225,7 @@ pdf(file=here('figures','figureS4.pdf'),width=6,height=9)
 
 par(mfrow=c(3,2))
 postHPDplot(fitted_beta0,main=TeX('Posterior $\\beta_0$'),HPD = 0.95)
-abline(v=qnorm(0.99,mean=sim.constants$beta0,sd=sim.constants$sigma),lty=2)
+abline(v=qnorm(0.90,mean=sim.constants$beta0,sd=sim.constants$sigma),lty=2)
 
 postHPDplot(1/fitted_beta1,main=TeX('Posterior $\\beta_1$'),HPD = 0.95)
 abline(v=-1/sim.constants$beta1,lty=2)
@@ -286,70 +286,6 @@ for (i in 1:nsim)
 	curve(dgamma(x,omega.prior[i],phi.prior[i]),add=TRUE,from=0,to=1500,col=rgb(0,0,0,0.1))
 }
 dev.off()
-
-
-fSXa  <- ggplot() +
-	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sim.sites,mapping = aes(fill=s),pch=21,col='darkgrey',size=2) + 
-	xlim(129,143) + 
-	ylim(31,42) +
-	labs(title='a',fill='s') + 
-	scale_fill_gradient2(low='blue',high='red',mid='white') +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
-
-fSXb  <- ggplot() +
-	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sim.sites,mapping = aes(fill=fitted_s),pch=21,col='darkgrey',size=2) + 
-	xlim(129,143) + 
-	ylim(31,42) +
-	labs(title='a',fill='s') + 
-	scale_fill_gradient2(low='blue',high='red',mid='white') +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
-
-grid.arrange(fSXa,fSXb)
-
-
-sim.sites$fitted_rate <- apply(fitted_rate,2,median)
-
-fS2b1 <- ggplot() +
-	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sim.sites,mapping = aes(fill=rate),pch=21,col='darkgrey',size=2) + 
-	xlim(129,143) + 
-	ylim(31,42) +
-	labs(title='b',fill='Dispersal Rate \n (km/yr)') + 
-	scale_fill_viridis(option="magma",limits=c(1,3.5)) +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
-fS2b2 <- ggplot() +
-	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sim.sites,mapping = aes(fill=fitted_rate),pch=21,col='darkgrey',size=2) + 
-	xlim(129,143) + 
-	ylim(31,42) +
-	labs(title='b',fill='Dispersal Rate \n (km/yr)') + 
-	scale_fill_viridis(option="magma",limits=c(1,3.5)) +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
-
-grid.arrange(fS2b1,fS2b2)
-
-sim.sites$fitted_rate <- apply(fitted_rate,2,median)
-
-fS2b1 <- ggplot() +
-	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sim.sites,mapping = aes(fill=rate),pch=21,col='darkgrey',size=2) + 
-	xlim(129,143) + 
-	ylim(31,42) +
-	labs(title='b',fill='Dispersal Rate \n (km/yr)') + 
-	scale_fill_viridis(option="magma",limits=c(1,3.5)) +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
-fS2b2 <- ggplot() +
-	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sim.sites,mapping = aes(fill=fitted_rate),pch=21,col='darkgrey',size=2) + 
-	xlim(129,143) + 
-	ylim(31,42) +
-	labs(title='b',fill='Dispersal Rate \n (km/yr)') + 
-	scale_fill_viridis(option="magma",limits=c(1,3.5)) +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
-
-grid.arrange(fS2b1,fS2b2)
 
 # Figure S8 (Traceplot of beta0, beta1, rhosq, etasq, omega, and phi) ----
 
