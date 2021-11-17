@@ -6,7 +6,7 @@ library(dplyr)
 library(here)
 
 # Read charred rice data  ----
-dat <- read.csv(here("data", "R14CDB_v1_4_5.csv")) |> subset(Rice == "TRUE" & UseForAnalyses == 'TRUE')
+dat <- read.csv(here("data", "R14CDB_v1_4_6.csv")) |> subset(Rice == "TRUE" & UseForAnalyses == 'TRUE')
 #**NOTE** update raw CSV data for the final version so that subsetting is not required
 
 # Subset data ----
@@ -15,6 +15,10 @@ dat <- subset(dat, !Region %in% c("Hokkaido", "Okinawa") & C14Age <= 3000 & C14A
 
 # Assign Site ID ----
 dat$SiteID  <- as.numeric(factor(dat$SiteName))
+
+# Assign Regions & Areas ----
+regions <- read.csv(here("data","prefecture_region_match.csv"))
+dat <- left_join(dat,regions)
 
 # Restructure Data for Bayesian Analyses ----
 
@@ -30,7 +34,8 @@ SiteInfo <- data.frame(SiteID = earliest_dates$SiteID,
 		       Latest = latest_dates$median.dates,
 		       Diff = earliest_dates$median.dates - latest_dates$median.dates,
 		       N_dates = n_dates$median.dates) |> unique()
-SiteInfo <- left_join(SiteInfo,unique(select(dat,Latitude,Longitude,SiteID,SiteName,SiteName_En)))
+SiteInfo <- left_join(SiteInfo,unique(select(dat,Latitude,Longitude,SiteID,SiteName,SiteName_En,Prefecture,Region,Area)))
+SiteInfo$area.id <- as.numeric(as.factor(SiteInfo$Area))
 
 # Collect date level information
 DateInfo <- unique(select(dat,ID,LabCode,SiteID,cra=C14Age,cra_error=C14Error,median.dates=median.dates)) |> arrange(ID) 
@@ -61,7 +66,9 @@ data(intcal20)
 constants <- list()
 constants$N.sites <- nrow(SiteInfo)
 constants$N.dates  <- nrow(DateInfo)
+constants$N.areas  <- length(unique(SiteInfo$Area))
 constants$id.sites <- DateInfo$SiteID
+constants$id.area  <- SiteInfo$area.id
 constants$dist_mat  <- dist_mat
 constants$dist_org  <- dist_org
 constants$calBP <- intcal20$CalBP
@@ -70,5 +77,3 @@ constants$C14err  <- intcal20$C14Age.sigma
 
 # Save everything on a R image file ----
 save(sites,constants,dat,SiteInfo,DateInfo,file=here('data','c14rice.RData'))
-
-
