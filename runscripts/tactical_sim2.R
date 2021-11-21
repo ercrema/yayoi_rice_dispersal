@@ -24,8 +24,8 @@ sim.constants <- list()
 sim.constants$Nsites <- Nsites
 sim.constants$Ndates  <- Ndates
 sim.constants$id.sites  <- id.sites
-sim.constants$a <- 3000
-sim.constants$b <- 2500
+sim.constants$a <- 3500
+sim.constants$b <- 3000
 
 set.seed(123)
 simModel <- nimbleModel(code = sim.model,constants = sim.constants)
