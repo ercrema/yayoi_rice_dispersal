@@ -154,7 +154,7 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	model <- nimbleModel(model,constants = constants,data=d,inits=inits)
 	cModel <- compileNimble(model)
 	conf <- configureMCMC(model)
-	conf  <- addMonitors('theta')
+	conf$addMonitors('theta')
 	MCMC <- buildMCMC(conf)
 	cMCMC <- compileNimble(MCMC)
 	results <- runMCMC(cMCMC,niter = niter, thin=thin,nburnin = nburnin,samplesAsCodaMCMC = T, setSeed=seed) 
@@ -498,12 +498,12 @@ trap.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 # Run MCMCs ----
 
 # MCMC Setup
-ncores  <-  2
+ncores  <-  3
 cl <- makeCluster(ncores)
-seeds <- c(123,456)
-niter  <- 5000
-nburnin  <- 3000
-thin  <- 1
+seeds <- c(123,456,789)
+niter  <- 1000000
+nburnin  <- 500000
+thin  <- 50
 
 out.unif.model0  <-  parLapply(cl = cl, X = seeds, fun = unif.model0, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, nburnin = nburnin,thin = thin)
 out.unif.model1  <-  parLapply(cl = cl, X = seeds, fun = unif.model1, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, nburnin = nburnin,thin = thin)
