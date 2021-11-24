@@ -9,6 +9,7 @@ library(maptools)
 library(viridis)
 library(latex2exp)
 library(gridExtra)
+library(diagram)
 library(quantreg)
 
 # Figure S1 (Impact of Hallstatt Plateau) ----
@@ -296,3 +297,54 @@ dev.off()
 # Figure S11 (Joint Posterior rhosq and etasq) ----
 
 # Figure S12 (Joint Posterior omega and phi) ----
+
+# Figure S13 (Posterior Arrival Date Trapezoidal Model ----
+load(here('results','trap_model0.RData'))
+load(here('results','trap_model1.RData'))
+load(here('results','trap_model2.RData'))
+
+extract <- function(x)
+{
+	tmp = do.call(rbind,x)
+	tmp2 = tmp[,grep('^a\\[',colnames(tmp))]
+	qta = apply(tmp2,2,quantile,prob=c(0,0.025,0.25,0.5,0.75,0.975,1))
+	return(qta)
+}
+
+post.bar <- function(x,i,h,col)
+{
+	lines(c(x[1],x[7]),c(i,i),col=col)
+	rect(xleft=x[2],xright=x[6],ybottom=i-h/5,ytop=i+h/5,border=NA,col=col)
+	rect(xleft=x[3],xright=x[5],ybottom=i-h/3,ytop=i+h/3,border=NA,col=col)
+	lines(c(x[4],x[4]),c(i-h/2,i+h/2),lwd=2,col='grey44')
+}
+
+
+main.col <- c(rgb(51,34,136,maxColorValue=255),rgb(136,204,238,maxColorValue = 255),rgb(68,170,153,maxColorValue = 255),rgb(17,119,51,maxColorValue = 255),rgb(153,153,51,maxColorValue = 255),rgb(221,204,119,maxColorValue = 255),rgb(204,102,119,maxColorValue = 255),rgb(136,34,85,maxColorValue = 255))
+
+pdf(file=here('figures','figureS13.pdf'),width=5.5,height=7,pointsize=9)
+par(mar=c(3,3,3,1))
+# Map
+# Posterior Arrival Times
+plot(NULL,xlim=c(4000,2000),ylim=c(0.5,31.5),xlab='',ylab='',axes=F)
+tmp0 = extract(out.trap.model0)
+tmp1 = extract(out.trap.model1)
+tmp2 = extract(out.trap.model2)
+
+iseq0 = seq(1,by=4,length.out=8)
+iseq1 = seq(2,by=4,length.out=8)
+iseq2 = seq(3,by=4,length.out=8)
+abline(h=seq(4,by=4,length.out=7),col='darkgrey',lty=2)
+for (i in 1:8)
+{
+	post.bar(tmp0[,i],i=iseq0[i],h=0.7,col=main.col[i])
+	post.bar(tmp1[,i],i=iseq1[i],h=0.7,col=main.col[i])
+	post.bar(tmp2[,i],i=iseq2[i],h=0.7,col=main.col[i])
+}
+axis(2,at=iseq1,labels = c('I','II','III','IV','V','VI','VII','VIII'),las=2)
+axis(1,at=BCADtoBP(c(-2000,-1750,-1500,-1250,-1000,-750,-500,-250,1)),labels=c('2000BC','1740BC','1500BC','1250BC','1000BC','750BC','500BC','250BC','1AD'),tck=-0.01)
+axis(3,at=seq(3900,1800,-300),labels=paste0(seq(3900,1800,-300),'BP'),tck=-0.01)
+box()
+text(x=c(2600,2600,2600),y=c(iseq0[1],iseq1[1],iseq2[1]),labels=c('Model0','Model1','Model2'))
+dev.off()
+

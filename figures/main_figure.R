@@ -20,9 +20,6 @@ load(here('results','gpqr_res.RData'))
 load(here('results','unif_model0.RData'))
 load(here('results','unif_model1.RData'))
 load(here('results','unif_model2.RData'))
-load(here('results','trap_model0.RData'))
-load(here('results','trap_model1.RData'))
-load(here('results','trap_model2.RData'))
 
 # Figure 1 (Sampling Site Distribution) ----
 
