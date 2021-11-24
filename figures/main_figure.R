@@ -12,10 +12,17 @@ library(dplyr)
 library(rgeos)
 library(elevatr)
 library(raster)
+library(diagram)
 library(RColorBrewer)
 # Load Data & Results ----
 load(here('data','c14rice.RData'))
 load(here('results','gpqr_res.RData'))
+load(here('results','unif_model0.RData'))
+load(here('results','unif_model1.RData'))
+load(here('results','unif_model2.RData'))
+load(here('results','trap_model0.RData'))
+load(here('results','trap_model1.RData'))
+load(here('results','trap_model2.RData'))
 
 # Figure 1 (Sampling Site Distribution) ----
 
@@ -151,3 +158,106 @@ f3c <- ggplot() +
 pdf(file=here('figures','figure3.pdf'),width=2.9,height=7)
 grid.arrange(f3a,f3b,f3c,nrow=3,padding=0)
 dev.off()
+
+#Figure 4 Estimated Arrival Date ----
+# Setup Functions and Variables 
+extract <- function(x)
+{
+	tmp = do.call(rbind,x)
+	tmp2 = tmp[,grep('^a\\[',colnames(tmp))]
+	qta = apply(tmp2,2,quantile,prob=c(0,0.025,0.25,0.5,0.75,0.975,1))
+	return(qta)
+}
+
+post.bar <- function(x,i,h,col)
+{
+	lines(c(x[1],x[7]),c(i,i),col=col)
+	rect(xleft=x[2],xright=x[6],ybottom=i-h/5,ytop=i+h/5,border=NA,col=col)
+	rect(xleft=x[3],xright=x[5],ybottom=i-h/3,ytop=i+h/3,border=NA,col=col)
+	lines(c(x[4],x[4]),c(i-h/2,i+h/2),lwd=2,col='grey44')
+}
+
+
+main.col <- c(rgb(51,34,136,maxColorValue=255),rgb(136,204,238,maxColorValue = 255),rgb(68,170,153,maxColorValue = 255),rgb(17,119,51,maxColorValue = 255),rgb(153,153,51,maxColorValue = 255),rgb(221,204,119,maxColorValue = 255),rgb(204,102,119,maxColorValue = 255),rgb(136,34,85,maxColorValue = 255))
+
+win  <- ne_countries(continent = 'asia',scale=10)
+japan <- ne_states(country = "japan") |> subset(!name_vi %in% c("Okinawa","Hokkaido"))
+df.pref.reg <- read.csv(here('data','prefecture_region_match.csv'))
+japan@data <- left_join(japan@data,df.pref.reg,by=c('name'='Prefecture'))
+japan <- gUnaryUnion(japan,id=japan@data$Area)
+japan.sf <- as(japan,'sf')
+win <- gUnaryUnion(win,id=win@data[,1])
+
+pdf(file=here('figures','figure4.pdf'),width=7,height=3.9,pointsize=4)
+par(mfrow=c(1,2),mar=c(3,3,3,1))
+# Map
+plot(win,xlim=c(127,143),ylim=c(31,43),col='lightgrey')
+legend('bottomright',legend='a',bty = 'n',cex=2)
+plot(japan.sf,col=main.col,border=NA,add=TRUE)
+axis(1,at=seq(129,143,2),tck=-0.01,padj=-0.8)
+axis(2,at=seq(30,42,2),tck=-0.01,padj=0.8)
+mtext(side=1,line =1.4,'Longitude')
+mtext(side=2,line=1.4,'Latitude')
+box()
+rect(xleft=127.5,xright=136,ybottom=37,ytop=43,col='white')
+text(130,34,labels='I',cex=1.5)
+text(132,32,labels='II',cex=1.5)
+text(134,32.5,labels='III',cex=1.5)
+text(137,33.2,labels='IV',cex=1.5)
+text(138.5,33.8,labels='V',cex=1.5)
+text(141.5,36,labels='VI',cex=1.5)
+text(139,39,labels='VII',cex=1.5)
+text(142.3,41,labels='VIII',cex=1.5)
+
+# Model Diagrams
+aw = 0.05
+al = 0.1
+##Model 0
+text(x=129,y=42.5,labels='Model 0',cex=1)
+text(x=seq(128,by=1,length.out=8),y=rep(41.9,8),labels=c('I','II','III','IV','V','VI','VII','VIII'),cex=1)
+##Model 1
+text(x=129,y=41,labels='Model 1',cex=1)
+text(x=seq(128,by=1,length.out=8),y=rep(40.4,8),labels=c('I','II','III','IV','V','VI','VII','VIII'),cex=1)
+pos2 = cbind(seq(128,by=1,length.out=8),rep(40.4,8))
+straightarrow(from=pos2[1,],to=pos2[2,],arr.type='triangle',segment=c(0.3,0.8),endhead=TRUE,arr.width=aw,arr.length=al,lwd = 1)
+curvedarrow(from = pos2[1, ], to = pos2[3, ]-c(0,0.25),curve = 0.3, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
+for (i in 3:7)
+{
+  straightarrow(from = pos2[i, ], to = pos2[i+1, ],arr.type='triangle',segment=c(0.3,0.8),endhead=T,arr.width=aw,arr.length=al,lwd=1)
+}
+##Model 2
+text(x=129,y=39.2,labels='Model 2',cex=1)
+text(x=seq(128,by=1,length.out=8),y=rep(38.6,8),labels=c('I','II','III','IV','V','VI','VII','VIII'),cex=1)
+pos3 = cbind(seq(128,by=1,length.out=8),rep(38.6,8))
+straightarrow(from=pos3[1,],to=pos3[2,],arr.type='triangle',segment=c(0.3,0.8),endhead=TRUE,arr.width=aw,arr.length=al,lwd=1)
+curvedarrow(from = pos3[1, ], to = pos3[3, ]-c(0,0.25),curve = 0.4, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1) 
+straightarrow(from=pos3[3,],to=pos3[4,],arr.type='triangle',segment=c(0.3,0.8),endhead=TRUE,arr.width=aw,arr.length=al,lwd=1)
+straightarrow(from=pos3[4,],to=pos3[5,],arr.type='triangle',segment=c(0.3,0.8),endhead=TRUE,arr.width=aw,arr.length=al,lwd=1)
+curvedarrow(from = pos3[4, ], to = pos3[6, ]-c(0,0.25),curve = 0.4, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
+curvedarrow(from = pos3[4, ], to = pos3[7, ]-c(0,0.25),curve = 0.42, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
+curvedarrow(from = pos3[4, ], to = pos3[8, ]+c(0,0.25),curve = -0.3, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
+
+# Posterior Arrival Times
+plot(NULL,xlim=c(3600,1900),ylim=c(0.5,31.5),xlab='',ylab='',axes=F)
+legend('bottomright',legend='b',bty = 'n',cex=2)
+tmp0 = extract(out.unif.model0)
+tmp1 = extract(out.unif.model1)
+tmp2 = extract(out.unif.model2)
+
+iseq0 = seq(1,by=4,length.out=8)
+iseq1 = seq(2,by=4,length.out=8)
+iseq2 = seq(3,by=4,length.out=8)
+abline(h=seq(4,by=4,length.out=7),col='darkgrey',lty=2)
+for (i in 1:8)
+{
+	post.bar(tmp0[,i],i=iseq0[i],h=0.7,col=main.col[i])
+	post.bar(tmp1[,i],i=iseq1[i],h=0.7,col=main.col[i])
+	post.bar(tmp2[,i],i=iseq2[i],h=0.7,col=main.col[i])
+}
+axis(2,at=iseq1,labels = c('I','II','III','IV','V','VI','VII','VIII'),las=2)
+axis(1,at=BCADtoBP(c(-1500,-1250,-1000,-750,-500,-250,1)),labels=c('1500BC','1250BC','1000BC','750BC','500BC','250BC','1AD'),tck=-0.01)
+axis(3,at=seq(3400,1800,-300),labels=paste0(seq(3400,1800,-300),'BP'),tck=-0.01)
+box()
+text(x=c(2600,2600,2600),y=c(iseq0[1],iseq1[1],iseq2[1]),labels=c('Model0','Model1','Model2'))
+dev.off()
+
