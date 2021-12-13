@@ -255,6 +255,6 @@ axis(2,at=iseq1,labels = c('I','II','III','IV','V','VI','VII','VIII'),las=2)
 axis(1,at=BCADtoBP(c(-1500,-1250,-1000,-750,-500,-250,1)),labels=c('1500BC','1250BC','1000BC','750BC','500BC','250BC','1AD'),tck=-0.01)
 axis(3,at=seq(3400,1800,-300),labels=paste0(seq(3400,1800,-300),'BP'),tck=-0.01)
 box()
-text(x=c(2600,2600,2600),y=c(iseq0[1],iseq1[1],iseq2[1]),labels=c('Model0','Model1','Model2'))
+text(x=BCADtoBP(c(-400,-400,-400)),y=c(iseq0[1],iseq1[1],iseq2[1]),labels=c('Model0','Model1','Model2'))
 dev.off()
 
