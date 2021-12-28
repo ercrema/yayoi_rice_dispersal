@@ -102,10 +102,10 @@ constants$tau <- 0.90
 theta.init <- medCal(calibrate(dat$cra,dat$cra_error))
 
 ## Setup and Execution of MCMC in Parallel ----
-ncores <- 3
+ncores <- 4
 cl <- makeCluster(ncores)
 # Run the model in parallel:
-seeds <- c(12,45,67)
+seeds <- c(12,45,67,89)
 niter = 8000000
 nburnin = 4000000
 thin = 400
