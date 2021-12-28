@@ -109,8 +109,7 @@ seeds <- c(12,45,67,89)
 niter = 8000000
 nburnin = 4000000
 thin = 400
-chain_output <- parLapply(cl = cl, X = seeds, fun = runFun, dat = dat,
-constants = constants, theta = theta.init, alpha.init = alpha.init, delta.init = delta.init, niter = niter, nburnin = nburnin,thin = thin)
+chain_output <- parLapply(cl = cl, X = seeds, fun = runFun, dat = dat,constants = constants, theta = theta.init, niter = niter, nburnin = nburnin,thin = thin)
 stopCluster(cl)
 # Convert into a mcmc.list object for diagnostic (see below)
 gpqr_res <- coda::mcmc.list(chain_output)
