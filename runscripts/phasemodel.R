@@ -501,9 +501,9 @@ trap.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 ncores  <-  4
 cl <- makeCluster(ncores)
 seeds <- c(12,34,56,78)
-niter  <- 2000000
-nburnin  <- 1000000
-thin  <- 100
+niter  <- 6000000
+nburnin  <- 3000000
+thin  <- 300
 
 out.unif.model0  <-  parLapply(cl = cl, X = seeds, fun = unif.model0, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, nburnin = nburnin,thin = thin)
 out.unif.model1  <-  parLapply(cl = cl, X = seeds, fun = unif.model1, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, nburnin = nburnin,thin = thin)
