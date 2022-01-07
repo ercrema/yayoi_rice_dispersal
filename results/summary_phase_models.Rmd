@@ -400,8 +400,8 @@ main.col <- c(rgb(51,34,136,maxColorValue=255),rgb(136,204,238,maxColorValue = 2
 
 ggplot(comb.long, aes(x = Posterior, y = area,fill=area)) + 
 	geom_density_ridges()+
-	scale_fill_manual(values=main.col) + 
-	scale_x_reverse(breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1,200)),labels=c('1200BC','1000BC','800BC','600BC','400BC','200BC','1AD','200AD'),limits=c(3300,1700)) +
+	scale_fill_manual(values=main.col) +
+	scale_x_reverse(breaks=BCADtoBP(c(-2000,-1800,-1600,-1400,-1200,-1000,-800,-600,-400,-200,1,200)),labels=c('2000BC','1800BC','1600BC','1400BC','1200BC','1000BC','800BC','600BC','400BC','200BC','1AD','200AD'),limits=c(4000,1700)) +
 	theme(legend.position = "none")
 ```
 
@@ -507,7 +507,7 @@ main.col <- c(rgb(51,34,136,maxColorValue=255),rgb(136,204,238,maxColorValue = 2
 ggplot(comb.long, aes(x = Posterior, y = area,fill=area)) + 
 	geom_density_ridges()+
 	scale_fill_manual(values=main.col) + 
-	scale_x_reverse(breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1,200)),labels=c('1200BC','1000BC','800BC','600BC','400BC','200BC','1AD','200AD'),limits=c(3300,1700)) +
+	scale_x_reverse(breaks=BCADtoBP(c(-2000,-1800,-1600,-1400,-1200,-1000,-800,-600,-400,-200,1,200)),labels=c('2000BC','1800BC','1600BC','1400BC','1200BC','1000BC','800BC','600BC','400BC','200BC','1AD','200AD'),limits=c(4000,1700)) +
 	theme(legend.position = "none")
 ```
 
@@ -613,7 +613,7 @@ main.col <- c(rgb(51,34,136,maxColorValue=255),rgb(136,204,238,maxColorValue = 2
 ggplot(comb.long, aes(x = Posterior, y = area,fill=area)) + 
 	geom_density_ridges()+
 	scale_fill_manual(values=main.col) + 
-	scale_x_reverse(breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1,200)),labels=c('1200BC','1000BC','800BC','600BC','400BC','200BC','1AD','200AD'),limits=c(3300,1700)) +
+	scale_x_reverse(breaks=BCADtoBP(c(-2000,-1800,-1600,-1400,-1200,-1000,-800,-600,-400,-200,1,200)),labels=c('2000BC','1800BC','1600BC','1400BC','1200BC','1000BC','800BC','600BC','400BC','200BC','1AD','200AD'),limits=c(4000,1700)) +
 	theme(legend.position = "none")
 ```
 
