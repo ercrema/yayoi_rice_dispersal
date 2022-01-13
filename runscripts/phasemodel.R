@@ -28,7 +28,7 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 	model <- nimbleCode({
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dexp(gamma)
+			delta[k] ~ dgamma(2,0.015)
 			alpha[k] ~ dunif(max=a[id.area[k]],min=b[id.area[k]]);
 		}
 
@@ -39,9 +39,6 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 			sd[i] <- (cra_error[i]^2+sigmaCurve[i]^2)^(1/2);
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
 		}
-
-		# Set Prior for Duration
-		gamma ~ dunif(0.002,1)
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
@@ -54,7 +51,6 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 	# Define Inits
 	set.seed(seed)
 	inits <- list(theta=theta.init, alpha=alpha.init, delta=delta.init)
-	inits$gamma <- runif(1,0.002,1)
 	init.a = init.b =  numeric(length=constants$N.areas)
 	for (i in 1:constants$N.areas)
 	{
@@ -89,7 +85,7 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		# Model Start/End Dates at Individual Sites	
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dexp(gamma)
+			delta[k] ~ dgamma(2,0.015)
 			alpha[k] ~ dunif(max=a[id.area[k]],min=b[id.area[k]]);
 		}
 
@@ -101,8 +97,6 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
 		}
 
-		# Set Prior for Duration
-		gamma ~ dunif(0.002,1)
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
@@ -117,7 +111,6 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	# Define Inits
 	set.seed(seed)
 	inits <- list(theta=theta.init, alpha=alpha.init, delta=delta.init)
-	inits$gamma <- runif(1,0.002,1)
 	check = TRUE
 	while(check)
 	{
@@ -172,7 +165,7 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		# Model Start/End Dates at Individual Sites	
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dexp(gamma)
+			delta[k] ~ dgamma(2,0.015)
 			alpha[k] ~ dunif(max=a[id.area[k]],min=b[id.area[k]]);
 		}
 
@@ -184,8 +177,6 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
 		}
 
-		# Set Prior for Duration
-		gamma ~ dunif(0.002,1)
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
@@ -200,7 +191,6 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	# Define Inits
 	set.seed(seed)
 	inits <- list(theta=theta.init, alpha=alpha.init, delta=delta.init)
-	inits$gamma <- runif(1,0.002,1)
 	check = TRUE
 	while(check)
 	{
@@ -255,7 +245,7 @@ trap.model0 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		# Model Start/End Dates at Individual Sites	
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dexp(gamma)
+			delta[k] ~ dgamma(2,0.015)
 			alpha[k] ~ dTrapezoidal(a=a[id.area[k]],m1=m1[id.area[k]],m2=m2[id.area[k]],b=b[id.area[k]]);
 		}
 
@@ -267,8 +257,6 @@ trap.model0 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
 		}
 
-		# Set Prior for Duration
-		gamma ~ dunif(0.002,1)
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
@@ -283,7 +271,6 @@ trap.model0 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	# Define Inits
 	set.seed(seed)
 	inits <- list(theta=theta.init, alpha=alpha.init, delta=delta.init)
-	inits$gamma <- runif(1,0.002,1)
 	init.a = init.b  = init.m1 = init.m2  = numeric(length=constants$N.areas)
 	for (i in 1:constants$N.areas)
 	{
@@ -325,7 +312,7 @@ trap.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		# Model Start/End Dates at Individual Sites	
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dexp(gamma)
+			delta[k] ~ dgamma(2,0.015)
 			alpha[k] ~ dTrapezoidal(a=a[id.area[k]],m1=m1[id.area[k]],m2=m2[id.area[k]],b=b[id.area[k]]);
 		}
 
@@ -337,8 +324,6 @@ trap.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
 		}
 
-		# Set Prior for Duration
-		gamma ~ dunif(0.002,1)
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
@@ -355,7 +340,6 @@ trap.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	# Define Inits
 	set.seed(seed)
 	inits <- list(theta=theta.init, alpha=alpha.init, delta=delta.init)
-	inits$gamma <- runif(1,0.002,1)
 	check = TRUE
 	while(check)
 	{
@@ -415,7 +399,7 @@ trap.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		# Model Start/End Dates at Individual Sites	
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dexp(gamma)
+			delta[k] ~ dgamma(2,0.015)
 			alpha[k] ~ dTrapezoidal(a=a[id.area[k]],m1=m1[id.area[k]],m2=m2[id.area[k]],b=b[id.area[k]]);
 		}
 
@@ -427,8 +411,6 @@ trap.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
 		}
 
-		# Set Prior for Duration
-		gamma ~ dunif(0.002,1)
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
@@ -445,7 +427,6 @@ trap.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	# Define Inits
 	set.seed(seed)
 	inits <- list(theta=theta.init, alpha=alpha.init, delta=delta.init)
-	inits$gamma <- runif(1,0.002,1)
 	check = TRUE
 	while(check)
 	{
