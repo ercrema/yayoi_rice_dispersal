@@ -53,7 +53,7 @@ sites <- SiteInfo
 coordinates(sites) <- c('Longitude','Latitude')
 proj4string(sites)  <- "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
 dist_mat  <- spDists(sites,longlat=TRUE) #inter-site distance matrix
-origin_point  <- c(129.95798382,33.44851467) #Nabatake Site 
+origin_point  <- c(130.0087,33.411) #Ukikunden Shell Midden 
 dist_org  <-  spDistsN1(sites,origin_point,longlat=TRUE) #distance from nabatake site
 
 # Create list with constants and data
