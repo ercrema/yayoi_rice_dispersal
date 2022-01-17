@@ -10,8 +10,7 @@ dat <- read.csv(here("data", "R14CDB_v1_4_6.csv")) |> subset(Rice == "TRUE" & Us
 #**NOTE** update raw CSV data for the final version so that subsetting is not required
 
 # Subset data ----
-# Only Dates between 3000 and 1000 C14age, excluding Hokkaido and Okinawa
-dat <- subset(dat, !Region %in% c("Hokkaido", "Okinawa") & C14Age <= 3000 & C14Age>1000 )
+dat <- subset(dat, !Region %in% c("Hokkaido", "Okinawa") & Method == 'AMS')
 
 # Assign Site ID ----
 dat$SiteID  <- as.numeric(factor(dat$SiteName))
