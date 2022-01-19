@@ -315,11 +315,11 @@ dev.off()
 
 # Figure S7 (Prior Predictive Check etasq and rhosq) ----
 nsim  <- 500
-etasq.prior  <- rexp(nsim,10)
-rho.prior  <- rgamma(nsim,10,(10-1)/200)
+etasq.prior  <- rexp(nsim,20)
+rho.prior  <- rtgamma(nsim,10,(10-1)/150,1,1350)
 
 pdf(file=here('figures','figureS7.pdf'),width=6,height=5)
-plot(NULL,xlab='Distance (km)',ylab='Covariance',xlim=c(0,1000),ylim=c(0,1))
+plot(NULL,xlab='Distance (km)',ylab='Covariance',xlim=c(0,1000),ylim=c(0,0.3))
 for (i in 1:nsim)
 {
 	curve(etasq.prior[i]*exp(-0.5*(x/rho.prior[i])^2),add=TRUE,from=0,to=1000,col=rgb(0,0,0,0.1))
