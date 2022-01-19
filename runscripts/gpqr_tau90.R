@@ -31,10 +31,14 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 	Ccov_ExpQ <- compileNimble(cov_ExpQ)
 	assign('cov_ExpQ',cov_ExpQ,envir=.GlobalEnv)
 
+	# Handle constraints on dipsersal rate
+	dat$lim  <- rep(1,constants$N.sites)
 	# Core model
 	model <- nimbleCode({
 		for (i in 1:N.sites){
 			# Model
+			rate[i] <- -1/(s[i]-beta1)
+			lim[i] ~ dconstraint(rate[i]>0)
 			mu[i] <- beta0 + (s[i]-beta1)*dist_org[i]
 			theta[i] ~ dAsymLaplace(mu=mu[i],sigma=sigma,tau=tau)
 			mu.date[i] <- interpLin(z=theta[i], x=calBP[], y=C14BP[]);
@@ -44,10 +48,10 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 		}
 		#priors
 		beta0 ~ dnorm(3000,sd=200);
-		beta1 ~ dexp(1)
+		beta1 ~ dexp(0.5)
 		sigma ~ dexp(0.01)
-		etasq ~ dexp(10);
-		rho ~ T(dgamma(2,(2-1)/200),1,1350); #mode 200
+		etasq ~ dexp(20);
+		rho ~ T(dgamma(10,(10-1)/150),1,1350); #mode 150
 		mu_s[1:N.sites] <- 0;
 		cov_s[1:N.sites, 1:N.sites] <- cov_ExpQ(dist_mat[1:N.sites, 1:N.sites], rho, etasq, 0.000001)
 		s[1:N.sites] ~ dmnorm(mu_s[1:N.sites], cov = cov_s[1:N.sites, 1:N.sites])
@@ -58,10 +62,10 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 	inits  <-  list()
 	inits$theta  <- theta.init
 	inits$beta0 <- rnorm(1,3000,200)
-	inits$beta1 <- rexp(1,1)
+	inits$beta1 <- rexp(1,0.5)
 	inits$sigma  <- rexp(1,0.01)
-	inits$rho  <- rtgamma(1,shape=2,scale=(2-1)/200,min=1,max=1350)
-	inits$etasq  <- rexp(1,10)
+	inits$rho  <- rtgamma(1,shape=10,scale=(10-1)/200,min=1,max=1350)
+	inits$etasq  <- rexp(1,20)
 	inits$s  <- rep(0,constants$N.sites)
 	inits$cov_s <- Ccov_ExpQ(constants$dist_mat, inits$rho, inits$etasq, 0.000001)
 	inits$s <-  t(chol(inits$cov_s)) %*% rnorm(constants$N.sites)
