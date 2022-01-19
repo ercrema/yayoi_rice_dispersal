@@ -1,16 +1,23 @@
 # Load Libraries and spatial data ----
 library(here)
 library(truncnorm)
+library(cascsim)
 library(ggplot2)
+library(ggridges)
 library(rnaturalearth)
 library(nimbleCarbon)
 library(rcarbon)
 library(maptools)
+library(sf)
+library(rgeos)
 library(viridis)
 library(latex2exp)
 library(gridExtra)
 library(diagram)
 library(quantreg)
+source(here('src','orderPPlot.R'))
+source(here('src','diffplot.R'))
+source(here('src','gpqrSim.R'))
 
 # Figure S1 (Impact of Hallstatt Plateau) ----
 # Load Observed Data
@@ -123,7 +130,7 @@ pdf(file=here('figures','figureS2.pdf'),width=8,height=8)
 grid.arrange(fS2a,fS2b,fS2c,fS2d,ncol=2,nrow=2)
 dev.off()
 
-# Figure S3 (Posterior vs True values of s and alpha) ----
+# Figure S3 (Posterior vs True values of s) ----
 
 # Load Tactical Simulation GPQR
 load(here('results','res_tactical.RData'))
@@ -209,7 +216,7 @@ abline(a=0,b=1,lty=2,col=1,lwd=2)
 
 dev.off()
 
-# Figure S4 (Posterior vs True values of beta0,beta1,rhosq,etasq,omega, and phi) ----
+# Figure S4 (Posterior vs True values of beta0,beta1,rho,etasq) ----
 # Load Tactical Simulation
 load(here('results','tactical_sim_res.RData'))
 # Load GPQR on tactical simulation
@@ -261,90 +268,230 @@ box()
 for(i in 1:nsim){abline(a=beta0.prior[i],b=beta1.prior[i],col=rgb(0,0,0,0.1))}
 dev.off()
 
-# Figure S6 (Prior Predictive Check etasq and rhosq) ----
+# Figure S6 (Intepretation of etasq and rho) ----
+# spatial window
+sf_japan <- ne_states(country = "japan") |> subset(!name_vi %in%  c("Okinawa","Hokkaido"))
+sampling.win <- as(sf_japan, "SpatialPolygons") |>  unionSpatialPolygons(IDs = rep(1, nrow(sf_japan)))
+sampling.win <- disaggregate(sampling.win) 
+sampling.win  <- sampling.win[order(raster::area(sampling.win),decreasing=TRUE)[1:3]]
+win.sf  <- as(sampling.win,'sf')
+win = sampling.win
+# fixed params
+n = 300
+origin.point = c(129.959,33.4485)
+beta0 = 3000
+beta1 = 1
+sigma = 100
+seed = 144231
+# sweep params
+etasq = c(0.01,0.05,0.15)
+rho = c(10,100,500)
+cov.param = expand.grid(etasq=etasq,rho=rho)
+tmp  <- vector('list',length=nrow(cov.param))
+out  <- vector('list',length=nrow(cov.param))
+
+
+for (i in 1:nrow(cov.param))
+{
+	tmp[[i]]  <- gpqrSim(win=win,n=n,beta0=beta0,beta1=beta1,sigma=sigma,origin.point=origin.point,etasq=cov.param$etasq[i],rho=cov.param$rho[i],seed=seed)
+
+	out[[i]] <- ggplot() +
+		geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
+		geom_sf(data=tmp[[i]],mapping = aes(fill=rate),pch=21,col='darkgrey',size=1.5) + 
+		xlim(129,143) + 
+		ylim(31,42) +
+# 		labs(title=paste0('etasq=',cov.param$etasq[i],' rho=',cov.param$rho[i]),fill='Dispersal Rate \n (km/yr)') + 
+ 		labs(title=TeX(sprintf("$\\eta^2 = %g \\, \\rho = %g$",cov.param$etasq[i],cov.param$rho[i])),fill='Dispersal Rate \n (km/yr)') + 
+ 		scale_fill_viridis(option = 'turbo',limits = c(0.7, 3), oob = scales::squish) +
+#  		scale_fill_viridis() +
+		theme(plot.title = element_text(hjust = 0.5,size=11), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+
+}
+
+
+pdf(file=here('figures','figureS6.pdf'),width=8,height=8)
+grid.arrange(grobs=out,nrow=3,ncol=3)
+dev.off()
+
+# Figure S7 (Prior Predictive Check etasq and rhosq) ----
 nsim  <- 500
 etasq.prior  <- rexp(nsim,10)
-rhosq.prior  <- rexp(nsim,1000)
-
-pdf(file=here('figures','figureS6.pdf'),width=6,height=5)
-plot(NULL,xlab='Distance (km)',ylab='Covariance',xlim=c(0,500),ylim=c(0,0.6))
-for (i in 1:nsim)
-{
-	curve(etasq.prior[i]*exp(-rhosq.prior[i]*x^2),add=TRUE,from=0,to=500,col=rgb(0,0,0,0.1))
-}
-dev.off()
-
-# Figure S7 (Prior Predictive Check of omega and phi) ----
-nsim  <- 500
-omega.prior  <- rtruncnorm(nsim,a=0,mean=3,sd=1)
-phi.prior  <- rtruncnorm(nsim,a=0,mean=0.01,sd=0.01)
-
+rho.prior  <- rgamma(nsim,10,(10-1)/200)
 
 pdf(file=here('figures','figureS7.pdf'),width=6,height=5)
-plot(NULL,xlab='Duration',ylab='Probability Density',xlim=c(0,1500),ylim=c(0,0.02))
+plot(NULL,xlab='Distance (km)',ylab='Covariance',xlim=c(0,1000),ylim=c(0,1))
 for (i in 1:nsim)
 {
-	curve(dgamma(x,omega.prior[i],phi.prior[i]),add=TRUE,from=0,to=1500,col=rgb(0,0,0,0.1))
+	curve(etasq.prior[i]*exp(-0.5*(x/rho.prior[i])^2),add=TRUE,from=0,to=1000,col=rgb(0,0,0,0.1))
 }
 dev.off()
 
-# Figure S8 (Traceplot of beta0, beta1, rhosq, etasq, omega, and phi) ----
+# Figure S8 (Traceplot of beta0, beta1, rhosq, and etasq for tau=0.9) ----
 
-# Figure S9 (Marginal posterior of beta0, beta1, rhosq, etasq, omega, and phi) ----
+load(here('results','gpqr_tau90.RData'))
 
-# Figure S10 (Joint Posterior beta0 & beta1) ----
-
-# Figure S11 (Joint Posterior rhosq and etasq) ----
-
-# Figure S12 (Joint Posterior omega and phi) ----
-
-# Figure S13 (Posterior Arrival Date Trapezoidal Model ----
-load(here('results','trap_model0.RData'))
-load(here('results','trap_model1.RData'))
-load(here('results','trap_model2.RData'))
-
-extract <- function(x)
-{
-	tmp = do.call(rbind,x)
-	tmp2 = tmp[,grep('^a\\[',colnames(tmp))]
-	qta = apply(tmp2,2,quantile,prob=c(0,0.025,0.25,0.5,0.75,0.975,1))
-	return(qta)
-}
-
-post.bar <- function(x,i,h,col)
-{
-	lines(c(x[1],x[7]),c(i,i),col=col)
-	rect(xleft=x[2],xright=x[6],ybottom=i-h/5,ytop=i+h/5,border=NA,col=col)
-	rect(xleft=x[3],xright=x[5],ybottom=i-h/3,ytop=i+h/3,border=NA,col=col)
-	lines(c(x[4],x[4]),c(i-h/2,i+h/2),lwd=2,col='grey44')
-}
-
-
-main.col <- c(rgb(51,34,136,maxColorValue=255),rgb(136,204,238,maxColorValue = 255),rgb(68,170,153,maxColorValue = 255),rgb(17,119,51,maxColorValue = 255),rgb(153,153,51,maxColorValue = 255),rgb(221,204,119,maxColorValue = 255),rgb(204,102,119,maxColorValue = 255),rgb(136,34,85,maxColorValue = 255))
-
-pdf(file=here('figures','figureS13.pdf'),width=5.5,height=7,pointsize=9)
-par(mar=c(3,3,3,1))
-# Map
-# Posterior Arrival Times
-plot(NULL,xlim=c(4000,2000),ylim=c(0.5,31.5),xlab='',ylab='',axes=F)
-tmp0 = extract(out.trap.model0)
-tmp1 = extract(out.trap.model1)
-tmp2 = extract(out.trap.model2)
-
-iseq0 = seq(1,by=4,length.out=8)
-iseq1 = seq(2,by=4,length.out=8)
-iseq2 = seq(3,by=4,length.out=8)
-abline(h=seq(4,by=4,length.out=7),col='darkgrey',lty=2)
-for (i in 1:8)
-{
-	post.bar(tmp0[,i],i=iseq0[i],h=0.7,col=main.col[i])
-	post.bar(tmp1[,i],i=iseq1[i],h=0.7,col=main.col[i])
-	post.bar(tmp2[,i],i=iseq2[i],h=0.7,col=main.col[i])
-}
-axis(2,at=iseq1,labels = c('I','II','III','IV','V','VI','VII','VIII'),las=2)
-axis(1,at=BCADtoBP(c(-2000,-1750,-1500,-1250,-1000,-750,-500,-250,1)),labels=c('2000BC','1740BC','1500BC','1250BC','1000BC','750BC','500BC','250BC','1AD'),tck=-0.01)
-axis(3,at=seq(3900,1800,-300),labels=paste0(seq(3900,1800,-300),'BP'),tck=-0.01)
-box()
-text(x=c(2600,2600,2600),y=c(iseq0[1],iseq1[1],iseq2[1]),labels=c('Model0','Model1','Model2'))
+pdf(file=here('figures','figureS8.pdf'),width=8,height=8)
+par(mfrow=c(2,2))
+traceplot(gpqr_tau90[,'beta0'],main=TeX('$\\beta_0$'),smooth=TRUE)
+traceplot(gpqr_tau90[,'beta1'],main=TeX('$\\beta_1$'),smooth=TRUE)
+traceplot(gpqr_tau90[,'rho'],main=TeX('$\\rho$'),smooth=TRUE)
+traceplot(gpqr_tau90[,'etasq'],main=TeX('$\\eta^2$'),smooth=TRUE)
 dev.off()
+
+# Figure S9 (Traceplot of beta0, beta1, rhosq, and etasq for tau=0.99) ----
+
+load(here('results','gpqr_tau99.RData'))
+
+pdf(file=here('figures','figureS9.pdf'),width=8,height=8)
+par(mfrow=c(2,2))
+traceplot(gpqr_tau99[,'beta0'],main=TeX('$\\beta_0$'),smooth=TRUE)
+traceplot(gpqr_tau99[,'beta1'],main=TeX('$\\beta_1$'),smooth=TRUE)
+traceplot(gpqr_tau99[,'rho'],main=TeX('$\\rho$'),smooth=TRUE)
+traceplot(gpqr_tau99[,'etasq'],main=TeX('$\\eta^2$'),smooth=TRUE)
+dev.off()
+
+# Table S1 (Rhat, ESS, and Posterior Summaries of beta0, beta1, rhosq, and etasq for tau=0.9) ----
+
+gpqr.tau90.comb  <- do.call(rbind,gpqr_tau90)
+params = c('beta0','beta1','rho','etasq')
+meds = apply(gpqr.tau90.comb[,params],2,median)
+lo90 = apply(gpqr.tau90.comb[,params],2,function(x){HPDinterval(as.mcmc(x),prob=0.90)[1]})
+hi90 = apply(gpqr.tau90.comb[,params],2,function(x){HPDinterval(as.mcmc(x),prob=0.90)[2]})
+rhats = gelman.diag(gpqr_tau90)$psrf[params,1]
+ess = effectiveSize(gpqr_tau90)[params]
+table.S1 = data.frame(params,meds,lo90,hi90,rhats,ess)
+write.table(table.S1,file=here('tables','table_S1.csv'),col.names=c('Parameter','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
+
+
+# Table S2 (Rhat, ESS, and Posterior Summaries of beta0, beta1, rhosq, and etasq for tau=0.99) ----
+
+gpqr.tau99.comb  <- do.call(rbind,gpqr_tau99)
+params = c('beta0','beta1','rho','etasq')
+meds = apply(gpqr.tau99.comb[,params],2,median)
+lo90 = apply(gpqr.tau99.comb[,params],2,function(x){HPDinterval(as.mcmc(x),prob=0.90)[1]})
+hi90 = apply(gpqr.tau99.comb[,params],2,function(x){HPDinterval(as.mcmc(x),prob=0.90)[2]})
+rhats = gelman.diag(gpqr_tau99)$psrf[params,1]
+ess = effectiveSize(gpqr_tau99)[params]
+table.S2 = data.frame(params,meds,lo90,hi90,rhats,ess)
+write.table(table.S2,file=here('tables','table_S1.csv'),col.names=c('Parameter','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
+
+# Figure S10 (Marginal and Joint posteriors of beta0, beta1, rhosq, etasq for tau = 0.9) ----
+
+pdf(file=here('figures','figureS10.pdf'),width=8,height=8)
+par(mfrow=c(2,2))
+postHPDplot(gpqr.tau90.comb[,'beta0'],main=TeX('$\\beta_0$'),xlab='Cal BP',ylab='')
+postHPDplot(gpqr.tau90.comb[,'beta1'],main=TeX('$\\beta_1$'),xlab='',ylab='')
+postHPDplot(gpqr.tau90.comb[,'rho'],main=TeX('$\\rho$'),xlab='km',ylab='')
+postHPDplot(gpqr.tau90.comb[,'etasq'],main=TeX('$\\eta^2$'),xlab='',ylab='')
+dev.off()
+
+# Figure S11 (Marginal and Joint posteriors of beta0, beta1, rhosq, etasq for tau = 0.99) ----
+
+pdf(file=here('figures','figureS11.pdf'),width=8,height=8)
+par(mfrow=c(2,2))
+postHPDplot(gpqr.tau99.comb[,'beta0'],main=TeX('$\\beta_0$'),xlab='Cal BP',ylab='')
+postHPDplot(gpqr.tau99.comb[,'beta1'],main=TeX('$\\beta_1$'),xlab='',ylab='')
+postHPDplot(gpqr.tau99.comb[,'rho'],main=TeX('$\\rho$'),xlab='km',ylab='')
+postHPDplot(gpqr.tau99.comb[,'etasq'],main=TeX('$\\eta^2$'),xlab='',ylab='')
+dev.off()
+
+# Figure S12 Tactical Simulation Posterior Predictive Check for nu and upsilon ----
+
+
+
+# Table S3 posterior estimates for nu and upsilon ----
+load(here("results","phase_model0.RData"))
+load(here("results","phase_model1.RData"))
+load(here("results","phase_model2.RData"))
+out.comb.unif.model0  <- do.call(rbind,out.unif.model0)
+out.comb.unif.model1  <- do.call(rbind,out.unif.model1)
+out.comb.unif.model2  <- do.call(rbind,out.unif.model2)
+post.nu.model0  <- out.comb.unif.model0[,paste0('a[',1:8,']')] |> round()
+post.nu.model1  <- out.comb.unif.model1[,paste0('a[',1:8,']')] |> round()
+post.nu.model2  <- out.comb.unif.model2[,paste0('a[',1:8,']')] |> round()
+hpdi.model0  <- apply(post.nu.model0,2,function(x){HPDinterval(as.mcmc(x),prob = .90)}) 
+hpdi.model1  <- apply(post.nu.model1,2,function(x){HPDinterval(as.mcmc(x),prob = .90)}) 
+hpdi.model2  <- apply(post.nu.model2,2,function(x){HPDinterval(as.mcmc(x),prob = .90)}) 
+med.model0  <- apply(post.nu.model0,2,median)
+med.model1  <- apply(post.nu.model1,2,median)
+med.model2  <- apply(post.nu.model2,2,median)
+
+
+foo  <- function(x)
+{
+	x = BPtoBCAD(x)
+	ifelse(x<0,paste(abs(x),'BC'),paste(x,'AD'))
+}
+models  <- rep(c('Model 0','Model 1','Model 2'),each=8) 
+area  <- rep(as.character(as.roman(1:8)),3)
+meds  <- c(foo(med.model0),foo(med.model1),foo(med.model2))
+hi90  <- c(foo(hpdi.model0[1,]),foo(hpdi.model1[1,]),foo(hpdi.model2[1,]))
+lo90  <- c(foo(hpdi.model0[2,]),foo(hpdi.model1[2,]),foo(hpdi.model2[2,]))
+rhat  <- c(rhat.unif.model0$psrf[1:8,1],rhat.unif.model1$psrf[1:8,1],rhat.unif.model2$psrf[1:8,1]) |> round(digits=3)
+ess  <- c(ess.unif.model0[1:8],ess.unif.model1[1:8],ess.unif.model2[1:8]) |> round()
+table.S3  = data.frame(models,area,meds,lo90,hi90,rhat,ess)
+write.table(table.S3,file=here('tables','table_S3.csv'),col.names=c('Model','Area','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
+
+# Figure S13 Marginal Posterior Distribution of nu, model 0 ----
+model0.long  <- data.frame(value=as.numeric(post.nu.model0),Area = rep(as.character(as.roman(1:8)),each=nrow(post.nu.model0)))
+
+pdf(file=here('figures','figureS13.pdf'),height=10,width=7)
+ggplot(model0.long, aes(x = value, y = Area,fill='lighblue')) + 
+	geom_density_ridges() +
+	scale_x_reverse(limits=c(3300,1800),breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1)),labels=c(1200,1000,800,600,400,200,1)) +
+	scale_fill_manual(values='lightblue') +
+	theme(legend.position = "none") +
+	xlab('BC')
+dev.off()
+
+# Figure S14 Probability Matrix of nu, model 0 ----
+pdf(file=here('figures','figureS14.pdf'),width=7,height=7.5)
+orderPPlot(post.nu.model0,name.vec=paste("Area",as.character(as.roman(1:8))))
+dev.off()
+
+# Figure S15 Difference Matrix plot of nu, model 0 ----
+pdf(file=here('figures','figureS15.pdf'),width=16,height=11)
+mat <- cbind(c(1,9:15),c(37,2,16:21),c(rep(37,2),3,22:26),c(rep(37,3),4,27:30),c(rep(37,4),5,31:33),c(rep(37,5),6,34:35),c(rep(37,6),7,36),c(rep(37,7),8))
+layout(mat)
+par(mar=c(0,0,0,0))
+for (i in 1:8){plot(NULL,xlim=c(0,1),ylim=c(0,1),xlab="",ylab="",axes=F);text(0.5,0.5,paste('Area',as.character(as.roman(i))),cex=3)}
+par(mar=c(3,0,0,1))
+for (i in 1:8){
+	for (j in 1:8){
+		if (i < j)
+		{
+			diffDens(post.nu.model0[,i],post.nu.model0[,j],xlim=c(-1200,1200))
+		}
+	}
+}
+dev.off()
+
+
+
+# Figure S16 Marginal Posterior Distribution of nu and upsilon, model 1 ----
+model1.long  <- data.frame(value=as.numeric(post.nu.model1),Area = rep(as.character(as.roman(1:8)),each=nrow(post.nu.model1)))
+
+pdf(file=here('figures','figureS16.pdf'),height=10,width=7)
+ggplot(model1.long, aes(x = value, y = Area,fill='lighblue')) + 
+	geom_density_ridges() +
+	scale_x_reverse(limits=c(3300,1800),breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1)),labels=c(1200,1000,800,600,400,200,1)) +
+	scale_fill_manual(values='lightblue') +
+	theme(legend.position = "none") +
+	xlab('BC')
+dev.off()
+
+# Figure S17 Marginal Posterior Distribution of nu and upsilon, model 2 ----
+model2.long  <- data.frame(value=as.numeric(post.nu.model2),Area = rep(as.character(as.roman(1:8)),each=nrow(post.nu.model2)))
+
+pdf(file=here('figures','figureS17.pdf'),height=10,width=7)
+ggplot(model2.long, aes(x = value, y = Area,fill='lighblue')) + 
+	geom_density_ridges() +
+	scale_x_reverse(limits=c(3300,1800),breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1)),labels=c(1200,1000,800,600,400,200,1)) +
+	scale_fill_manual(values='lightblue') +
+	theme(legend.position = "none") +
+	xlab('BC')
+dev.off()
+
+
+
 
