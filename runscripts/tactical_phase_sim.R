@@ -38,4 +38,4 @@ simModel$simulate('theta')
 cra = uncalibrate(round(simModel$theta))$rCRA
 cra_error = rep(20,length(cra))
 d.sim <- list(cra=cra,cra_error=cra_error,id.sites=id.sites)
-save(d.sim,sim.constants,file=here('results','tactical_sim_res2.RData'))
+save(d.sim,sim.constants,file=here('data','tactical_sim_phase.RData'))

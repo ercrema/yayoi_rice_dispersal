@@ -32,6 +32,5 @@ true.param$seed <- 13233 #random seed
 # Simulate Data ----
 sim.sites  <- gpqrSim(win=sampling.win,n=true.param$n,beta0=true.param$beta0,beta1=true.param$beta1,sigma=true.param$sigma,origin.point=true.param$origin.point,etasq=true.param$etasq,rho=true.param$rho,seed=true.param$seed)
 
-# Process output for Bayesian Analyses ----
 # Save simulation output ----
 save(true.param,sim.sites,file=here('data','tactical_sim_gpqr.RData'))

@@ -3,7 +3,7 @@ library(here)
 library(coda)
 library(nimbleCarbon)
 library(rcarbon)
-load(here('results','tactical_sim_res2.RData'))
+load(here('data','tactical_sim_phase.RData'))
 
 # Model assuming independence of samples ----
 model1 <- nimbleCode({
@@ -88,4 +88,4 @@ rhat2  <- gelman.diag(mcmc.samples2,multivariate = FALSE)
 ess2  <- effectiveSize(mcmc.samples2)
 
 # Save output ----
-save(mcmc.samples1,rhat1,ess1,mcmc.samples2,rhat2,ess2,file=here('results','res_tactical2.RData'))
+save(mcmc.samples1,rhat1,ess1,mcmc.samples2,rhat2,ess2,file=here('results','phasemodel_tactsim.RData'))
