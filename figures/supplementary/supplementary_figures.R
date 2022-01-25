@@ -169,33 +169,42 @@ pdf(here('figures','supplementary','figureS6.pdf'),width=8,height=8)
 s6
 dev.off()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Figure S7 (Posterior vs True values of s for Tactical Simulation) ----
+load(here('results','gpqr_tactsim.RData'))
+gpqr_tactsim_post  <- do.call(rbind,gpqr_tactsim)
+tactsim_post_s  <- gpqr_tactsim_post[,paste0('s[',1:nrow(sim.sites),']')]
+tactsim_post_s_med  <- apply(tactsim_post_s,2,median)
+tactsim_post_s_lo  <- apply(tactsim_post_s,2,quantile,0.025)
+tactsim_post_s_hi  <- apply(tactsim_post_s,2,quantile,0.975)
+rr = c(min(c(tactsim_post_s_lo,sim.sites$s)),max(c(tactsim_post_s_hi,sim.sites$s)))
+
+pdf(here('figures','supplementary','figureS7.pdf'),height=6,width=6)
+plot(NULL,xlim=rr,ylim=rr,xlab='Simulated s',ylab='Predicted s')
+points(sim.sites$s,tactsim_post_s_med,pch=20)
+for (i in 1:nrow(sim.sites))
+{
+	lines(x=c(sim.sites$s[i],sim.sites$s[i]),y=c(tactsim_post_s_lo[i],tactsim_post_s_hi[i]))
+}
+abline(a=0,b=1,lty=2,col='red')
+dev.off()
 
 # Figure S8 (Posterior vs True values of beta0,beta1,rho,etasq for Tactical Simulation) ----
+tactsim_post_beta0  <- gpqr_tactsim_post[,'beta0']
+tactsim_post_beta1  <- gpqr_tactsim_post[,'beta1']
+tactsim_post_etasq  <- gpqr_tactsim_post[,'etasq']
+tactsim_post_rho  <- gpqr_tactsim_post[,'rho']
+
+pdf(here('figures','supplementary','figureS8.pdf'),height=8,width=8)
+par(mfrow=c(2,2))
+postHPDplot(tactsim_post_beta0,xlab='Cal BP',ylab='Posterior Probability',main=TeX('$\\beta_0$'))
+abline(v=true.param$beta0,lty=2)
+postHPDplot(tactsim_post_beta1,xlab='',ylab='Posterior Probability',main=TeX('$\\beta_1$'))
+abline(v=true.param$beta1,lty=2)
+postHPDplot(tactsim_post_etasq,xlab='Cal BP',ylab='Posterior Probability',main=TeX('$\\eta^2$'))
+abline(v=true.param$etasq,lty=2)
+postHPDplot(tactsim_post_rho,xlab='',ylab='Posterior Probability',main=TeX('$\\rho$'))
+abline(v=true.param$rho,lty=2)
+dev.off()
 
 # Figure S9 (Prior Predictive Check beta0, beta1, s) ----
 nsim <- 5000
