@@ -48,7 +48,7 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 		}
 		#priors
 		beta0 ~ dnorm(3000,sd=200);
-		beta1 ~ dexp(0.5)
+		beta1 ~ dexp(1)
 		sigma ~ dexp(0.01)
 		etasq ~ dexp(20);
 		rho ~ T(dgamma(10,(10-1)/150),1,1350); #mode 150
@@ -62,7 +62,7 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 	inits  <-  list()
 	inits$theta  <- theta.init
 	inits$beta0 <- rnorm(1,3000,200)
-	inits$beta1 <- rexp(1,0.5)
+	inits$beta1 <- rexp(1,1)
 	inits$sigma  <- rexp(1,0.01)
 	inits$rho  <- rtgamma(1,shape=10,scale=(10-1)/200,min=1,max=1350)
 	inits$etasq  <- rexp(1,20)
