@@ -16,7 +16,8 @@ library(diagram)
 library(RColorBrewer)
 # Load Data & Results ----
 load(here('data','c14rice.RData'))
-load(here('results','gpqr_res.RData'))
+load(here('results','gpqr_tau90.RData'))
+# load(here('results','gpqr_tau99.RData'))
 load(here('results','unif_model0.RData'))
 load(here('results','unif_model1.RData'))
 load(here('results','unif_model2.RData'))
@@ -33,7 +34,7 @@ df.pref.reg = data.frame(Pref = c("Aichi","Gifu","Akita","Ishikawa","Aomori","Ch
 japan@data <- left_join(japan@data,df.pref.reg,by=c('name'='Pref'))
 japan <- gUnaryUnion(japan,id=japan@data$Regions)
 japan.sf <- as(japan,'sf')
-elevation <- get_elev_raster(locations = japan.sf, z = 2,clip = "locations")
+elevation <- get_elev_raster(locations = japan.sf, z = 4,clip = "locations",src='aws')
 cropped_elev <- crop(elevation,japan.sf)
 elevate <- as.data.frame(cropped_elev,xy = TRUE)
 colnames(elevate)[3] = "elevation_value"
@@ -63,7 +64,7 @@ f1 <-   ggplot() +
 	labs(fill = "Elevation (meters)",x='',y='') +
 	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.3,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.2, 'in'),legend.key.size = unit(0.2, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"),axis.title=element_blank())
 
-pdf(file=here('figures','figure1.pdf'),width=5,height=5)
+pdf(file=here('figures','main','figure1.pdf'),width=5,height=5)
 f1
 dev.off()
 
@@ -97,63 +98,51 @@ f2  <- ggplot(data=df.combo) +
 	labs(y = "Normalised Summed Probability") +
 	theme(plot.title = element_text(hjust = 0.5),legend.position=c(0.22,0.8),legend.spacing.y = unit(-11, "pt"),legend.background = element_rect(fill = "transparent"), legend.text=element_text(size=6),axis.title=element_text(size=9),plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"))
 
-pdf(file=here('figures','figure2.pdf'),width = 5, height = 4)
+pdf(file=here('figures','main','figure2.pdf'),width = 5, height = 4)
 f2
 dev.off()
 
 
 
-# Figure 3 (Posterior Mean of dispersal rate deviations and arrival time) ----
-post.gpqr <- gpqr_uniform_sample[[1]] #Extract posterior from chain #1
+# Figure 3 (Posterior Mean of dispersal rate deviations) ----
+post.gpqr  <- do.call(rbind,gpqr_tau90)
 nmcmc  <- nrow(post.gpqr) #number of MCMC samples
 post.s  <- post.gpqr[,grep('s\\[',colnames(post.gpqr))]
-post.arrival <- matrix(NA,nmcmc,constants$N.sites)
+# post.arrival <- matrix(NA,nmcmc,constants$N.sites)
 post.rate <- matrix(NA,nmcmc,constants$N.sites)
 for (i in 1:nmcmc)
 {
-	post.rate[i,] = - 1 / (post.gpqr[i,'betaD'] + post.s[i,])
-	post.arrival[i,]  <- BPtoBCAD(post.gpqr[i,'intercept'] + (post.gpqr[i,'betaD'] + post.s[i,]) * constants$dist_org)
+	post.rate[i,] = -1 / (post.s[i,]-post.gpqr[i,'beta1'])
+# 	post.arrival[i,]  <- BPtoBCAD(post.gpqr[i,'beta0'] + (post.gpqr[i,'beta1'] + post.s[i,]) * constants$dist_org)
 }
 
 sites@data$s.m <- apply(post.s,2,median)
-sites@data$arrival.m  <- apply(post.arrival,2,median)
+# sites@data$arrival.m  <- apply(post.arrival,2,median)
 sites@data$rate.m  <- apply(post.rate,2,median)
 
 sites.sf <- as(sites,'sf')
 
 f3a <- ggplot() +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=s.m),pch=21,col='darkgrey',size=2) + 
+	geom_sf(data=sites.sf,mapping = aes(fill=s.m),pch=21,col='darkgrey',size=1.2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title='a',fill='s') + 
 	scale_fill_gradient2(low='blue',high='red',mid='white') +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+	theme(plot.title = element_text(hjust = 0.5,size=6), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=4),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=4.5),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
 
 
 f3b <- ggplot() +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=rate.m),pch=21,col='darkgrey',size=2) + 
+	geom_sf(data=sites.sf,mapping = aes(fill=rate.m),pch=21,col='darkgrey',size=1.2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title='b',fill='Dispersal Rate \n (km/yr)') + 
-	scale_fill_viridis(option="magma") +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+	scale_fill_viridis(option="turbo") +
+	theme(plot.title = element_text(hjust = 0.5,size=6), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=4),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=4.5),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
 
-
-
-f3c <- ggplot() +
-	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=arrival.m),pch=21,col='darkgrey',size=2) + 
-	xlim(129,143) + 
-	ylim(31,42) +
-	labs(title='c',fill='1th Perc.') + 
-	scale_fill_continuous(type = "viridis", breaks = c(-1000,-600,-200,200), labels = c('1000BC','600BC','200BC','200AD'),limits=c(-1000,250)) +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.2,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.1, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
-
-
-pdf(file=here('figures','figure3.pdf'),width=2.9,height=7)
-grid.arrange(f3a,f3b,f3c,nrow=3,padding=0)
+pdf(file=here('figures','main','figure3.pdf'),width=2.9,height=4.7)
+grid.arrange(f3a,f3b,ncol=2,padding=0)
 dev.off()
 
 #Figure 4 Estimated Arrival Date ----
@@ -168,7 +157,7 @@ extract <- function(x)
 
 post.bar <- function(x,i,h,col)
 {
-	lines(c(x[1],x[7]),c(i,i),col=col)
+# 	lines(c(x[1],x[7]),c(i,i),col=col)
 	rect(xleft=x[2],xright=x[6],ybottom=i-h/5,ytop=i+h/5,border=NA,col=col)
 	rect(xleft=x[3],xright=x[5],ybottom=i-h/3,ytop=i+h/3,border=NA,col=col)
 	lines(c(x[4],x[4]),c(i-h/2,i+h/2),lwd=2,col='grey44')
@@ -185,7 +174,7 @@ japan <- gUnaryUnion(japan,id=japan@data$Area)
 japan.sf <- as(japan,'sf')
 win <- gUnaryUnion(win,id=win@data[,1])
 
-pdf(file=here('figures','figure4.pdf'),width=7,height=3.9,pointsize=4)
+pdf(file=here('figures','main','figure4.pdf'),width=7,height=3.9,pointsize=4)
 par(mfrow=c(1,2),mar=c(3,3,3,1))
 # Map
 plot(win,xlim=c(127,143),ylim=c(31,43),col='lightgrey')
