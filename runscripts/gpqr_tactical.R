@@ -60,7 +60,7 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 		for (i in 1:N){
 			# Model
 			rate[i] <- -1/(s[i]-beta1)
-# 			lim[i] ~ dconstraint(rate[i]>0)
+ 			lim[i] ~ dconstraint(rate[i]>0)
 			mu[i] <- beta0 + (s[i]-beta1)*dist_org[i]
 			theta[i] ~ dAsymLaplace(mu=mu[i],sigma=sigma,tau=tau)
 			mu.date[i] <- interpLin(z=theta[i], x=calBP[], y=C14BP[]);
@@ -70,7 +70,7 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 		}
 		#priors
 		beta0 ~ dnorm(3000,sd=200);
-		beta1 ~ dexp(0.5)
+		beta1 ~ dexp(1)
 		sigma ~ dexp(0.01)
 		etasq ~ dexp(20);
 		rho ~ T(dgamma(10,(10-1)/150),1,1350); #mode 150
