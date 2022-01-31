@@ -22,12 +22,12 @@ sampling.win  <- sampling.win[order(raster::area(sampling.win),decreasing=TRUE)[
 true.param  <- list()
 true.param$n  <- 150 #number of sites & dates
 true.param$origin.point <- c(129.95,33.45) #dispersal origin point
-true.param$beta0 <- 3000 #mean date at origin point
+true.param$beta0 <- 3100 #mean date at origin point
 true.param$beta1 <- 0.6 #reciprocal of dispersal rate
 true.param$sigma <- 100 #variability of arrival date
-true.param$etasq <- 0.08 #variability of dispersal rate
+true.param$etasq <- 0.06 #variability of dispersal rate
 true.param$rho <- 150 #range of spatial autocorrelation
-true.param$seed <- 13233 #random seed
+true.param$seed <- 1233 #random seed
 
 # Simulate Data ----
 sim.sites  <- gpqrSim(win=sampling.win,n=true.param$n,beta0=true.param$beta0,beta1=true.param$beta1,sigma=true.param$sigma,origin.point=true.param$origin.point,etasq=true.param$etasq,rho=true.param$rho,seed=true.param$seed)
