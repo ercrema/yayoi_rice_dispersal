@@ -28,7 +28,7 @@ theta.init = medCal(calibrate(d1$cra,d1$cra_error,verbose = FALSE))
 inits1 <- list(a=5000,b=500,theta=theta.init)
 
 #Run MCMC
-mcmc.samples1<- nimbleMCMC(code = model1,constants = constants1,data = d1,niter = 1000000, nchains = 3, thin=100, nburnin = 500000,monitors=c('a','b','theta'), inits=inits1, samplesAsCodaMCMC=TRUE)
+mcmc.samples1<- nimbleMCMC(code = model1,constants = constants1,data = d1,niter = 2000000, nchains = 3, thin=100, nburnin = 1000000,monitors=c('a','b','theta'), inits=inits1, samplesAsCodaMCMC=TRUE)
 
 #Diagnostics
 rhat1  <- gelman.diag(mcmc.samples1,multivariate = FALSE)
@@ -81,7 +81,7 @@ alpha.init  <- earliest$theta + buffer/2
 inits2 <- list(a=5000,b=500,gamma1=5,gamma2=200,theta=theta.init,alpha=alpha.init,delta=delta.init)
 
 #Run MCMC
-mcmc.samples2<- nimbleMCMC(code = model2,constants = constants2,data = d2,niter = 1000000, nchains = 3, thin=100, nburnin = 500000,monitors=c('a','b','theta','gamma1','gamma2'), inits=inits2, samplesAsCodaMCMC=TRUE)
+mcmc.samples2<- nimbleMCMC(code = model2,constants = constants2,data = d2,niter = 2000000, nchains = 3, thin=100, nburnin = 1000000,monitors=c('a','b','theta','gamma1','gamma2'), inits=inits2, samplesAsCodaMCMC=TRUE)
 
 #Diagnostics
 rhat2  <- gelman.diag(mcmc.samples2,multivariate = FALSE)
