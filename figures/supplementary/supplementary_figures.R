@@ -16,6 +16,7 @@ library(latex2exp)
 library(gridExtra)
 library(diagram)
 library(quantreg)
+library(coda)
 source(here('src','orderPPlot.R'))
 source(here('src','diffplot.R'))
 source(here('src','gpqrSim.R'))
@@ -47,7 +48,7 @@ load(here('results','quantreg_res.RData'))
 rq.ci <- predict.rq(fit.rq,newdata=data.frame(dist_org=0:1300),interval='confidence')
 
 # Bayesian model 
-qr.ch1 <- quantreg_sample[[1]]
+qr.ch1 <- do.call(rbind,quantreg_sample)
 post.alpha.quantreg <- qr.ch1[,'alpha']
 post.beta.quantreg <- qr.ch1[,'beta']
 post.alpha.beta.quantreg  <- data.frame(alpha=post.alpha.quantreg,beta=post.beta.quantreg)
@@ -86,8 +87,14 @@ box()
 dev.off()
 
 
-# Figure S3 (Variance Covariance Function Parameters) ----
-pdf(here('figures','supplementary','figureS3.pdf'),width=5,height=5)
+# Figure S3 (Posterior Dispersal Rate of non-spatial quantile regression) ----
+pdf(here('figures','supplementary','figureS3.pdf'),height=5,width=5.5)
+postHPDplot(1/post.beta.quantreg,xlab='km/year',ylab='Probability Density',prob=.95,main=TeX('Posterior of $-1/\\beta_1$'))
+dev.off()
+
+
+# Figure S4 (Variance Covariance Function Parameters) ----
+pdf(here('figures','supplementary','figureS4.pdf'),width=5,height=5)
 etasq = 0.05
 rho = 150
 curve(etasq*exp(-0.5*(x/rho)^2),from=0,to=500,xlab=TeX('$d_{i,j}$'),ylab=TeX('$cov(i,j)$'))
@@ -99,7 +106,7 @@ text(75,etasq*exp(-0.5)-0.004,label=TeX('$\\eta^2e^{-0.5}$'))
 text(200,0.01,label=TeX('$\\rho = 150$'))
 dev.off()
 
-# Figure S4 (Impact of rho and etasq on variability in dispersal rate) ----
+# Figure S5 (Impact of rho and etasq on variability in dispersal rate) ----
 sf_japan <- ne_states(country = "japan") |> subset(!name_vi %in%  c("Okinawa","Hokkaido"))
 sampling.win <- as(sf_japan, "SpatialPolygons") |>  unionSpatialPolygons(IDs = rep(1, nrow(sf_japan)))
 sampling.win <- disaggregate(sampling.win) 
@@ -139,74 +146,19 @@ for (i in 1:nrow(cov.param))
 }
 
 
-pdf(file=here('figures','supplementary','figureS4.pdf'),width=8,height=8)
+pdf(file=here('figures','supplementary','figureS5.pdf'),width=8,height=8)
 grid.arrange(grobs=out,nrow=3,ncol=3)
 dev.off()
 
 
-# Figure S5 (Relationship between slope and rate of dispersal)  ----
-pdf(here('figures','supplementary','figureS5.pdf'),width=5,height=5)
+# Figure S6 (Relationship between slope and rate of dispersal)  ----
+pdf(here('figures','supplementary','figureS6.pdf'),width=5,height=5)
 par(mar=c(5,6,2,2))
 curve(-1/x,from=-2.5,to=-0.05,xlab=TeX('$Slope: \\, s - \\beta_1$'),ylab=TeX('$Speed: \\, \\frac{-1}{s-\\beta_1}$'),axes=TRUE)
 dev.off()
 
 
-# Figure S6 (Tactical Simulation) ----
-load(here('data','tactical_sim_gpqr.RData'))
-s6  <- ggplot() +
-	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sim.sites,mapping = aes(fill=rate),pch=21,col='darkgrey',size=3) + 
-	xlim(129,143) + 
-	ylim(31,42) +
-	labs(fill='Dispersal Rate \n (km/yr)') + 
-	scale_fill_viridis(option="turbo") +
-	annotate("text", x = 140, y = 33, label = TeX('$\\beta_0 = 3000$')) +
-	annotate("text", x = 140, y = 32.5, label = TeX('$\\beta_1 = 0.6$')) +
-	annotate("text", x = 140, y = 32, label = TeX('$\\eta^2 = 0.08$')) +
-	annotate("text", x = 140, y = 31.5, label = TeX('$\\rho = 150$')) +
-	theme(legend.position = c(0.2, 0.8),legend.background=element_rect(fill = alpha("white",0.5)))
-pdf(here('figures','supplementary','figureS6.pdf'),width=8,height=8)
-s6
-dev.off()
-
-# Figure S7 (Posterior vs True values of s for Tactical Simulation) ----
-load(here('results','gpqr_tactsim.RData'))
-gpqr_tactsim_post  <- do.call(rbind,gpqr_tactsim)
-tactsim_post_s  <- gpqr_tactsim_post[,paste0('s[',1:nrow(sim.sites),']')]
-tactsim_post_s_med  <- apply(tactsim_post_s,2,median)
-tactsim_post_s_lo  <- apply(tactsim_post_s,2,quantile,0.025)
-tactsim_post_s_hi  <- apply(tactsim_post_s,2,quantile,0.975)
-rr = c(min(c(tactsim_post_s_lo,sim.sites$s)),max(c(tactsim_post_s_hi,sim.sites$s)))
-
-pdf(here('figures','supplementary','figureS7.pdf'),height=6,width=6)
-plot(NULL,xlim=rr,ylim=rr,xlab='Simulated s',ylab='Predicted s')
-points(sim.sites$s,tactsim_post_s_med,pch=20)
-for (i in 1:nrow(sim.sites))
-{
-	lines(x=c(sim.sites$s[i],sim.sites$s[i]),y=c(tactsim_post_s_lo[i],tactsim_post_s_hi[i]))
-}
-abline(a=0,b=1,lty=2,col='red')
-dev.off()
-
-# Figure S8 (Posterior vs True values of beta0,beta1,rho,etasq for Tactical Simulation) ----
-tactsim_post_beta0  <- gpqr_tactsim_post[,'beta0']
-tactsim_post_beta1  <- gpqr_tactsim_post[,'beta1']
-tactsim_post_etasq  <- gpqr_tactsim_post[,'etasq']
-tactsim_post_rho  <- gpqr_tactsim_post[,'rho']
-
-pdf(here('figures','supplementary','figureS8.pdf'),height=8,width=8)
-par(mfrow=c(2,2))
-postHPDplot(tactsim_post_beta0,xlab='Cal BP',ylab='Posterior Probability',main=TeX('$\\beta_0$'))
-abline(v=true.param$beta0,lty=2)
-postHPDplot(tactsim_post_beta1,xlab='',ylab='Posterior Probability',main=TeX('$\\beta_1$'))
-abline(v=true.param$beta1,lty=2)
-postHPDplot(tactsim_post_etasq,xlab='Cal BP',ylab='Posterior Probability',main=TeX('$\\eta^2$'))
-abline(v=true.param$etasq,lty=2)
-postHPDplot(tactsim_post_rho,xlab='',ylab='Posterior Probability',main=TeX('$\\rho$'))
-abline(v=true.param$rho,lty=2)
-dev.off()
-
-# Figure S9 (Prior Predictive Check beta0, beta1, s) ----
+# Figure S7 (Prior Predictive Check beta0, beta1, s) ----
 nsim <- 5000
 beta0.prior <- rnorm(nsim,mean=3000,sd=200)
 beta1.prior  <- rexp(nsim,rate=1)
@@ -222,7 +174,7 @@ for (i in 1:nsim2)
 	slope.mat[i,] <- beta0.prior[i] + slope[i]*c(dists)	
 }
 
-pdf(file=here('figures','supplementary','figureS9.pdf'),width=6,height=6)
+pdf(file=here('figures','supplementary','figureS7.pdf'),width=6,height=6)
 plot(NULL,xlim=c(0,1300),ylim=c(3400,1500),type='n',xlab='Distance (km)',ylab='Cal BP',axes=F)
 axis(1)
 axis(2,at=seq(3400,1600,-400))
@@ -240,7 +192,7 @@ legend('bottomright',legend=c('50% percentile range','95% percentile range'),fil
 dev.off()
 
 
-# Figure S10 (Prior Predictive Check etasq and rho) ----
+# Figure S8 (Prior Predictive Check etasq and rho) ----
 nsim  <- 1000
 etasq.prior  <- rexp(nsim,20)
 rho.prior  <- rtgamma(nsim,10,(10-1)/150,1,1350)
@@ -250,7 +202,7 @@ for (i in 1:nsim)
  cov.mat[i,] = etasq.prior[i]*exp(-0.5*(0:1000/rho.prior[i])^2)
 }
 
-pdf(file=here('figures','supplementary','figureS10.pdf'),width=6,height=5)
+pdf(file=here('figures','supplementary','figureS8.pdf'),width=6,height=5)
 plot(NULL,xlab='Distance (km)',ylab='Covariance',xlim=c(0,1000),ylim=c(0,0.2))
 polygon(c(0:1000,1000:0),c(apply(cov.mat,2,quantile,0.025),rev(apply(cov.mat,2,quantile,0.975))),border=NA,col=rgb(0.67,0.84,0.9,0.5))
 polygon(c(0:1000,1000:0),c(apply(cov.mat,2,quantile,0.5),rev(apply(cov.mat,2,quantile,0.75))),border=NA,col=rgb(0.25,0.41,0.88,0.5))
@@ -258,37 +210,93 @@ legend('topright',legend=c('50% percentile range','95% percentile range'),fill=c
 dev.off()
 
 
+# Figure S9 (Tactical Simulation) ----
+load(here('data','tactical_sim_gpqr.RData'))
+load(here('results','gpqr_tactsim.RData'))
+gpqr_tactsim_post  <- do.call(rbind,gpqr_tactsim)
+tactsim_post_s  <- gpqr_tactsim_post[,paste0('s[',1:nrow(sim.sites),']')]
+tactsim_post_beta1  <- gpqr_tactsim_post[,'beta1']
+tactsim_post_rate  <-  -1/(tactsim_post_s-tactsim_post_beta1)
+sim.sites$pred.rate  <- apply(tactsim_post_rate,2,median)
+
+
+s9a  <- ggplot() +
+	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
+	geom_sf(data=sim.sites,mapping = aes(fill=rate),pch=21,col='darkgrey',size=3) + 
+	xlim(129,143) + 
+	ylim(31,42) +
+	labs(fill='Dispersal Rate \n (km/yr)') + 
+	scale_fill_viridis(option="turbo",limits=c(0,3.5),oob = scales::squish) +
+	annotate("text", x = 140, y = 33, label = TeX('$\\beta_0 = 3000$')) +
+	annotate("text", x = 140, y = 32.5, label = TeX('$\\beta_1 = 0.6$')) +
+	annotate("text", x = 140, y = 32, label = TeX('$\\eta^2 = 0.08$')) +
+	annotate("text", x = 140, y = 31.5, label = TeX('$\\rho = 150$')) +
+	ggtitle('Simulated Dispersal Rates') +
+	theme(legend.position = c(0.2, 0.8),legend.background=element_rect(fill = alpha("white",0.5)),axis.title.x=element_blank(),axis.title.y=element_blank())
+
+
+s9b  <- ggplot() +
+	geom_sf(data=win.sf,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
+	geom_sf(data=sim.sites,mapping = aes(fill=pred.rate),pch=21,col='darkgrey',size=3) + 
+	xlim(129,143) + 
+	ylim(31,42) +
+	labs(fill='Dispersal Rate \n (km/yr)') + 
+	scale_fill_viridis(option="turbo",limits=c(0,3.5),oob = scales::squish) +
+	ggtitle('Predicted Dispersal Rates') +
+	theme(legend.position = c(0.2, 0.8),legend.background=element_rect(fill = alpha("white",0.5)),axis.title.x=element_blank(),axis.title.y=element_blank())
+
+
+pdf(here('figures','supplementary','figureS9.pdf'),width=10,height=7)
+grid.arrange(s9a,s9b,ncol=2)
+dev.off()
 
 
 
 
+# Figure S10 (Posterior vs True values of s for Tactical Simulation) ----
+load(here('results','gpqr_tactsim.RData'))
+gpqr_tactsim_post  <- do.call(rbind,gpqr_tactsim)
+tactsim_post_s  <- gpqr_tactsim_post[,paste0('s[',1:nrow(sim.sites),']')]
+tactsim_post_s_med  <- apply(tactsim_post_s,2,median)
+tactsim_post_s_lo  <- apply(tactsim_post_s,2,quantile,0.025)
+tactsim_post_s_hi  <- apply(tactsim_post_s,2,quantile,0.975)
+rr = c(min(c(tactsim_post_s_lo,sim.sites$s)),max(c(tactsim_post_s_hi,sim.sites$s)))
+
+pdf(here('figures','supplementary','figureS10.pdf'),height=6,width=6)
+plot(NULL,xlim=rr,ylim=rr,xlab='Simulated s',ylab='Predicted s')
+points(sim.sites$s,tactsim_post_s_med,pch=20)
+for (i in 1:nrow(sim.sites))
+{
+	lines(x=c(sim.sites$s[i],sim.sites$s[i]),y=c(tactsim_post_s_lo[i],tactsim_post_s_hi[i]))
+}
+abline(a=0,b=1,lty=2,col='red')
+dev.off()
+
+# Figure S11 (Posterior vs True values of beta0,beta1,rho,etasq for Tactical Simulation) ----
+tactsim_post_beta0  <- gpqr_tactsim_post[,'beta0']
+tactsim_post_beta1  <- gpqr_tactsim_post[,'beta1']
+tactsim_post_etasq  <- gpqr_tactsim_post[,'etasq']
+tactsim_post_rho  <- gpqr_tactsim_post[,'rho']
+true_beta0_with_tau09  <- qnorm(0.9,true.param$beta0,true.param$sigma) 
 
 
+pdf(here('figures','supplementary','figureS11.pdf'),height=8,width=8)
+par(mfrow=c(2,2))
+postHPDplot(tactsim_post_beta0,xlab='Cal BP',ylab='Posterior Probability',main=TeX('$\\beta_0$'),prob = 0.95)
+abline(v=true_beta0_with_tau09,lty=2)
+postHPDplot(tactsim_post_beta1,xlab='',ylab='Posterior Probability',main=TeX('$\\beta_1$'),prob=0.95)
+abline(v=true.param$beta1,lty=2)
+postHPDplot(tactsim_post_etasq,xlab='Cal BP',ylab='Posterior Probability',main=TeX('$\\eta^2$'),prob=0.95)
+abline(v=true.param$etasq,lty=2)
+postHPDplot(tactsim_post_rho,xlab='',ylab='Posterior Probability',main=TeX('$\\rho$'),prob=0.95)
+abline(v=true.param$rho,lty=2)
+dev.off()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Figure S11 (Traceplot of beta0, beta1, rhosq, and etasq for tau=0.9) ----
+# Figure S12 (Traceplot of beta0, beta1, rhosq, and etasq for tau=0.9) ----
 
 load(here('results','gpqr_tau90.RData'))
 
-pdf(file=here('figures','figureS11.pdf'),width=8,height=8)
+pdf(file=here('figures','figureS12.pdf'),width=8,height=8)
 par(mfrow=c(2,2))
 traceplot(gpqr_tau90[,'beta0'],main=TeX('$\\beta_0$'),smooth=TRUE)
 traceplot(gpqr_tau90[,'beta1'],main=TeX('$\\beta_1$'),smooth=TRUE)
@@ -296,11 +304,11 @@ traceplot(gpqr_tau90[,'rho'],main=TeX('$\\rho$'),smooth=TRUE)
 traceplot(gpqr_tau90[,'etasq'],main=TeX('$\\eta^2$'),smooth=TRUE)
 dev.off()
 
-# Figure S12 (Traceplot of beta0, beta1, rhosq, and etasq for tau=0.99) ----
+# Figure S13 (Traceplot of beta0, beta1, rhosq, and etasq for tau=0.99) ----
 
 load(here('results','gpqr_tau99.RData'))
 
-pdf(file=here('figures','figureS12.pdf'),width=8,height=8)
+pdf(file=here('figures','figureS13.pdf'),width=8,height=8)
 par(mfrow=c(2,2))
 traceplot(gpqr_tau99[,'beta0'],main=TeX('$\\beta_0$'),smooth=TRUE)
 traceplot(gpqr_tau99[,'beta1'],main=TeX('$\\beta_1$'),smooth=TRUE)
@@ -333,11 +341,11 @@ ess = effectiveSize(gpqr_tau99)[params]
 table.S2 = data.frame(params,meds,lo90,hi90,rhats,ess)
 write.table(table.S2,file=here('tables','table_S1.csv'),col.names=c('Parameter','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
 
-# Figure S13 (Distribution of Rhats for tau=.9 and tau=.099) ----
+# Figure S14 (Distribution of Rhats for tau=.9 and tau=.099) ----
 
-# Figure S14 (Marginal posteriors of beta0, beta1, rho, etasq for tau = 0.9) ----
+# Figure S15 (Marginal posteriors of beta0, beta1, rho, etasq for tau = 0.9) ----
 
-pdf(file=here('figures','figureS14.pdf'),width=8,height=8)
+pdf(file=here('figures','figureS15.pdf'),width=8,height=8)
 par(mfrow=c(2,2))
 postHPDplot(gpqr.tau90.comb[,'beta0'],main=TeX('$\\beta_0$'),xlab='Cal BP',ylab='')
 postHPDplot(gpqr.tau90.comb[,'beta1'],main=TeX('$\\beta_1$'),xlab='',ylab='')
@@ -345,9 +353,9 @@ postHPDplot(gpqr.tau90.comb[,'rho'],main=TeX('$\\rho$'),xlab='km',ylab='')
 postHPDplot(gpqr.tau90.comb[,'etasq'],main=TeX('$\\eta^2$'),xlab='',ylab='')
 dev.off()
 
-# Figure S15 (Marginal posteriors of beta0, beta1, rho, etasq for tau = 0.99) ----
+# Figure S16 (Marginal posteriors of beta0, beta1, rho, etasq for tau = 0.99) ----
 
-pdf(file=here('figures','figureS15.pdf'),width=8,height=8)
+pdf(file=here('figures','figureS16.pdf'),width=8,height=8)
 par(mfrow=c(2,2))
 postHPDplot(gpqr.tau99.comb[,'beta0'],main=TeX('$\\beta_0$'),xlab='Cal BP',ylab='')
 postHPDplot(gpqr.tau99.comb[,'beta1'],main=TeX('$\\beta_1$'),xlab='',ylab='')
@@ -355,7 +363,7 @@ postHPDplot(gpqr.tau99.comb[,'rho'],main=TeX('$\\rho$'),xlab='km',ylab='')
 postHPDplot(gpqr.tau99.comb[,'etasq'],main=TeX('$\\eta^2$'),xlab='',ylab='')
 dev.off()
 
-# Figure S16 Tactical Simulation Posterior Predictive Check for nu and upsilon ----
+# Figure S17 Tactical Simulation Posterior Predictive Check for nu and upsilon ----
 load(here("results","phasemodel_tactsim.RData"))
 post.model.a  <- do.call(rbind,mcmc.samples1)[,1:2]
 post.model.b  <- do.call(rbind,mcmc.samples2)[,1:2]
@@ -364,7 +372,7 @@ dens.a.upsilon  <- density(post.model.a[,2],bw=5)
 dens.b.nu  <- density(post.model.b[,1],bw=5)
 dens.b.upsilon  <- density(post.model.b[,2],bw=5)
 
-pdf(file=here('figures','supplementary','figureS16.pdf'),width=8,height=8)
+pdf(file=here('figures','supplementary','figureS17.pdf'),width=8,height=8)
 plot(NULL,xlim=c(3900,2500),ylim=c(0,0.022),xlab='Cal BP',ylab='Posterior Probability') 
 polygon(c(dens.a.nu$x,rev(dens.a.nu$x)),c(rep(0,length(dens.a.nu$x)),rev(dens.a.nu$y)),border=NA,col=rgb(0,0.4,0,0.5))
 polygon(c(dens.a.upsilon$x,rev(dens.a.upsilon$x)),c(rep(0,length(dens.a.upsilon$x)),rev(dens.a.upsilon$y)),border=NA,col=rgb(0,0.4,0,0.5))
@@ -408,10 +416,10 @@ ess  <- c(ess.unif.model0[1:8],ess.unif.model1[1:8],ess.unif.model2[1:8]) |> rou
 table.S3  = data.frame(models,area,meds,lo90,hi90,rhat,ess)
 write.table(table.S3,file=here('tables','table_S3.csv'),col.names=c('Model','Area','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
 
-# Figure S17 Marginal Posterior Distribution of nu, model 0 ----
+# Figure S18 Marginal Posterior Distribution of nu, model 0 ----
 model0.long  <- data.frame(value=as.numeric(post.nu.model0),Area = rep(as.character(as.roman(1:8)),each=nrow(post.nu.model0)))
 
-pdf(file=here('figures','supplementary','figureS17.pdf'),height=10,width=7)
+pdf(file=here('figures','supplementary','figureS18.pdf'),height=10,width=7)
 ggplot(model0.long, aes(x = value, y = Area,fill='lighblue')) + 
 	geom_density_ridges() +
 	scale_x_reverse(limits=c(3300,1800),breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1)),labels=c(1200,1000,800,600,400,200,1)) +
@@ -420,13 +428,13 @@ ggplot(model0.long, aes(x = value, y = Area,fill='lighblue')) +
 	xlab('BC')
 dev.off()
 
-# Figure S18 Probability Matrix of nu, model 0 ----
-pdf(file=here('figures','supplementary','figureS18.pdf'),width=7,height=7.5)
+# Figure S19 Probability Matrix of nu, model 0 ----
+pdf(file=here('figures','supplementary','figureS19.pdf'),width=7,height=7.5)
 orderPPlot(post.nu.model0,name.vec=paste("Area",as.character(as.roman(1:8))))
 dev.off()
 
-# Figure S19 Difference Matrix plot of nu, model 0 ----
-pdf(file=here('figures','supplementary','figureS19.pdf'),width=16,height=11)
+# Figure S20 Difference Matrix plot of nu, model 0 ----
+pdf(file=here('figures','supplementary','figureS20.pdf'),width=16,height=11)
 mat <- cbind(c(1,9:15),c(37,2,16:21),c(rep(37,2),3,22:26),c(rep(37,3),4,27:30),c(rep(37,4),5,31:33),c(rep(37,5),6,34:35),c(rep(37,6),7,36),c(rep(37,7),8))
 layout(mat)
 par(mar=c(0,0,0,0))
