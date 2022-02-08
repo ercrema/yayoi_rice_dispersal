@@ -15,7 +15,7 @@ theta.init <- DateInfo$median.dates
 delta.init <- SiteInfo$Diff + buffer
 alpha.init <- SiteInfo$Earliest + buffer/2
 # Constants
-constants$constraint_trapezium  <- rep(1,constants$N.areas)
+constants$constraint_uniform  <- rep(1,constants$N.areas)
 constants$constraint_dispersal  <- 1
 
 
@@ -28,7 +28,7 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 	model <- nimbleCode({
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dgamma(2,0.015)
+			delta[k] ~ dgamma(gamma1,(gamma1-1)/gamma2)
 			alpha[k] ~ dunif(max=a[id.area[k]],min=b[id.area[k]]);
 		}
 
@@ -44,8 +44,11 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 		for (j in 1:N.areas){
 			a[j] ~ dunif(500,5000);
 			b[j] ~ dunif(500,5000);
-			constraint_trapezium[j] ~ dconstraint(a[j]>b[j])
+			constraint_uniform[j] ~ dconstraint(a[j]>b[j])
 		}
+		# Hyperprior for duration
+		gamma1 ~ dunif(1,20)
+		gamma2 ~ T(dnorm(mean=200,sd=100),1,500)
 	})
 
 	# Define Inits
@@ -85,7 +88,7 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		# Model Start/End Dates at Individual Sites	
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dgamma(2,0.015)
+			delta[k] ~ dgamma(gamma1,(gamma1-1)/gamma2)
 			alpha[k] ~ dunif(max=a[id.area[k]],min=b[id.area[k]]);
 		}
 
@@ -102,8 +105,12 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		for (j in 1:N.areas){
 			a[j] ~ dunif(500,5000);
 			b[j] ~ dunif(500,5000);
-			constraint_trapezium[j] ~ dconstraint(a[j]>b[j])
+			constraint_uniform[j] ~ dconstraint(a[j]>b[j])
 		}
+
+		# Hyperprior for duration
+		gamma1 ~ dunif(1,20)
+		gamma2 ~ T(dnorm(mean=200,sd=100),1,500)
 
 		# Define Dispersal Constraint
 		constraint_dispersal ~ dconstraint(a[1]>a[2] & a[1]>a[3] & a[3]>a[4] & a[4]>a[5] & a[5]>a[6] & a[6]>a[7] & a[7]>a[8])  
@@ -165,7 +172,7 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		# Model Start/End Dates at Individual Sites	
 		for (k in 1:N.sites)
 		{
-			delta[k] ~ dgamma(2,0.015)
+			delta[k] ~ dgamma(gamma1,(gamma1-1)/gamma2)
 			alpha[k] ~ dunif(max=a[id.area[k]],min=b[id.area[k]]);
 		}
 
@@ -182,8 +189,11 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		for (j in 1:N.areas){
 			a[j] ~ dunif(500,5000);
 			b[j] ~ dunif(500,5000);
-			constraint_trapezium[j] ~ dconstraint(a[j]>b[j])
+			constraint_uniform[j] ~ dconstraint(a[j]>b[j])
 		}
+		# Hyperprior for duration
+		gamma1 ~ dunif(1,20)
+		gamma2 ~ T(dnorm(mean=200,sd=100),1,500)
 
 		# Define Dispersal Constraint
 		constraint_dispersal ~ dconstraint(a[1]>a[2] & a[1]>a[3] & a[3]>a[4] & a[4]>a[5] & a[4]>a[6] & a[4]>a[7] & a[4]>a[8])  
