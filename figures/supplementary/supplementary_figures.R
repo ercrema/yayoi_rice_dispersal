@@ -433,10 +433,25 @@ ess  <- c(ess.unif.model0[1:8],ess.unif.model1[1:8],ess.unif.model2[1:8]) |> rou
 table.S4  = data.frame(models,area,meds,lo90,hi90,rhat,ess)
 write.table(table.S3,file=here('tables','table_S4.csv'),col.names=c('Model','Area','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
 
-# Figure S18 Marginal Posterior Distribution of nu, model 0 ----
+
+# Figure S18 Prior Predictive check for delta ----
+nsim  <- 5000
+set.seed(123)
+gamma1  <- runif(nsim,1,20)
+gamma2  <- rtruncnorm(nsim,mean=200,sd=100,1,500)
+delta.mat = matrix(NA,ncol=1000,nrow=nsim)
+for (i in 1:nsim) {delta.mat[i,] = dgamma(1:1000,gamma1[i],(gamma1[i]-1)/gamma2[i])}
+
+pdf(file=here('figures','supplementary','figureS18.pdf'),height=6,width=6)
+plot(NULL,xlab=TeX('$\\delta$'),ylab='Probability Density',xlim=c(1,1000),ylim=c(0,0.02))
+polygon(x=c(1:1000,1000:1),y=c(apply(delta.mat,2,quantile,prob=0.025),rev(apply(delta.mat,2,quantile,prob=0.975))),border=NA,col=rgb(0.67,0.84,0.9,0.5))
+polygon(x=c(1:1000,1000:1),y=c(apply(delta.mat,2,quantile,prob=0.25),rev(apply(delta.mat,2,quantile,prob=0.75))),border=NA,col=rgb(0.25,0.41,0.88,0.5))
+dev.off()
+
+# Figure S19 Marginal Posterior Distribution of nu, model 0 ----
 model0.long  <- data.frame(value=as.numeric(post.nu.model0),Area = rep(as.character(as.roman(1:8)),each=nrow(post.nu.model0)))
 
-pdf(file=here('figures','supplementary','figureS18.pdf'),height=10,width=7)
+pdf(file=here('figures','supplementary','figureS19.pdf'),height=10,width=7)
 ggplot(model0.long, aes(x = value, y = Area,fill='lighblue')) + 
 	geom_density_ridges() +
 	scale_x_reverse(limits=c(3300,1800),breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1)),labels=c(1200,1000,800,600,400,200,1)) +
@@ -445,13 +460,13 @@ ggplot(model0.long, aes(x = value, y = Area,fill='lighblue')) +
 	xlab('BC')
 dev.off()
 
-# Figure S19 Probability Matrix of nu, model 0 ----
-pdf(file=here('figures','supplementary','figureS19.pdf'),width=7,height=7.5)
+# Figure S20 Probability Matrix of nu, model 0 ----
+pdf(file=here('figures','supplementary','figureS20.pdf'),width=7,height=7.5)
 orderPPlot(post.nu.model0,name.vec=paste("Area",as.character(as.roman(1:8))))
 dev.off()
 
-# Figure S20 Difference Matrix plot of nu, model 0 ----
-pdf(file=here('figures','supplementary','figureS20.pdf'),width=16,height=11)
+# Figure S21 Difference Matrix plot of nu, model 0 ----
+pdf(file=here('figures','supplementary','figureS21.pdf'),width=16,height=11)
 mat <- cbind(c(1,9:15),c(37,2,16:21),c(rep(37,2),3,22:26),c(rep(37,3),4,27:30),c(rep(37,4),5,31:33),c(rep(37,5),6,34:35),c(rep(37,6),7,36),c(rep(37,7),8))
 layout(mat)
 par(mar=c(0,0,0,0))
@@ -469,10 +484,10 @@ dev.off()
 
 
 
-# Figure S20 Marginal Posterior Distribution of nu and upsilon, model 1 ----
+# Figure S21 Marginal Posterior Distribution of nu and upsilon, model 1 ----
 model1.long  <- data.frame(value=as.numeric(post.nu.model1),Area = rep(as.character(as.roman(1:8)),each=nrow(post.nu.model1)))
 
-pdf(file=here('figures','supplementary','figureS20.pdf'),height=10,width=7)
+pdf(file=here('figures','supplementary','figureS21.pdf'),height=10,width=7)
 ggplot(model1.long, aes(x = value, y = Area,fill='lightblue')) + 
 	geom_density_ridges() +
 	scale_x_reverse(limits=c(3300,1800),breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1)),labels=c(1200,1000,800,600,400,200,1)) +
@@ -481,10 +496,10 @@ ggplot(model1.long, aes(x = value, y = Area,fill='lightblue')) +
 	xlab('BC')
 dev.off()
 
-# Figure S21 Marginal Posterior Distribution of nu and upsilon, model 2 ----
+# Figure S22 Marginal Posterior Distribution of nu and upsilon, model 2 ----
 model2.long  <- data.frame(value=as.numeric(post.nu.model2),Area = rep(as.character(as.roman(1:8)),each=nrow(post.nu.model2)))
 
-pdf(file=here('figures','supplementary','figureS21.pdf'),height=10,width=7)
+pdf(file=here('figures','supplementary','figureS22.pdf'),height=10,width=7)
 ggplot(model2.long, aes(x = value, y = Area,fill='lightblue')) + 
 	geom_density_ridges() +
 	scale_x_reverse(limits=c(3300,1800),breaks=BCADtoBP(c(-1200,-1000,-800,-600,-400,-200,1)),labels=c(1200,1000,800,600,400,200,1)) +
