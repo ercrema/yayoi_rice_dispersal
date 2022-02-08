@@ -383,7 +383,24 @@ axis(3,at=c(3500,3000),labels=c(TeX('$\\nu$'),TeX('$\\upsilon$')))
 legend('topright',legend=c('Non hierarchichal','Hierarchichal'),fill=c('darkgreen','darkorange'))
 dev.off()
 
-# Table S3 posterior estimates for nu and upsilon ----
+# Table S3 Summary Data Per Region ----
+load(here('data','c14rice.RData'))
+pref.regions  <- read.csv(here('data','prefecture_region_match.csv'))
+region.names  <- as.character(as.roman(1:8))
+region.prefs  <- character(8)
+for (i in 1:8)
+{
+	region.prefs[i] = paste0(subset(pref.regions,Area==paste0('Area',i))$Prefecture,collapse="|")
+}
+n.sites <- as.numeric(aggregate(SiteID~Area,data=SiteInfo,length)$SiteID)
+n.dates <- as.numeric(aggregate(N_dates~Area,data=SiteInfo,sum)$N_dates)
+table.s3  <- data.frame(Area=region.names,Prefectures=region.prefs,n_dates=n.dates,n_sites=n.sites)
+
+write.table(table.S3,file=here('tables','table_S3.csv'),col.names=c('Area','Prefectures','Number of Dates','Number of Sites'),sep=',',row.names=FALSE)
+
+
+
+# Table S4 posterior estimates for nu and upsilon ----
 load(here("results","phase_model0.RData"))
 load(here("results","phase_model1.RData"))
 load(here("results","phase_model2.RData"))
@@ -413,8 +430,8 @@ hi90  <- c(foo(hpdi.model0[1,]),foo(hpdi.model1[1,]),foo(hpdi.model2[1,]))
 lo90  <- c(foo(hpdi.model0[2,]),foo(hpdi.model1[2,]),foo(hpdi.model2[2,]))
 rhat  <- c(rhat.unif.model0$psrf[1:8,1],rhat.unif.model1$psrf[1:8,1],rhat.unif.model2$psrf[1:8,1]) |> round(digits=3)
 ess  <- c(ess.unif.model0[1:8],ess.unif.model1[1:8],ess.unif.model2[1:8]) |> round()
-table.S3  = data.frame(models,area,meds,lo90,hi90,rhat,ess)
-write.table(table.S3,file=here('tables','table_S3.csv'),col.names=c('Model','Area','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
+table.S4  = data.frame(models,area,meds,lo90,hi90,rhat,ess)
+write.table(table.S3,file=here('tables','table_S4.csv'),col.names=c('Model','Area','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
 
 # Figure S18 Marginal Posterior Distribution of nu, model 0 ----
 model0.long  <- data.frame(value=as.numeric(post.nu.model0),Area = rep(as.character(as.roman(1:8)),each=nrow(post.nu.model0)))
