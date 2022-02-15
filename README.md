@@ -18,8 +18,6 @@ Dataset required for all analyses are contained in the directory _data_. The mai
 
 ## Hierarchichal Phase Model
 
-# Figures & Tables 
-
 # File Structure
 
 ### data
