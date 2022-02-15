@@ -18,9 +18,9 @@ library(RColorBrewer)
 load(here('data','c14rice.RData'))
 load(here('results','gpqr_tau90.RData'))
 # load(here('results','gpqr_tau99.RData'))
-load(here('results','unif_model0.RData'))
-load(here('results','unif_model1.RData'))
-load(here('results','unif_model2.RData'))
+load(here('results','phase_model0.RData'))
+load(here('results','phase_model1.RData'))
+load(here('results','phase_model2.RData'))
 
 # Figure 1 (Sampling Site Distribution) ----
 
@@ -64,7 +64,7 @@ f1 <-   ggplot() +
 	labs(fill = "Elevation (meters)",x='',y='') +
 	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.3,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.2, 'in'),legend.key.size = unit(0.2, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"),axis.title=element_blank())
 
-pdf(file=here('figures','main','figure1.pdf'),width=5,height=5)
+pdf(file=here('manuscript','main_figures','figure1.pdf'),width=5,height=5)
 f1
 dev.off()
 
@@ -98,7 +98,7 @@ f2  <- ggplot(data=df.combo) +
 	labs(y = "Normalised Summed Probability") +
 	theme(plot.title = element_text(hjust = 0.5),legend.position=c(0.22,0.8),legend.spacing.y = unit(-11, "pt"),legend.background = element_rect(fill = "transparent"), legend.text=element_text(size=6),axis.title=element_text(size=9),plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"))
 
-pdf(file=here('figures','main','figure2.pdf'),width = 5, height = 4)
+pdf(file=here('manuscript','main_figures','figure2.pdf'),width = 5, height = 4)
 f2
 dev.off()
 
@@ -141,7 +141,7 @@ f3b <- ggplot() +
 	scale_fill_viridis(option="turbo") +
 	theme(plot.title = element_text(hjust = 0.5,size=6), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=4),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=4.5),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
 
-pdf(file=here('figures','main','figure3.pdf'),width=2.9,height=4.7)
+pdf(file=here('manuscript','main_figures','figure3.pdf'),width=2.9,height=4.7)
 grid.arrange(f3a,f3b,ncol=2,padding=0)
 dev.off()
 
@@ -174,7 +174,7 @@ japan <- gUnaryUnion(japan,id=japan@data$Area)
 japan.sf <- as(japan,'sf')
 win <- gUnaryUnion(win,id=win@data[,1])
 
-pdf(file=here('figures','main','figure4.pdf'),width=7,height=3.9,pointsize=4)
+pdf(file=here('manuscript','main_figures','figure4.pdf'),width=7,height=3.9,pointsize=4)
 par(mfrow=c(1,2),mar=c(3,3,3,1))
 # Map
 plot(win,xlim=c(127,143),ylim=c(31,43),col='lightgrey')
