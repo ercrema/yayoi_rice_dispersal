@@ -55,7 +55,8 @@ model2 <- nimbleCode({
 
 	# Set Prior for Duration
 	a ~ dunif(0,10000);
-	b ~ dunif(0,10000);	unif.const ~ dconstraint(b<a);
+	b ~ dunif(0,10000);	
+	unif.const ~ dconstraint(b<a);
 	gamma1 ~ dunif(1,20);
 	gamma2 ~ T(dnorm(mean=200,sd=100),1,500);
 })
@@ -78,10 +79,10 @@ delta.init  <- diff.age + buffer
 alpha.init  <- earliest$theta + buffer/2
 
 
-inits2 <- list(a=5000,b=500,gamma1=5,gamma2=200,theta=theta.init,alpha=alpha.init,delta=delta.init)
+inits2 <- list(a=5000,b=500,theta=theta.init,alpha=alpha.init,delta=delta.init,gamma1=5,gamma2=200)
 
 #Run MCMC
-mcmc.samples2<- nimbleMCMC(code = model2,constants = constants2,data = d2,niter = 2000000, nchains = 3, thin=100, nburnin = 1000000,monitors=c('a','b','theta','gamma1','gamma2'), inits=inits2, samplesAsCodaMCMC=TRUE)
+mcmc.samples2<- nimbleMCMC(code = model2,constants = constants2,data = d2,niter = 2000000, nchains = 3, thin=100, nburnin = 1000000,monitors=c('a','b','theta','delta','alpha','gamma1','gamma2'), inits=inits2, samplesAsCodaMCMC=TRUE)
 
 #Diagnostics
 rhat2  <- gelman.diag(mcmc.samples2,multivariate = FALSE)

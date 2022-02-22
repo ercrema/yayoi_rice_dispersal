@@ -66,12 +66,14 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 
 	inits$a  <- init.a
 	inits$b  <- init.b
+	inits$gamma1  <- 10
+	inits$gamma2  <- 200
 
 	# Compile and Run model	
 	model <- nimbleModel(model,constants = constants,data=d,inits=inits)
 	cModel <- compileNimble(model)
 	conf <- configureMCMC(model)
-	conf$addMonitors('theta')
+	conf$addMonitors(c('theta','delta','alpha'))
 	MCMC <- buildMCMC(conf)
 	cMCMC <- compileNimble(MCMC)
 	results <- runMCMC(cMCMC,niter = niter, thin=thin,nburnin = nburnin,samplesAsCodaMCMC = T, setSeed=seed) 
@@ -146,7 +148,9 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 
 	inits$a  <- init.a
 	inits$b  <- init.b
-	
+	inits$gamma1  <- 10
+	inits$gamma2  <- 200
+
 	#Add constraint
 	d$constraint_dispersal  <- 1
 
@@ -154,7 +158,7 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	model <- nimbleModel(model,constants = constants,data=d,inits=inits)
 	cModel <- compileNimble(model)
 	conf <- configureMCMC(model)
-	conf$addMonitors('theta')
+	conf$addMonitors(c('theta','alpha','delta'))
 	MCMC <- buildMCMC(conf)
 	cMCMC <- compileNimble(MCMC)
 	results <- runMCMC(cMCMC,niter = niter, thin=thin,nburnin = nburnin,samplesAsCodaMCMC = T, setSeed=seed) 
@@ -229,6 +233,10 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 
 	inits$a  <- init.a
 	inits$b  <- init.b
+	inits$gamma1  <- 10
+	inits$gamma2  <- 200
+
+	
 	
 	#Add constraint
 	d$constraint_dispersal  <- 1
@@ -237,7 +245,7 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	model <- nimbleModel(model,constants = constants,data=d,inits=inits)
 	cModel <- compileNimble(model)
 	conf <- configureMCMC(model)
-	conf$addMonitors('theta')
+	conf$addMonitors(c('theta','delta','alpha'))
 	MCMC <- buildMCMC(conf)
 	cMCMC <- compileNimble(MCMC)
 	results <- runMCMC(cMCMC,niter = niter, thin=thin,nburnin = nburnin,samplesAsCodaMCMC = T, setSeed=seed) 
@@ -250,9 +258,9 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 ncores  <-  4
 cl <- makeCluster(ncores)
 seeds <- c(12,34,56,78)
-niter  <- 6000000
-nburnin  <- 3000000
-thin  <- 300
+niter  <- 8000000
+nburnin  <- 4000000
+thin  <- 400
 
 out.unif.model0  <-  parLapply(cl = cl, X = seeds, fun = unif.model0, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, nburnin = nburnin,thin = thin)
 out.unif.model1  <-  parLapply(cl = cl, X = seeds, fun = unif.model1, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, nburnin = nburnin,thin = thin)
