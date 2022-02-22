@@ -6,14 +6,26 @@ library(dplyr)
 library(here)
 
 # Read charred rice data  ----
-dat <- read.csv(here("data", "R14CDB_v1_4_6.csv")) |> subset(Rice == "TRUE" & UseForAnalyses == 'TRUE')
-#**NOTE** update raw CSV data for the final version so that subsetting is not required
+dat <- read.csv(here("data", "R14CDB.csv")) |> subset(UseForAnalyses == 'TRUE')
 
 # Subset data ----
 dat <- subset(dat, !Region %in% c("Hokkaido", "Okinawa") & Method == 'AMS')
 
+# Pool Samples TKA-23237 amd TKA-23238
+poolLabCodes  <- c('TKA-23237','TKA-23238')
+i  <- which(dat$LabCode%in%poolLabCodes)
+pooledDates  <- poolDates(dat$C14Age[i],dat$C14Error[i])[2:3]
+dat  <- rbind.data.frame(dat,dat[i[1],])
+dat$ID[nrow(dat)] <- max(dat$ID) + 1
+dat$LabCode[nrow(dat)] <- 'Combined_TKA23237_TKA23238'
+dat$C14Age[nrow(dat)] <- as.numeric(pooledDates[1])
+dat$C14Error[nrow(dat)] <- as.numeric(pooledDates[1])
+dat$Context[nrow(dat)] <- 'Charred rice grain embedded in sherd fabric (Combined Dates)'
+dat  <- dat[-i,]
+
+
 # Assign Site ID ----
-dat$SiteID  <- as.numeric(factor(dat$SiteName))
+dat$SiteID  <- as.numeric(factor(dat$SiteName_jp))
 
 # Assign Regions & Areas ----
 regions <- read.csv(here("data","prefecture_region_match.csv"))
@@ -33,7 +45,7 @@ SiteInfo <- data.frame(SiteID = earliest_dates$SiteID,
 		       Latest = latest_dates$median.dates,
 		       Diff = earliest_dates$median.dates - latest_dates$median.dates,
 		       N_dates = n_dates$median.dates) |> unique()
-SiteInfo <- left_join(SiteInfo,unique(select(dat,Latitude,Longitude,SiteID,SiteName,SiteName_En,Prefecture,Region,Area)))
+SiteInfo <- left_join(SiteInfo,unique(select(dat,Latitude,Longitude,SiteID,SiteName_jp,SiteName_en,Prefecture,Region,Area)))
 SiteInfo$area.id <- as.numeric(as.factor(SiteInfo$Area))
 
 # Collect date level information
