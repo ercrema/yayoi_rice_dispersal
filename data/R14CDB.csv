@@ -82,7 +82,7 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 80,IAAA-143579,TRUE,424,23,AMS,赤沢城跡,Akasawajoseki,36.97448889,138.6510889,Niigata,Chubu,23号土坑　黒色土,2016,津南町文化財調査報告書第69輯　赤沢城跡,
 81,IAAA-143580,TRUE,270,22,AMS,赤沢城跡,Akasawajoseki,36.97448889,138.6510889,Niigata,Chubu,5溝　炭化物出土範囲B,2016,津南町文化財調査報告書第69輯　赤沢城跡,
 82,IAAA-1500685,TRUE,723,24,AMS,岡遺跡,Okaiseki,33.49203056,133.9276,Kochi,Shikoku,試料名:SX3埋土出土炭化,2016,高知県埋蔵文化財センター発掘調査報告書　第149集　岡遺跡　県道大久保伊尾木線道路改良工事に伴う発掘調査報告書,
-83,IAAA-30066,FALSE,-860,30,AMS,ナガラバル東遺跡,Nagarabaruhigashiiseki,27.03966111,127.9685806,Okinawa,Kyushu,98LF12,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,Negative Date (Needs Checking)
+83,IAAA-30066,FALSE,-860,30,AMS,ナガラバル東遺跡,Nagarabaruhigashiiseki,27.03966111,127.9685806,Okinawa,Kyushu,98LF12,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,Negative Date
 84,IAAA-30108,TRUE,290,30,AMS,飛泉寺跡遺跡,Hisenjiatoiseki,38.01341111,139.8212694,Yamagata,Tohoku,SB905EP40-F,2004,山形県埋蔵文化財センター調査報告書第134集　飛泉寺跡遺跡発掘調査報告書,
 85,IAAA-30244,TRUE,1750,40,AMS,川前2遺跡,Kawamae2iseki,38.33593056,140.3147389,Yamagata,Tohoku,SD125,2011,山形県埋蔵文化財センター調査報告書第193集　川前2遺跡第1･2次発掘調査報告書,
 86,IAAA-30251,TRUE,2140,40,AMS,吉野ヶ里遺跡,Yoshinogariiseki,33.31048056,130.3726694,Saga,Kyushu,田手地区，ユンボ作業中に出土,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,
@@ -420,7 +420,7 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 418,Beta-226069,TRUE,2270,40,AMS,下村遺跡,Shimomuraiseki,34.164444,131.203333,Yamaguchi,Chugoku,SK80,2007,山口県埋蔵文化財センター調査報告第60集 下村遺跡,
 419,Beta-226071,TRUE,2300,40,AMS,下村遺跡,Shimomuraiseki,34.164444,131.203333,Yamaguchi,Chugoku,SU8,2007,山口県埋蔵文化財センター調査報告第60集 下村遺跡,
 420,Beta-152889,TRUE,1970,40,AMS,津島遺跡,Tsushimaiseki,34.676944,133.921667,Okayama,Chugoku,土壙67,2003,岡山県埋蔵文化財発掘調査報告173 津島遺跡,
-421,PLD-41669,TRUE,2214,21,AMS,神後田遺跡,Jigodeiseki,35.935833,133.375,Shimane,Chugoku,SD48,2021,松江市文化財調査報告書 第197集 神後田遺跡発掘調査報告書,
+421,PLD-41669,TRUE,2214,21,AMS,神後田遺跡,Jigodeiseki,35.442777,133.052222,Shimane,Chugoku,SD48,2021,松江市文化財調査報告書 第197集 神後田遺跡発掘調査報告書,
 422,OR-106,TRUE,1330,40,Beta Counting,後谷Ⅴ遺跡,Ushirodanigoiseki,35.3625,132.808611,Shimane,Chugoku,不明（奈良～平安時代）,1996,斐川町文化財調査報告15 後谷Ⅴ遺跡,
 423,Beta-548173,TRUE,2460,23,AMS,福富松ノ前,Fukutomimatsunomae,35.4535,133.1161,Shimane,Chugoku,畔,2020,松江市文化財調査報告書 第194集 福富松ノ前遺跡,Site coordinate adjusted from the report
 424,Beta-549729,TRUE,2559,22,AMS,福富松ノ前,Fukutomimatsunomae,35.4535,133.1161,Shimane,Chugoku,畔,2020,松江市文化財調査報告書 第194集 福富松ノ前遺跡,Site coordinate adjusted from the report
