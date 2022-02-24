@@ -10,10 +10,17 @@ load(here("data","c14rice.RData"))
 # Data
 d <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error,constraint_uniform=rep(1,constants$N.areas),constraint_dispersal=1)
 # Inits
-buffer <- 100
+buffer <- 10
 theta.init <- DateInfo$median.dates
 delta.init <- SiteInfo$Diff + buffer
 alpha.init <- SiteInfo$Earliest + buffer/2
+
+# Dummy extension of the calibration curve
+constants$calBP <- c(1000000,constants$calBP,-1000000)
+constants$C14BP <- c(1000000,constants$C14BP,-1000000)
+constants$C14err <- c(1000,constants$C14err,1000)
+
+
 
 # MCMC RunScript (Uniform Model0) ----
 unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants, nburnin, thin, niter)
@@ -57,7 +64,7 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 		tmp.delta <- delta.init[which(constants$id.area==i)]
 		tmp.beta <- tmp.alpha - tmp.delta
 		init.a[i] <- runif(1,max(tmp.alpha),5000)
-		init.b[i]  <- runif(1,10,min(tmp.beta))
+		init.b[i]  <- runif(1,50,min(tmp.beta))
 	}
 
 	inits$a  <- init.a
@@ -137,7 +144,7 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 				}
 			}
 			
-			init.b[i]  <- runif(1,10,min(tmp.beta))
+			init.b[i]  <- runif(1,50,min(tmp.beta))
 		}
 		if (all(!is.na(init.a))){check=FALSE}
 	}
@@ -222,7 +229,7 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 				}
 			}
 			
-			init.b[i]  <- runif(1,10,min(tmp.beta))
+			init.b[i]  <- runif(1,50,min(tmp.beta))
 		}
 		if (all(!is.na(init.a))){check=FALSE}
 	}

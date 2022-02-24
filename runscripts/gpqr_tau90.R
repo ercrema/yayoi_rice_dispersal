@@ -8,6 +8,12 @@ library(parallel)
 # Read 14C dates
 load(here('data','c14rice.RData'))
 
+# Dummy extension of the calibration curve
+constants$calBP <- c(1000000,constants$calBP,-1000000)
+constants$C14BP <- c(1000000,constants$C14BP,-1000000)
+constants$C14err <- c(1000,constants$C14err,1000)
+
+
 ## Define Run Function ----
 runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 {
