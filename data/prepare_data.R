@@ -16,7 +16,7 @@ dat  <- rbind.data.frame(dat,dat[i[1],])
 dat$ID[nrow(dat)] <- max(dat$ID) + 1
 dat$LabCode[nrow(dat)] <- 'Combined_TKA23237_TKA23238'
 dat$C14Age[nrow(dat)] <- as.numeric(pooledDates[1])
-dat$C14Error[nrow(dat)] <- as.numeric(pooledDates[1])
+dat$C14Error[nrow(dat)] <- as.numeric(pooledDates[2])
 dat$Context[nrow(dat)] <- 'Charred rice grain embedded in sherd fabric (Combined Dates)'
 dat  <- dat[-i,]
 
