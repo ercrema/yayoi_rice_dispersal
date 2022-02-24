@@ -8,16 +8,12 @@ load(here("data","c14rice.RData"))
 
 # General Setup ----
 # Data
-d <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error,constraint_trapezium=rep(1,constants$N.areas))
+d <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error,constraint_uniform=rep(1,constants$N.areas),constraint_dispersal=1)
 # Inits
 buffer <- 100
 theta.init <- DateInfo$median.dates
 delta.init <- SiteInfo$Diff + buffer
 alpha.init <- SiteInfo$Earliest + buffer/2
-# Constants
-constants$constraint_uniform  <- rep(1,constants$N.areas)
-constants$constraint_dispersal  <- 1
-
 
 # MCMC RunScript (Uniform Model0) ----
 unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants, nburnin, thin, niter)
@@ -42,8 +38,8 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
-			a[j] ~ dunif(500,5000);
-			b[j] ~ dunif(500,5000);
+			a[j] ~ dunif(50,5000);
+			b[j] ~ dunif(50,5000);
 			constraint_uniform[j] ~ dconstraint(a[j]>b[j])
 		}
 		# Hyperprior for duration
@@ -61,7 +57,7 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 		tmp.delta <- delta.init[which(constants$id.area==i)]
 		tmp.beta <- tmp.alpha - tmp.delta
 		init.a[i] <- runif(1,max(tmp.alpha),5000)
-		init.b[i]  <- runif(1,500,min(tmp.beta))
+		init.b[i]  <- runif(1,10,min(tmp.beta))
 	}
 
 	inits$a  <- init.a
@@ -105,8 +101,8 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
-			a[j] ~ dunif(500,5000);
-			b[j] ~ dunif(500,5000);
+			a[j] ~ dunif(50,5000);
+			b[j] ~ dunif(50,5000);
 			constraint_uniform[j] ~ dconstraint(a[j]>b[j])
 		}
 
@@ -141,7 +137,7 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 				}
 			}
 			
-			init.b[i]  <- runif(1,500,min(tmp.beta))
+			init.b[i]  <- runif(1,10,min(tmp.beta))
 		}
 		if (all(!is.na(init.a))){check=FALSE}
 	}
@@ -191,8 +187,8 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
-			a[j] ~ dunif(500,5000);
-			b[j] ~ dunif(500,5000);
+			a[j] ~ dunif(50,5000);
+			b[j] ~ dunif(50,5000);
 			constraint_uniform[j] ~ dconstraint(a[j]>b[j])
 		}
 		# Hyperprior for duration
@@ -226,7 +222,7 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 				}
 			}
 			
-			init.b[i]  <- runif(1,500,min(tmp.beta))
+			init.b[i]  <- runif(1,10,min(tmp.beta))
 		}
 		if (all(!is.na(init.a))){check=FALSE}
 	}
@@ -286,6 +282,3 @@ a.unif.model2 <- agreementIndex(d$cra,d$cra_error,calCurve='intcal20',theta=out.
 save(out.unif.model0,rhat.unif.model0,ess.unif.model0,a.unif.model0,file=here("results","phase_model0.RData"))
 save(out.unif.model1,rhat.unif.model1,ess.unif.model1,a.unif.model1,file=here("results","phase_model1.RData"))
 save(out.unif.model2,rhat.unif.model2,ess.unif.model2,a.unif.model2,file=here("results","phase_model2.RData"))
-
-
-

@@ -38,7 +38,7 @@ constants$N.dates  <- nrow(subset.DateInfo)
 # Define Quantile
 constants$tau <- 0.99
 
-# Dummy extenstion of the calibration curve
+# Dummy extension of the calibration curve
 constants$calBP <- c(1000000,constants$calBP,-1000000)
 constants$C14BP <- c(1000000,constants$C14BP,-1000000)
 constants$C14err <- c(1000,constants$C14err,1000)
@@ -89,9 +89,9 @@ runFun <- function(seed, dat, theta.init, constants, nburnin, thin, niter)
 }       
 
 # Setup and Execution of MCMC in Parallel ----
-ncores  <-  3
+ncores  <-  4
 cl <- makeCluster(ncores)
-seeds  <-  c(123,456,789)
+seeds  <-  c(12,34,56,78)
 niter  <- 2000000 #working 1000000 and 500000
 nburnin  <- 1000000
 thin  <- 100
@@ -100,7 +100,7 @@ chain_output = parLapply(cl = cl, X = seeds, fun = runFun, d = dat, constants = 
 stopCluster()        
 # Convert into a mcmc.list object for diagnostic (see below)
 quantreg_sample <- coda::mcmc.list(chain_output)
-rhat <- coda::gelman.diag(quantreg_sample,multivariate = FALSE);range(rhat$psrf[,1])
-ess <- coda::effectiveSize(quantreg_sample); range(ess)
+qrhat <- coda::gelman.diag(quantreg_sample,multivariate = FALSE)
+qess <- coda::effectiveSize(quantreg_sample)
 ## Store Output ----
-save(fit.rq,quantreg_sample,file=here('results','quantreg_res.RData'))
+save(qrhat,qess,fit.rq,quantreg_sample,file=here('results','quantreg_res.RData'))
