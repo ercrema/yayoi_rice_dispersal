@@ -8,9 +8,6 @@ library(here)
 # Read charred rice data  ----
 dat <- read.csv(here("data", "R14CDB.csv")) |> subset(UseForAnalyses == 'TRUE')
 
-# Subset data ----
-dat <- subset(dat, !Region %in% c("Hokkaido", "Okinawa") & Method == 'AMS')
-
 # Pool Samples TKA-23237 amd TKA-23238
 poolLabCodes  <- c('TKA-23237','TKA-23238')
 i  <- which(dat$LabCode%in%poolLabCodes)

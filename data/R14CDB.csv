@@ -1,8 +1,8 @@
 ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitude,Longitude,Prefecture,Region,Context,PublicationYear,Reference,Notes
 1,136469,TRUE,650,40,AMS,林遺跡(第4次調査),Hayashiiseki（Dai4jichosa）,32.52908056,131.6702389,Miyazaki,Kyushu,試料名:№6　C3区SC7,2008,宮崎県埋蔵文化財センター発掘調査報告書　第174集　林遺跡Ⅱ　一般国道10号延岡道路建設事業に伴う埋蔵文化財発掘調査報告書4,LabCode was not fully reported.
-2,Beta-100179,TRUE,620,50,AMS,K39遺跡第3次調査（大木地点）,K36isekidai3jichosa（Okichiten）,43.07331944,141.3336611,Hokkaido,Hokkaido,"第Ⅱ文化層　5層　灰集中DA55, U-39-C55b",1997,札幌市文化財調査報告書54　K39遺跡大木地点,
-3,Beta-100180,TRUE,700,50,AMS,K39遺跡第3次調査（大木地点）,K36isekidai3jichosa（Okichiten）,43.07331944,141.3336611,Hokkaido,Hokkaido,"第Ⅳ文化層　土坑覆土　土坑Pit12b, U-39-C12b",1997,札幌市文化財調査報告書54　K39遺跡大木地点,
-4,Beta-138182,TRUE,590,40,AMS,K39遺跡第6次,K39isekidai6ji,43.08106111,141.3364389,Hokkaido,Hokkaido,"5a層　34-07区　炉址5HE08, K39N18-04",2001,札幌市文化財調査報告書65　K39遺跡第6次調査（第5分冊）,
+2,Beta-100179,FALSE,620,50,AMS,K39遺跡第3次調査（大木地点）,K36isekidai3jichosa（Okichiten）,43.07331944,141.3336611,Hokkaido,Hokkaido,"第Ⅱ文化層　5層　灰集中DA55, U-39-C55b",1997,札幌市文化財調査報告書54　K39遺跡大木地点,Outside window of analysis
+3,Beta-100180,FALSE,700,50,AMS,K39遺跡第3次調査（大木地点）,K36isekidai3jichosa（Okichiten）,43.07331944,141.3336611,Hokkaido,Hokkaido,"第Ⅳ文化層　土坑覆土　土坑Pit12b, U-39-C12b",1997,札幌市文化財調査報告書54　K39遺跡大木地点,Outside window of analysis
+4,Beta-138182,FALSE,590,40,AMS,K39遺跡第6次,K39isekidai6ji,43.08106111,141.3364389,Hokkaido,Hokkaido,"5a層　34-07区　炉址5HE08, K39N18-04",2001,札幌市文化財調査報告書65　K39遺跡第6次調査（第5分冊）,Outside window of analysis
 5,Beta-145777,TRUE,1970,40,AMS,真田･北金目遺跡群,Sanada・Kitakanabeisekigun,35.36831944,139.2834806,Kanagawa,Kanto,6区 SI115,2003,平塚市真田･北金目遺跡群発掘調査報告書3　第4分冊,
 6,Beta-145778,TRUE,2000,40,AMS,真田･北金目遺跡群,Sanada・Kitakanabeisekigun,35.36831944,139.2834806,Kanagawa,Kanto,6区 SI115,2003,平塚市真田･北金目遺跡群発掘調査報告書3　第4分冊,
 7,Beta-145779,TRUE,1860,40,AMS,真田･北金目遺跡群,Sanada・Kitakanabeisekigun,35.36831944,139.2834806,Kanagawa,Kanto,32B地点　SI008,2003,平塚市真田･北金目遺跡群発掘調査報告書3　第4分冊,
@@ -40,7 +40,7 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 39,Beta-218286,TRUE,2060,40,AMS,国光原遺跡,Kokkobaruiseki,32.172777,131.500555,Miyazaki,Kyushu,"試料名:№4　A区,SL1-1",2007,宮崎県埋蔵文化財センター発掘調査報告書　第149集　国光原遺跡　東九州自動車道(都農〜西都間)建設に伴う埋蔵文化財発掘調査報告書44,
 40,Beta-225348,TRUE,1210,40,AMS,宮ノ東遺跡,Miyanohigashiiseki,32.08108889,131.4152694,Miyazaki,Kyushu,試料名:24,2008,宮崎県埋蔵文化財センター発掘調査報告書　第173集　宮ノ東遺跡　東九州自動車道(都農〜西都間)建設に伴う埋蔵文化財発掘調査報告書60　,
 41,Beta-225386,TRUE,710,40,AMS,姫御前遺跡,Himegozeiseki,37.04406111,137.8718611,Niigata,Chubu,11B5地点　Ⅲ層,2008,新潟県埋蔵文化財調査報告書第184集　北陸新幹線関係発掘調査報告書Ⅷ　姫御前遺跡Ⅰ,
-42,Beta-239326,TRUE,210,40,AMS,T71遺跡　第2次,T71iseki　Dai2ji,43.0193,141.3617111,Hokkaido,Hokkaido,"2DB13　2層, T71-4",2008,札幌市文化財調査報告書87　T71遺跡　第2次調査,
+42,Beta-239326,FALSE,210,40,AMS,T71遺跡　第2次,T71iseki　Dai2ji,43.0193,141.3617111,Hokkaido,Hokkaido,"2DB13　2層, T71-4",2008,札幌市文化財調査報告書87　T71遺跡　第2次調査,Outside window of analysis
 43,Beta-331065,TRUE,40,30,AMS,石郷(3)遺跡,Ishigo(3)Iseki,40.57213889,140.54985,Aomori,Tohoku,不明,2014,亀ヶ岡文化の低湿地遺跡　冷温帯地域の遺跡資源の保存活用促進プロジェクト調査成果報告書1,
 44,Beta-340384,TRUE,50,30,AMS,永吉天神段遺跡(第2地点),Nagayoshitenjindaniseki（Dai２chiten）,31.42563056,130.9788806,Kagoshima,Kyushu,試料名:№1 土坑7号　,2016,公益財団法人鹿児島県文化振興財団埋蔵文化財調査センター発掘調査報告書(8)　東九州自動車道建設(志布志IC〜鹿屋串良JCT)に伴う埋蔵文化財発掘調査報告書　　永吉天神段遺跡(第1地点),
 45,Beta-430181,TRUE,210,30,AMS,文京遺跡(60次調査),Bunkyoiseki（Dai60jichosa）,33.84971944,132.7705111,Ehime,Shikoku,試料名:№1　BNK-60,2017,文京遺跡Ⅷ　-文京遺跡60次調査-　愛媛大学埋蔵文化財調査報告ⅩⅩⅩ,
@@ -49,14 +49,14 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 48,IAA-141615,TRUE,884,23,AMS,細池寺道上遺跡,Hosoiketeramichiueiseki,37.79789907,139.1549796,Niigata,Chubu,SD137　3層,2015,細池寺道上遺跡Ⅳ　第43次調査,
 49,IAA-141616,TRUE,649,24,AMS,細池寺道上遺跡,Hosoiketeramichiueiseki,37.79789907,139.1549796,Niigata,Chubu,SE263　3層,2015,細池寺道上遺跡Ⅳ　第43次調査,
 50,IAAA-103552,TRUE,1036,26,AMS,油伝(1)遺跡,Aburaden(1)Iseki,40.60315,140.4631194,Aomori,Tohoku,SN4　B2　1層,2014,油伝(1)遺跡発掘調査報告書,
-51,IAAA-10378,TRUE,290,30,AMS,オサツ2遺跡,Osatsu2iseki,42.874,141.6311611,Hokkaido,Hokkaido,"（Ⅲ層（Ta-aより下位））1号平地式住居跡床面, OS2-1",2002,千歳市文化財調査報告書ⅩⅩⅦ　ユカンボシC２遺跡・オサツ２遺跡における考古学的調査,
+51,IAAA-10378,FALSE,290,30,AMS,オサツ2遺跡,Osatsu2iseki,42.874,141.6311611,Hokkaido,Hokkaido,"（Ⅲ層（Ta-aより下位））1号平地式住居跡床面, OS2-1",2002,千歳市文化財調査報告書ⅩⅩⅦ　ユカンボシC２遺跡・オサツ２遺跡における考古学的調査,Outside window of analysis
 52,IAAA-10597,TRUE,340,20,AMS,新府城跡,Shimpujoato,35.74118056,138.4318389,Yamanashi,Chubu,ポイント1炭範囲②,2002,史跡新府城跡,
 53,IAAA-10652,TRUE,960,30,AMS,和野Ⅰ遺跡,Wano1iseki,39.93111944,141.9137694,Iwate,Tohoku,第5号焼土･炭化物集中区,2004,岩手県文化振興事業団埋蔵文化財調査報告書第452集　和野Ⅰ遺跡発掘調査報告書　(第1分冊　本文･図版･表編),
 54,IAAA-112037,TRUE,1167,25,AMS,家ノ浦Ⅱ遺跡,Ienora2iseki,39.29598889,139.9746694,Akita,Tohoku,南側斜面3,2013,秋田県文化財調査報告書第485集　家ノ浦Ⅱ遺跡,
-55,IAAA-112206,TRUE,389,25,AMS,福山城下町遺跡,Fukuyamajokamachiiseki,41.42801111,140.1111611,Hokkaido,Hokkaido,"Ⅲ層　炉4　灰1, 4",2012,（財）北海道埋蔵文化財センター調査報告書第290集　松前町　福山城下町遺跡　－町道旭豊岡線代行事業改良工事に関わる埋蔵文化財発掘調査報告書－,
-56,IAAA-112207,TRUE,328,23,AMS,福山城下町遺跡,Fukuyamajokamachiiseki,41.42801111,140.1111611,Hokkaido,Hokkaido,"Ⅲ層　炉5　灰1, 5",2012,（財）北海道埋蔵文化財センター調査報告書第290集　松前町　福山城下町遺跡　－町道旭豊岡線代行事業改良工事に関わる埋蔵文化財発掘調査報告書－,
-57,IAAA-112209,TRUE,339,24,AMS,福山城下町遺跡,Fukuyamajokamachiiseki,41.42801111,140.1111611,Hokkaido,Hokkaido,"Ⅲ層　炉7, 7",2012,（財）北海道埋蔵文化財センター調査報告書第290集　松前町　福山城下町遺跡　－町道旭豊岡線代行事業改良工事に関わる埋蔵文化財発掘調査報告書－,
-58,IAAA-112210,TRUE,340,24,AMS,福山城下町遺跡,Fukuyamajokamachiiseki,41.42801111,140.1111611,Hokkaido,Hokkaido,"Ⅲ層　灰集中1, 8",2012,（財）北海道埋蔵文化財センター調査報告書第290集　松前町　福山城下町遺跡　－町道旭豊岡線代行事業改良工事に関わる埋蔵文化財発掘調査報告書－,
+55,IAAA-112206,FALSE,389,25,AMS,福山城下町遺跡,Fukuyamajokamachiiseki,41.42801111,140.1111611,Hokkaido,Hokkaido,"Ⅲ層　炉4　灰1, 4",2012,（財）北海道埋蔵文化財センター調査報告書第290集　松前町　福山城下町遺跡　－町道旭豊岡線代行事業改良工事に関わる埋蔵文化財発掘調査報告書－,Outside window of analysis
+56,IAAA-112207,FALSE,328,23,AMS,福山城下町遺跡,Fukuyamajokamachiiseki,41.42801111,140.1111611,Hokkaido,Hokkaido,"Ⅲ層　炉5　灰1, 5",2012,（財）北海道埋蔵文化財センター調査報告書第290集　松前町　福山城下町遺跡　－町道旭豊岡線代行事業改良工事に関わる埋蔵文化財発掘調査報告書－,Outside window of analysis
+57,IAAA-112209,FALSE,339,24,AMS,福山城下町遺跡,Fukuyamajokamachiiseki,41.42801111,140.1111611,Hokkaido,Hokkaido,"Ⅲ層　炉7, 7",2012,（財）北海道埋蔵文化財センター調査報告書第290集　松前町　福山城下町遺跡　－町道旭豊岡線代行事業改良工事に関わる埋蔵文化財発掘調査報告書－,Outside window of analysis
+58,IAAA-112210,FALSE,340,24,AMS,福山城下町遺跡,Fukuyamajokamachiiseki,41.42801111,140.1111611,Hokkaido,Hokkaido,"Ⅲ層　灰集中1, 8",2012,（財）北海道埋蔵文化財センター調査報告書第290集　松前町　福山城下町遺跡　－町道旭豊岡線代行事業改良工事に関わる埋蔵文化財発掘調査報告書－,Outside window of analysis
 59,IAAA-112450,TRUE,1294,24,AMS,道村B遺跡,Domurabiseki,36.5077,136.5499694,Ishikawa,Chubu,Ⅰ東　2SI04　炭化物層,2015,白山市道村B遺跡,
 60,IAAA-112452,TRUE,1232,23,AMS,道村B遺跡,Domurabiseki,36.5077,136.5499694,Ishikawa,Chubu,Ⅰ東　2SK28炭化物,2015,白山市道村B遺跡,
 61,IAAA-112453,TRUE,1245,25,AMS,道村B遺跡,Domurabiseki,36.5077,136.5499694,Ishikawa,Chubu,Ⅰ東　2SK29炭化物,2015,白山市道村B遺跡,
@@ -82,13 +82,13 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 80,IAAA-143579,TRUE,424,23,AMS,赤沢城跡,Akasawajoseki,36.97448889,138.6510889,Niigata,Chubu,23号土坑　黒色土,2016,津南町文化財調査報告書第69輯　赤沢城跡,
 81,IAAA-143580,TRUE,270,22,AMS,赤沢城跡,Akasawajoseki,36.97448889,138.6510889,Niigata,Chubu,5溝　炭化物出土範囲B,2016,津南町文化財調査報告書第69輯　赤沢城跡,
 82,IAAA-1500685,TRUE,723,24,AMS,岡遺跡,Okaiseki,33.49203056,133.9276,Kochi,Shikoku,試料名:SX3埋土出土炭化,2016,高知県埋蔵文化財センター発掘調査報告書　第149集　岡遺跡　県道大久保伊尾木線道路改良工事に伴う発掘調査報告書,
-83,IAAA-30066,FALSE,-860,30,AMS,ナガラバル東遺跡,Nagarabaruhigashiiseki,27.03966111,127.9685806,Okinawa,Kyushu,98LF12,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,Negative Date
+83,IAAA-30066,FALSE,-860,30,AMS,ナガラバル東遺跡,Nagarabaruhigashiiseki,27.03966111,127.9685806,Okinawa,Kyushu,98LF12,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,Negative Date; Modern Sample; Outside window of analysis
 84,IAAA-30108,TRUE,290,30,AMS,飛泉寺跡遺跡,Hisenjiatoiseki,38.01341111,139.8212694,Yamagata,Tohoku,SB905EP40-F,2004,山形県埋蔵文化財センター調査報告書第134集　飛泉寺跡遺跡発掘調査報告書,
 85,IAAA-30244,TRUE,1750,40,AMS,川前2遺跡,Kawamae2iseki,38.33593056,140.3147389,Yamagata,Tohoku,SD125,2011,山形県埋蔵文化財センター調査報告書第193集　川前2遺跡第1･2次発掘調査報告書,
 86,IAAA-30251,TRUE,2140,40,AMS,吉野ヶ里遺跡,Yoshinogariiseki,33.31048056,130.3726694,Saga,Kyushu,田手地区，ユンボ作業中に出土,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,
 87,IAAA-30258,TRUE,2340,50,AMS,下稗田遺跡,Shimohiedaiseki,33.70353889,130.9447194,Fukuoka,Kyushu,Ⅱ-F区80号貯蔵穴,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,
 88,IAAA-30369,TRUE,590,40,AMS,水橋金広･中馬場遺跡,Mizuhashikanehiro・Nakabambaiseki,36.71478056,137.3069194,Toyama,Chubu,SK26,2006,富山市埋蔵文化財調査報告6-(1)　水橋金広･中馬場遺跡発掘調査報告書Ⅱ,
-89,IAAA-30533,TRUE,270,50,AMS,トメト川3遺跡,Tometogawa3iseki,42.86336944,141.6767111,Hokkaido,Hokkaido,"炉1-2層（Ta-a層直下）　1号平地式住居跡, TM3-01",2004,千歳市文化財調査報告書ⅩⅩⅩⅠ　トメト川３遺跡における考古学的調査,
+89,IAAA-30533,FALSE,270,50,AMS,トメト川3遺跡,Tometogawa3iseki,42.86336944,141.6767111,Hokkaido,Hokkaido,"炉1-2層（Ta-a層直下）　1号平地式住居跡, TM3-01",2004,千歳市文化財調査報告書ⅩⅩⅩⅠ　トメト川３遺跡における考古学的調査,Outside window of analysis
 90,IAAA-30559,TRUE,1230,40,AMS,鞠智城跡,Kikuchijoato,33.02808056,130.7596694,Kumamoto,Kyushu,長者山西　72号建物跡,2004,鞠智城跡　-第24次調査報告-　,
 91,IAAA-31951,TRUE,630,33,AMS,間尽遺跡,Mazukushiiseki,36.76141944,136.9593194,Toyama,Chubu,SK104　3層,2004,高岡市埋蔵文化財調査報告第11冊　間尽遺跡調査報告Ⅱ,
 92,IAAA-31968,TRUE,2022,41,AMS,カネガ谷遺跡,Kanegadaniiseki,34.15846944,134.5162,Tokushima,Shikoku,試料番号:8　C'-9　SB1007　埋土(床面直上)遺物番号:38　,2005,徳島県埋蔵文化財センター調査報告書　第62集　四国横断自動車道建設に伴う埋蔵文化財発掘調査報告　(自然科学･図版編),
@@ -126,19 +126,19 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 124,IAAA-71140,FALSE,1900,30,AMS,大友西遺跡,Otomonishiiseki,36.60446111,136.6272,Ishikawa,Chubu,18号井戸（SE18）,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,ORA might have reservoir effect?
 125,IAAA-71153,TRUE,2540,30,AMS,讃良郡条里遺跡,Saragunjoriiseki,34.75516528,135.6330833,Osaka,Kansai,6-152号土坑,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,
 126,IAAA-71592,TRUE,2200,40,AMS,朝日遺跡,Asahiiseki,35.21685247,136.8523623,Aichi,Chubu,NA,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,
-127,IAAA-71859,TRUE,412,28,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8354,140.8396111,Aomori,Tohoku,SC-12　炭層,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
+127,IAAA-71859,TRUE,412,28,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8425,140.848055,Aomori,Tohoku,SC-12　炭層,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
 128,IAAA-71927,FALSE,2400,30,AMS,庄・蔵本６次,Sho・Kuramoto6ji,34.07518056,134.5184194,Tokushima,Shikoku,SD312焼土070228,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,Conlicting information on specimen; Excluded as might not be rice.
 129,IAAA-71930,TRUE,2540,30,AMS,庄・蔵本６次,Sho・Kuramoto6ji,34.07518056,134.5184194,Tokushima,Shikoku,SD315下層、炭化物層,2009,弥生農耕の起源と東アジア-炭素14年代測定による高精度編年体系の構築-平成16～20年文部科学省・科学研究費学術創成研究費　研究成果報告書,
 130,IAAA-72660,TRUE,1348,29,AMS,恒川遺跡群,Gongaisekigun,35.5438,137.8427111,Nagano,Chubu,YKS3454-5 36次調査区,2013,恒川遺跡群総括編 長野県飯田市教育委員会,
 131,IAAA-72661,TRUE,1231,25,AMS,恒川遺跡群,Gongaisekigun,35.5438,137.8427111,Nagano,Chubu,YKS4754　32次調査区,2013,恒川遺跡群総括編 長野県飯田市教育委員会,
 132,IAAA-72878,TRUE,1093,37,AMS,西部遺跡,Seibuiseki,38.15261111,139.4423111,Niigata,Chubu,SC002　1層,2009,新潟県埋蔵文化財調査報告書第194集　日本海沿岸東北自動車道関係発掘調査報告書ⅩⅩⅩ　西部遺跡Ⅳ･桜林遺跡Ⅲ,
-133,IAAA-80675,FALSE,NA,NA,AMS,宮田館遺跡,Miyatadateiseki,40.8354,140.8396111,Aomori,Tohoku,火山灰範囲12　Ⅱa層,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,Modern sample
+133,IAAA-80675,FALSE,NA,NA,AMS,宮田館遺跡,Miyatadateiseki,40.837777,140.835,Aomori,Tohoku,火山灰範囲12　Ⅱa層,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,Modern sample
 134,IAAA-81401,TRUE,1962,27,AMS,河原口坊中遺跡,Kawaraguchibojoiseki,35.4495,139.3822806,Kanagawa,Kanto,YH2号方形周溝墓,2015,かながわ考古学財団調査報告307　河原口坊中遺跡第2次調査　第4分冊,
-135,IAAA-81495,TRUE,618,26,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8354,140.8396111,Aomori,Tohoku,SK-259　最下層,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
-136,IAAA-81496,TRUE,454,27,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8354,140.8396111,Aomori,Tohoku,SK-266　3層下位,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
-137,IAAA-81497,TRUE,729,25,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8354,140.8396111,Aomori,Tohoku,SK-303　2層上部,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
-138,IAAA-81499,TRUE,384,27,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8354,140.8396111,Aomori,Tohoku,SF-133　火床面付近,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
-139,IAAA-81500,TRUE,569,25,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8354,140.8396111,Aomori,Tohoku,SF-134　底面炭範囲,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
+135,IAAA-81495,TRUE,618,26,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8425,140.848055,Aomori,Tohoku,SK-259　最下層,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
+136,IAAA-81496,TRUE,454,27,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8425,140.848055,Aomori,Tohoku,SK-266　3層下位,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
+137,IAAA-81497,TRUE,729,25,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8425,140.848055,Aomori,Tohoku,SK-303　2層上部,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
+138,IAAA-81499,TRUE,384,27,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8425,140.848055,Aomori,Tohoku,SF-133　火床面付近,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
+139,IAAA-81500,TRUE,569,25,AMS,米山(2)遺跡,Yoneyama(2)Iseki,40.8425,140.848055,Aomori,Tohoku,SF-134　底面炭範囲,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
 140,IAAA-82019,TRUE,1109,31,AMS,太田遺跡,Otaiseki,37.63723889,139.0557389,Niigata,Chubu,SK100,2011,加茂市文化財調査報告(21)　荒又遺跡･太田遺跡,
 141,IAAA-82020,TRUE,1165,31,AMS,太田遺跡,Otaiseki,37.63723889,139.0557389,Niigata,Chubu,SK100,2011,加茂市文化財調査報告(21)　荒又遺跡･太田遺跡,
 142,IAAA-82021,TRUE,1251,27,AMS,太田遺跡,Otaiseki,37.63723889,139.0557389,Niigata,Chubu,SK63,2011,加茂市文化財調査報告(21)　荒又遺跡･太田遺跡,
@@ -242,7 +242,7 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 240,PLD-11632,TRUE,2085,20,AMS,カラカミ遺跡,Karakamiiseki,33.79505,129.6965806,Nagasaki,Kyushu,試料番号:NAKU-C11　第1地点B9-5a貝層,2008,壱岐カラカミ遺跡Ⅱ　-カラカミ遺跡東亜考古学会第1地点の発掘調査-　平成20年度独立行政法人日本学術振興会科学研究費補助金基盤研究B,
 241,PLD-11698,TRUE,560,20,AMS,中居林遺跡,Nakaibayashiiseki,40.48821944,141.4939889,Aomori,Tohoku,第3号竪穴住居跡　床面,2009,青森県埋蔵文化財調査報告書第470集　長久保(2)遺跡Ⅲ　糠塚小沢遺跡Ⅱ　中居林遺跡Ⅱ,
 242,PLD-12287,TRUE,1124,20,AMS,中平遺跡,Nakadairaiseki,40.72323056,140.5305194,Aomori,Tohoku,SI05　イ区2号土壌サンプル,2010,青森県埋蔵文化財調査報告書第490集　中平遺跡Ⅱ,
-243,PLD-12328,TRUE,1350,18,AMS,宮田館遺跡,Miyatadateiseki,40.8354,140.8396111,Aomori,Tohoku,火山灰範囲12　Ⅱa層,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
+243,PLD-12328,TRUE,1350,18,AMS,宮田館遺跡,Miyatadateiseki,40.837777,140.835,Aomori,Tohoku,火山灰範囲12　Ⅱa層,2009,青森県埋蔵文化財調査報告書第473集　米山(2)遺跡Ⅵ･宮田館遺跡Ⅶ,
 244,PLD-12397,TRUE,2154,21,AMS,佐寺原遺跡(3次調査),Sateraharaiseki（3jichosa）,33.3394,130.9796806,Oita,Kyushu,5号土坑　1.2層,2011,佐寺原遺跡　ｰ2･3次調査ｰ,
 245,PLD-12604,TRUE,1260,23,AMS,上五明条里水田址,Kamigomyojorisuidenshi,36.44278889,138.14725,Nagano,Chubu,SD9,2011,長野県埋蔵文化財センター発掘調査報告書97　主要地方道長野上田線力石バイパス建設事業埋蔵文化財発掘調査報告書2　坂城町内　上五明条里水田址,
 246,PLD-12741,TRUE,2216,22,AMS,佐寺原遺跡(3次調査),Sateraharaiseki（3jichosa）,33.3394,130.9796806,Oita,Kyushu,6号土坑,2011,佐寺原遺跡　ｰ2･3次調査ｰ,
@@ -339,9 +339,9 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 337,Missing9,TRUE,2087,23,AMS,森平遺跡,Moridairaiseki,36.2566,138.4523,Nagano,Chubu,SB17　炉埋土,2014,長野県埋蔵文化財センター発掘調査報告書107　森平遺跡　寄塚遺跡群　今井西原遺跡　今井宮の前遺跡　中部横断自動車道建設に伴う埋蔵文化財発掘調査報告書5　佐久市内5,Labcode was missing in the original reference
 338,Missing10,TRUE,2060,40,AMS,向原第1遺跡,Mukobarudai1iseki,32.08913056,131.4439194,Miyazaki,Kyushu,②SA3,2006,宮崎県埋蔵文化財センター発掘調査報告書　第119集　　向原第1遺跡　東九州自動車道(都農〜西都間)建設に伴う埋蔵文化財発掘調査報告書24,Labcode was missing in the original reference
 339,Missing11,TRUE,1990,40,AMS,八幡第2遺跡,Hachimandai2iseki,32.243055,131.513611,Miyazaki,Kyushu,③SA4-5,2007,宮崎県埋蔵文化財センター発掘調査報告書　第148集　八幡第2遺跡　東九州自動車道(都農〜西都間)建設に伴う埋蔵文化財発掘調査報告書43,Labcode was missing in the original reference
-340,Missing12,TRUE,727,18,AMS,海舞寺遺跡,Kaimaijiiseki,32.70021944,131.8075306,Miyazaki,Kyushu,分析番号:22　S93 Code №:10493-3,2010,宮崎県埋蔵文化財センター発掘調査報告書　第189集　海舞寺遺跡･市之串遺跡･中野内遺跡･森ノ上遺跡(弥生･古墳時代編)･力ラ石の元遺跡　東九州自動車道(県境〜北川間)建設に伴う埋蔵文化財発掘調査報告書1,Labcode was missing in the original reference
-341,Missing13,TRUE,768,17,AMS,海舞寺遺跡,Kaimaijiiseki,32.70021944,131.8075306,Miyazaki,Kyushu,分析番号:26　S110 Code №:10493-4 ,2010,宮崎県埋蔵文化財センター発掘調査報告書　第189集　海舞寺遺跡･市之串遺跡･中野内遺跡･森ノ上遺跡(弥生･古墳時代編)･力ラ石の元遺跡　東九州自動車道(県境〜北川間)建設に伴う埋蔵文化財発掘調査報告書1,Labcode was missing in the original reference
-342,Missing14,TRUE,1726,19,AMS,森ノ上遺跡,Morinoeiseki,32.70021944,131.8075306,Miyazaki,Kyushu,分析番号:171　SA4土器中 Code №:10493-15,2010,宮崎県埋蔵文化財センター発掘調査報告書　第189集　海舞寺遺跡･市之串遺跡･中野内遺跡･森ノ上遺跡(弥生･古墳時代編)･力ラ石の元遺跡　東九州自動車道(県境〜北川間)建設に伴う埋蔵文化財発掘調査報告書1,Labcode was missing in the original reference
+340,Missing12,TRUE,727,18,AMS,海舞寺遺跡,Kaimaijiiseki,32.725277,131.823611,Miyazaki,Kyushu,分析番号:22　S93 Code №:10493-3,2010,宮崎県埋蔵文化財センター発掘調査報告書　第189集　海舞寺遺跡･市之串遺跡･中野内遺跡･森ノ上遺跡(弥生･古墳時代編)･力ラ石の元遺跡　東九州自動車道(県境〜北川間)建設に伴う埋蔵文化財発掘調査報告書1,Labcode was missing in the original reference
+341,Missing13,TRUE,768,17,AMS,海舞寺遺跡,Kaimaijiiseki,32.725277,131.823611,Miyazaki,Kyushu,分析番号:26　S110 Code №:10493-4 ,2010,宮崎県埋蔵文化財センター発掘調査報告書　第189集　海舞寺遺跡･市之串遺跡･中野内遺跡･森ノ上遺跡(弥生･古墳時代編)･力ラ石の元遺跡　東九州自動車道(県境〜北川間)建設に伴う埋蔵文化財発掘調査報告書1,Labcode was missing in the original reference
+342,Missing14,TRUE,1726,19,AMS,森ノ上遺跡,Morinoeiseki,32.707777,131.811388,Miyazaki,Kyushu,分析番号:171　SA4土器中 Code №:10493-15,2010,宮崎県埋蔵文化財センター発掘調査報告書　第189集　海舞寺遺跡･市之串遺跡･中野内遺跡･森ノ上遺跡(弥生･古墳時代編)･力ラ石の元遺跡　東九州自動車道(県境〜北川間)建設に伴う埋蔵文化財発掘調査報告書1,Labcode was missing in the original reference
 343,Missing15,TRUE,265,20,AMS,穆佐城跡,Mukasajoato,31.93323889,131.3235806,Miyazaki,Kyushu,18号土坑,2010,宮崎市文化財調査報告書　第79集　史跡穆佐城跡　　穆佐城跡保存整備に伴う埋蔵文化財発掘調査報告書(Ⅳ),Labcode was missing in the original reference
 344,Missing16,TRUE,650,20,Beta Counting,鞠智城跡,Kikuchijoato,33.02808056,130.7596694,Kumamoto,Kyushu,長者山調査区･礎石建築址,1991,熊本県文化財調査報告　第116集　鞠智城跡,Labcode was missing in the original reference
 345,IAAA-170355,TRUE,2695,21,AMS,宇木汲田貝塚,Ukikundenkaizuka,33.411,130.0087,Saga,Kyushu,F-8-c 区 層位：Xa-10-17,2021,九州大学大学院人文科学研究院考古学研究室 2021 『宇木汲田貝塚』,
@@ -374,13 +374,13 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 372,Beta-420404,TRUE,2250,30,AMS,八日市地方遺跡,Yokaichijikataiseki,36.401666,136.456388,Ishikawa,Chubu,"26 地区 E6-a; 7 ～ 10 期 ISYZ-S2 の炭 / (ISYZ-S2) carbonized rice excavated from the middle layer of E6-a (buried shallow valley), District 26.",2019,小松市埋蔵文化財センター 2019 『八日市地方遺跡 V5』小松市埋蔵文化財センター,
 373,YU-7197,TRUE,824,20,AMS,小牧遺跡,Komaki iseki,31.445833,130.945277,Kagoshima,Kyushu,No.4 石組遺構１号,2019,公益財団法人鹿児島県文化振興財団埋蔵文化財調査センター 2019 『公益財団法人鹿児島県文化振興財団 埋蔵文化財調査センター発掘調査報告書26：小牧遺跡１　古代～近世以降編』公益財団法人鹿児島県文化振興財団埋蔵文化財調査センター,
 374,YU-10196,TRUE,1311,20,AMS,春日堀遺跡１,Kasugabori Iseki 1,31.4652,131.036538,Kagoshima,Kyushu,竪穴建物跡16号SA32 No.5イネ?,2020,公益財団法人鹿児島県文化振興財団埋蔵文化財調査センター 2020 『春日堀遺跡１　縄文時代中期～近世編』公益財団法人鹿児島県文化振興財団埋蔵文化財調査センター発掘調査報告書32,
-375,PLD-31079,TRUE,206,19,AMS,富山城跡,Toyamajoseki,36.66140956,137.159974,Toyama,Chubu,"調査区：4区, 遺構：4-SD1,位置：北壁⑯",2018,北陸航測株式会社 2018 『富山市埋蔵文化財調査報告93：富山城跡発掘調査報告書　第二分冊2』富山市教育委員会埋蔵文化財センター,
+375,PLD-31079,TRUE,206,19,AMS,富山城跡,Toyamajoato,36.69262824,137.210756,Toyama,Chubu,"調査区：4区, 遺構：4-SD1,位置：北壁⑯",2018,北陸航測株式会社 2018 『富山市埋蔵文化財調査報告93：富山城跡発掘調査報告書　第二分冊2』富山市教育委員会埋蔵文化財センター,
 376,PLD-25352,TRUE,499,16,AMS,境関館遺跡,Sakaizekidateiseki,40.620555,140.508611,Aomori,Tohoku,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
 377,PLD-25353,TRUE,1144,18,AMS,隠川(４)遺跡,Kakuregawa(4)iseki,40.750833,140.54305,Aomori,Tohoku,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
 378,PLD-25354,TRUE,435,19,AMS,砂沢平遺跡,Sunazawataiiseki,40.510277,140.61277,Aomori,Tohoku,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
 379,PLD-25355,TRUE,1138,20,AMS,大平遺跡,Oodaiiseki,40.514722,140.60916,Aomori,Tohoku,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
 380,PLD-25356,TRUE,963,19,AMS,前川遺跡C区,Maekawaiseki,40.629444,140.543888,Aomori,Tohoku,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
-381,PLD-25357,TRUE,639,19,AMS,前川遺跡CI区,Maekawaiseki,40.629444,140.543888,Aomori,Tohoku,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
+381,PLD-25357,TRUE,639,19,AMS,前川遺跡C区,Maekawaiseki,40.629444,140.543888,Aomori,Tohoku,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
 382,PLD-25358,TRUE,1893,18,AMS,橋原遺跡,Hashihara,36.0537661,138.0391061,Nagano,Chubu,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
 383,PLD-25359,TRUE,1940,17,AMS,榎田遺跡,Enokidaiseki,36.6198,138.2719,Nagano,Chubu,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
 384,PLD-25360,TRUE,2125,18,AMS,小塚遺跡IV,Kurokawakozukaiseki,36.205833,138.869444,Gunma,Kanto,,2014,『日本の出土米I』田中克典・上條信彦　編、弘前大学人文学部部　北日本考古学研究センター,
@@ -397,7 +397,7 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 395,PLD-27270,TRUE,1311,19,AMS,基肄城跡,Kiijoato,33.44339,130.5085,Saga,Kyushu,,2015,『日本の出土米　II』田中克典・佐藤洋一郎・上條信彦　弘前大学人文学部部　北日本考古学研究センター　編、六一書房,
 396,PLD-27271,TRUE,1586,19,AMS,梅坂炭化米遺跡,Umesakatankamaiiseki,33.4039,130.5192,Saga,Kyushu,,2015,『日本の出土米　II』田中克典・佐藤洋一郎・上條信彦　弘前大学人文学部部　北日本考古学研究センター　編、六一書房,
 397,PLD-27272,TRUE,1917,20,AMS,大場富士塚遺跡,Obafujitsukaiseki,35.5672,139.53763,Kanagawa,Kanto,,2015,『日本の出土米　II』田中克典・佐藤洋一郎・上條信彦　弘前大学人文学部部　北日本考古学研究センター　編、六一書房,
-398,PLD-27273,TRUE,1241,20,AMS,手宮洞窟,Temiyadoukutsu,43.2121,141.002,Hokkaido,Hokkaido,,2015,『日本の出土米　II』田中克典・佐藤洋一郎・上條信彦　弘前大学人文学部部　北日本考古学研究センター　編、六一書房,
+398,PLD-27273,FALSE,1241,20,AMS,手宮洞窟,Temiyadoukutsu,43.2121,141.002,Hokkaido,Hokkaido,,2015,『日本の出土米　II』田中克典・佐藤洋一郎・上條信彦　弘前大学人文学部部　北日本考古学研究センター　編、六一書房,Outside window of analysis
 399,PLD-27274,TRUE,2077,20,AMS,吉田遺跡,Yoshidaiseki,33.22,130.557,Fukuoka,Kyushu,,2015,『日本の出土米　II』田中克典・佐藤洋一郎・上條信彦　弘前大学人文学部部　北日本考古学研究センター　編、六一書房,
 400,PLD-27275,TRUE,2093,20,AMS,岩崎遺跡群,Iwasakiisekigun,33.222,130.546,Fukuoka,Kyushu,,2015,『日本の出土米　II』田中克典・佐藤洋一郎・上條信彦　弘前大学人文学部部　北日本考古学研究センター　編、六一書房,
 401,Beta-181423,TRUE,2660,40,AMS,雀居福岡,Sasai Fukuoka,33.57935337,130.4512285,Fukuoka,Kyushu,Sample No.9,2011,『東北アジア古民族植物. 学と縄文農耕]』小畑弘己著　同成社,
@@ -435,7 +435,7 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 433,Missing19,TRUE,1490,100,Beta Counting,柳遺跡,Yanagi,35.426119,133.20818,Shimane,Chugoku,柳遺跡SK02内,1998,一般国道9号（安来道路）建設予定地内埋蔵文化財発掘調査報告書　西地区IX,Labcode was missing in the original reference
 434,TO-2202,FALSE,2540,240,NA,風張(1)遺跡,Kazahari(1)Iseki,40.46616111,141.4994806,Aomori,Tohoku,Pithouse 32,1995,"D'Andrea, A. C. 1995. ""Later Jomon Subsistence in Northeastern Japan: New Evidence from Palaeoethnobotanical Studies."" Asian Perspectives 34 (2): 195-227.",Redating suggests contamination; cf Nakayama 2010
 435,TO-4086,FALSE,2810,270,NA,風張(1)遺跡,Kazahari(1)Iseki,40.46616111,141.4994806,Aomori,Tohoku,Pithouse 32,1995,"D'Andrea, A. C. 1995. ""Later Jomon Subsistence in Northeastern Japan: New Evidence from Palaeoethnobotanical Studies."" Asian Perspectives 34 (2): 195-227.",Redating suggests contamination; cf Nakayama 2010
-436,IAAA-101083,TRUE,610,23,AMS,大山寺僧坊跡,Daisensoubouato,35.391944,133.537777,Tottori,Chugoku,遺構：SK-3（平坦地南西部）,2011,大山僧坊跡調査報告書,
-437,IAAA-101084,TRUE,550,24,AMS,大山寺僧坊跡,Daisensoubouato,35.391944,133.537777,Tottori,Chugoku,遺構：C-4区（平坦地南西部）,2011,大山僧坊跡調査報告書,
+436,IAAA-101083,TRUE,610,23,AMS,大山僧坊跡,Daisensoubouato,35.391944,133.537777,Tottori,Chugoku,遺構：SK-3（平坦地南西部）,2011,大山僧坊跡調査報告書,
+437,IAAA-101084,TRUE,550,24,AMS,大山僧坊跡,Daisensoubouato,35.391944,133.537777,Tottori,Chugoku,遺構：C-4区（平坦地南西部）,2011,大山僧坊跡調査報告書,
 438,IAAA-133716,TRUE,260,20,AMS,大山僧坊跡,Daisensoubouato,35.391944,133.537777,Tottori,Chugoku,E-33区,2015,鳥取県西伯郡大山町町内遺跡発掘調査報告書VII（平成25年度実施分）,
 439,PLD-26857-1,TRUE,2486,19,AMS,金沢坂津口遺跡,Kanazawasakaduguchiiseki,35.494444,134.1275,Tottori,Chugoku,,2017,鳥取県鳥取市金沢坂津口遺跡,
