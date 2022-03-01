@@ -81,6 +81,8 @@ runFun <- function(seed, dat, theta.init, constants, nburnin, thin, niter)
 
 	cModel.asymlap <- compileNimble(model.asymlap)
 	conf.asymlap <- configureMCMC(model.asymlap)
+	conf.asymlap$removeSampler('theta')
+	conf.asymlap$addSampler(target = c('theta'), type = 'RW',control=list(scale=2,adaptInterval=500,adaptFactorExponent=0.99))
 	conf.asymlap$addMonitors('theta')
 	MCMC.asymlap <- buildMCMC(conf.asymlap)
 	cMCMC.asymlap <- compileNimble(MCMC.asymlap)
