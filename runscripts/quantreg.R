@@ -97,7 +97,7 @@ nburnin  <- 1000000
 thin  <- 100
 
 chain_output = parLapply(cl = cl, X = seeds, fun = runFun, d = dat, constants = constants, theta = theta.init, niter = niter, nburnin = nburnin,thin = thin)
-stopCluster()        
+stopCluster(cl)        
 # Convert into a mcmc.list object for diagnostic (see below)
 quantreg_sample <- coda::mcmc.list(chain_output)
 qrhat <- coda::gelman.diag(quantreg_sample,multivariate = FALSE)
