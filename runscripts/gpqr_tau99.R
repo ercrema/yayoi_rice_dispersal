@@ -39,6 +39,8 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 
 	# Handle constraints on dipsersal rate
 	dat$lim  <- rep(1,constants$N.sites)
+	# Handle constraints on calibration so that everything is within calibration curve
+	dat$cra.constraint = rep(1,constants$N.dates)
 	# Core model
 	model <- nimbleCode({
 		for (i in 1:N.sites){
@@ -48,6 +50,7 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 			mu[i] <- beta0 + (s[i]-beta1)*dist_org[i]
 			theta[i] ~ dAsymLaplace(mu=mu[i],sigma=sigma,tau=tau)
 			mu.date[i] <- interpLin(z=theta[i], x=calBP[], y=C14BP[]);
+			cra.constraint[i] ~ dconstraint(mu.date[i] < 50193 & mu.date[i] > 95)
 			sigmaCurve[i] <- interpLin(z=theta[i], x=calBP[], y=C14err[]);
 			sd[i] <- (cra_error[i]^2+sigmaCurve[i]^2)^(1/2);
 			cra[i] ~ dnorm(mean=mu.date[i],sd=sd[i]);
@@ -82,13 +85,17 @@ runFun  <- function(seed,dat,theta.init,constants,niter,nburnin,thin)
 	cModel.gpqr <- compileNimble(model.gpqr)
 
 	# MCMC configuration
-	conf.gpqr <- configureMCMC(model.gpqr)
+	conf.gpqr <- configureMCMC(model.gpqr,control=list(adaptInterval=20000,adaptFactorExponent=0.1))
 	conf.gpqr$addMonitors('s')
 	conf.gpqr$addMonitors('rho')
 	conf.gpqr$addMonitors('etasq')
 	conf.gpqr$removeSamplers('s[1:206]')
 	conf.gpqr$removeSamplers('beta1')
 	conf.gpqr$addSampler(c('beta1','s[1:206]'), type='AF_slice') 
+	conf.gpqr$removeSamplers('beta0');conf.gpqr$addSampler('beta0',control=list(adaptInterval=200,adaptFactorExponent=0.8))
+	conf.gpqr$removeSamplers('sigma');conf.gpqr$addSampler('sigma',control=list(adaptInterval=200,adaptFactorExponent=0.8))
+	conf.gpqr$removeSamplers('etasq');conf.gpqr$addSampler('etasq',control=list(adaptInterval=200,adaptFactorExponent=0.8))
+	conf.gpqr$removeSamplers('rho');conf.gpqr$addSampler('rho',control=list(adaptInterval=200,adaptFactorExponent=0.8))
 	MCMC.gpqr <- buildMCMC(conf.gpqr)
 	cMCMC.gpqr <- compileNimble(MCMC.gpqr)
 
