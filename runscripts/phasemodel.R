@@ -9,6 +9,8 @@ load(here("data","c14rice.RData"))
 # General Setup ----
 # Data
 d <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error,constraint_uniform=rep(1,constants$N.areas),constraint_dispersal=1)
+# Constraint for ignoring inference outside calibration range
+d$cra.constraint = rep(1,constants$N.dates)
 # Inits
 buffer <- 10
 theta.init <- DateInfo$median.dates
@@ -38,6 +40,7 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 		for (i in 1:N.dates){
 			theta[i] ~ dunif(alpha[id.sites[i]]-delta[id.sites[i]]+1,alpha[id.sites[i]]);
 			mu[i] <- interpLin(z=theta[i], x=calBP[], y=C14BP[]);
+			cra.constraint[i] ~ dconstraint(mu[i] < 50193 & mu[i] > 95) #C14 age must be within the calibration range
 			sigmaCurve[i] <- interpLin(z=theta[i], x=calBP[], y=C14err[]);
 			sd[i] <- (cra_error[i]^2+sigmaCurve[i]^2)^(1/2);
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
@@ -75,7 +78,7 @@ unif.model0  <- function(seed, d, theta.init, alpha.init, delta.init, constants,
 	# Compile and Run model	
 	model <- nimbleModel(model,constants = constants,data=d,inits=inits)
 	cModel <- compileNimble(model)
-	conf <- configureMCMC(model)
+	conf <- configureMCMC(model,control=list(adaptInterval=20000,adaptFactorExponent=0.1))
 	conf$addMonitors(c('theta','delta','alpha'))
 	MCMC <- buildMCMC(conf)
 	cMCMC <- compileNimble(MCMC)
@@ -100,6 +103,7 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		for (i in 1:N.dates){
 			theta[i] ~ dunif(alpha[id.sites[i]]-delta[id.sites[i]]+1,alpha[id.sites[i]]);
 			mu[i] <- interpLin(z=theta[i], x=calBP[], y=C14BP[]);
+			cra.constraint[i] ~ dconstraint(mu[i] < 50193 & mu[i] > 95) #C14 age must be within the calibration range
 			sigmaCurve[i] <- interpLin(z=theta[i], x=calBP[], y=C14err[]);
 			sd[i] <- (cra_error[i]^2+sigmaCurve[i]^2)^(1/2);
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
@@ -160,7 +164,7 @@ unif.model1 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	#Compile and Run
 	model <- nimbleModel(model,constants = constants,data=d,inits=inits)
 	cModel <- compileNimble(model)
-	conf <- configureMCMC(model)
+	conf <- configureMCMC(model,control=list(adaptInterval=20000,adaptFactorExponent=0.1))
 	conf$addMonitors(c('theta','alpha','delta'))
 	MCMC <- buildMCMC(conf)
 	cMCMC <- compileNimble(MCMC)
@@ -186,6 +190,7 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		for (i in 1:N.dates){
 			theta[i] ~ dunif(alpha[id.sites[i]]-delta[id.sites[i]]+1,alpha[id.sites[i]]);
 			mu[i] <- interpLin(z=theta[i], x=calBP[], y=C14BP[]);
+			cra.constraint[i] ~ dconstraint(mu[i] < 50193 & mu[i] > 95) #C14 age must be within the calibration range
 			sigmaCurve[i] <- interpLin(z=theta[i], x=calBP[], y=C14err[]);
 			sd[i] <- (cra_error[i]^2+sigmaCurve[i]^2)^(1/2);
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
@@ -247,7 +252,7 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	#Compile and Run
 	model <- nimbleModel(model,constants = constants,data=d,inits=inits)
 	cModel <- compileNimble(model)
-	conf <- configureMCMC(model)
+	conf <- configureMCMC(model,control=list(adaptInterval=20000,adaptFactorExponent=0.1))
 	conf$addMonitors(c('theta','delta','alpha'))
 	MCMC <- buildMCMC(conf)
 	cMCMC <- compileNimble(MCMC)
@@ -261,9 +266,9 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 ncores  <-  4
 cl <- makeCluster(ncores)
 seeds <- c(12,34,56,78)
-niter  <- 8000000
-nburnin  <- 4000000
-thin  <- 400
+niter  <- 4000000
+nburnin  <- 2000000
+thin  <- 200
 
 out.unif.model0  <-  parLapply(cl = cl, X = seeds, fun = unif.model0, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, nburnin = nburnin,thin = thin)
 out.unif.model1  <-  parLapply(cl = cl, X = seeds, fun = unif.model1, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, nburnin = nburnin,thin = thin)
