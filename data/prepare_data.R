@@ -6,7 +6,7 @@ library(dplyr)
 library(here)
 
 # Read charred rice data  ----
-dat <- read.csv(here("data", "R14CDB.csv")) |> subset(UseForAnalyses == 'TRUE')
+dat <- read.csv(here("data", "R14CDB.csv")) |> subset(UseForAnalyses == 'TRUE'& C14Age > 1000)
 
 # Pool Samples TKA-23237 amd TKA-23238
 poolLabCodes  <- c('TKA-23237','TKA-23238')
