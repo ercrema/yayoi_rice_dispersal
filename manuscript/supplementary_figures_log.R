@@ -62,7 +62,7 @@ post.ci <- t(apply(post.quantreg,1,quantile,c(0.025,0.5,0.975)))
 col.alpha <- function(x,a=1){xx=col2rgb(x)/255;return(rgb(xx[1],xx[2],xx[2],a))}
 
 pdf(file=here('manuscript','supplementary_figures','figureS2.pdf'),width=8.5,height=7)
-plot(NULL,xlim=c(0,1300),ylim=c(3200,900),axes=F,xlab='Distance from Ukukinden Site (in km)',ylab='Cal BP')
+plot(NULL,xlim=c(0,1300),ylim=c(3200,900),axes=F,xlab='Distance from Ukikunden Site (in km)',ylab='Cal BP')
 rect(xleft=-100,xright=1400,ybottom=2720,ytop=2350,col=col.alpha('grey',0.2),border=NA)
 abline(h=2720,lty=4)
 abline(h=2350,lty=4)
@@ -82,7 +82,7 @@ lines(0:1300,post.ci[,2],lty=1,lwd=2,col='indianred')
 polygon(x=c(0:1300,1300:0),c(post.ci[,1],rev(post.ci[,3])),col=col.alpha('indianred',0.2),border=NA)
 
 text(x=245,y=2400,labels='Hallstat Plateau')
-legend('bottomright',legend=c('Median Calibrated Date',TeX('Median Posterior $\\theta$'),'Quantile Regression on Median Dates','Bayesian Quantile Regression with Measurement Error'),pch=c(1,20,NA,NA),lwd=c(NA,NA,2,2),col=c(1,1,'blue','indianred'))
+legend('bottomright',legend=c('Median Calibrated Date',TeX('Median Posterior $\\theta$'),'Quantile Regression on Median Dates','Bayesian Quantile Regression with Measurement Error'),pch=c(1,20,NA,NA),lwd=c(NA,NA,2,2),col=c(1,1,'blue','indianred'),cex=0.8)
 box()
 dev.off()
 
