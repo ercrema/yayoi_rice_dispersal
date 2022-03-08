@@ -403,7 +403,7 @@ ID,LabCode,UseForAnalyses,C14Age,C14Error,Method,SiteName_jp,SiteName_en,Latitud
 401,Beta-181423,TRUE,2660,40,AMS,雀居福岡,Sasai Fukuoka,33.57935337,130.4512285,Fukuoka,Kyushu,Sample No.9,2011,『東北アジア古民族植物. 学と縄文農耕]』小畑弘己著　同成社,
 402,Tka-13458,TRUE,1595,40,AMS,魔取五反田追跡 (福岡),Matogotandatsuiseki,33.34621005,130.7285166,Fukuoka,Kyushu,Sample JF0002,2011,『東北アジア古民族植物. 学と縄文農耕]』小畑弘己著　同成社,
 403,Tka-13459,TRUE,1550,40,AMS,魔取五反田追跡 (福岡),Matogotandatsuiseki,33.34621005,130.7285166,Fukuoka,Kyushu,Sample JF0003,2011,『東北アジア古民族植物. 学と縄文農耕]』小畑弘己著　同成社,
-404,GaK-17431,FALSE,3020,80,AMS,小津浜遺跡,Ozuhamaiseki,35.07165,135.95125,Shiga,Kansai,"中央調査区・SD11下層,No.1",2002,琵琶湖開発関連埋蔵文化財発掘調査報告書6 小津浜遺跡 第１分冊（本文）,
+404,GaK-17431,FALSE,3020,80,Beta Counting,小津浜遺跡,Ozuhamaiseki,35.07165,135.95125,Shiga,Kansai,"中央調査区・SD11下層,No.1",2002,琵琶湖開発関連埋蔵文化財発掘調査報告書6 小津浜遺跡 第１分冊（本文）,"Date is much earlier than all other archaeological evidence from the site (dated to Early Yayoi); No additional information on the sample (e.g. photograph), most likely contamination."
 405,IAA-541,FALSE,NA,NA,Beta Counting,中尾新保谷内遺跡,Nakaoshimboyachiiseki,36.85016944,136.9477194,Toyama,Chubu,B3地区 SK2480,2009,富山県文化振興財団埋蔵文化財発掘調査報告第41集 中尾茅戸遺跡 中尾新保谷内遺跡 神明北遺跡 大野江淵遺跡発掘調査報告(第二分冊),Modern sample
 406,IAAA-110795,FALSE,NA,NA,AMS,別對遺跡,Bettsuiiseki,34.61211111,135.7650111,Nara,Kansai,方形遺構埋土中 14C-1,2012,奈良県遺跡調査概報 2011年度（第一分冊）,Modern sample
 407,IAAA-83002,TRUE,2327,30,AMS,市之郷遺跡,Ichinogouiseki,34.82471111,134.7073806,Hyogo,Kansai,Ⅱ区SK05土坑埋土,2010,兵庫県文化財調査報告 第372冊 姫路市 市之郷遺跡Ⅱ ―（都）大日線緊急街路整備工事に伴う発掘調査報告書―,
