@@ -65,7 +65,7 @@ f1 <-   ggplot() +
 	geom_raster(data = elevate , aes(x = x, y = y,fill = elevation_value )) +
 	annotation_custom(grob = grob.shade) +
 	geom_sf(data=japan.sf,alpha=0,lwd=0.5,lty=1,col='grey11') +
-	geom_sf(data=sites.sf,size=1.5) + 
+	geom_sf(data=sites.sf,size=1.1,col='black',pch=21,fill='red') + 
  	scale_fill_gradientn(colours = kovesi.linear_gow_65_90_c35(100), limits=c(0, 3500)) +
 	xlim(129,143) + 
 	ylim(31,42) +
@@ -77,7 +77,8 @@ f1 <-   ggplot() +
 	annotate(geom='text',x=133, y=31.8, label="Kyushu",size=4) +
 	annotate(geom='text',x=131.1, y=35.6, label="Chugoku",size=4) +
 	labs(fill = "Elevation (meters)",x='',y='') +
-	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.3,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.2, 'in'),legend.key.size = unit(0.2, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"),axis.title=element_blank())
+# 	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.3,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.2, 'in'),legend.key.size = unit(0.2, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"),axis.title=element_blank())
+	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position='none',plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"),axis.title=element_blank())
 pdf(file=here('manuscript','main_figures','figure1.pdf'),width=5,height=5)
 f1
 dev.off()
