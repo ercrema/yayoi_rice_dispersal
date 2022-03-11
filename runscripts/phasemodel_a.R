@@ -8,7 +8,7 @@ load(here("data","c14rice.RData"))
 
 # General Setup ----
 # Data
-d <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error,constraint_uniform=rep(1,constants$N.areas),constraint_dispersal=1)
+d <- list(cra=DateInfo$cra,cra_error=DateInfo$cra_error,constraint_uniform=rep(1,constants$N.areas))
 # Constraint for ignoring inference outside calibration range
 d$cra.constraint = rep(1,constants$N.dates)
 # Inits
@@ -26,15 +26,16 @@ constants$C14err <- c(1000,constants$C14err,1000)
 init.a  <- aggregate(Earliest~Area,FUN=max,data=SiteInfo)[,2] + 100
 init.b  <- aggregate(Latest~Area,FUN=min,data=SiteInfo)[,2] - 100
 
-# MCMC RunScript (Uniform Model2) ----
 
-unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, init.a, init.b, nburnin, thin, niter)
+
+
+# MCMC RunScript (Uniform Model a) ----
+unif.model.a  <- function(seed, d, theta.init, alpha.init, delta.init, init.a, init.b, constants, nburnin, thin, niter)
 {
 	#Load Library
 	library(nimbleCarbon)
 	#Define Core Model
 	model <- nimbleCode({
-		# Model Start/End Dates at Individual Sites	
 		for (k in 1:N.sites)
 		{
 			delta[k] ~ dgamma(gamma1,(gamma1-1)/gamma2)
@@ -50,7 +51,6 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 			cra[i] ~ dnorm(mean=mu[i],sd=sd[i]);
 		}
 
-
 		# Set Prior for Each Region
 		for (j in 1:N.areas){
 			a[j] ~ dunif(50,5000);
@@ -60,19 +60,14 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 		# Hyperprior for duration
 		gamma1 ~ dunif(1,20)
 		gamma2 ~ T(dnorm(mean=200,sd=100),1,500)
-
-		# Define Dispersal Constraint
-		constraint_dispersal ~ dconstraint(a[1]>a[2] & a[1]>a[3] & a[3]>a[4] & a[4]>a[5] & a[4]>a[6] & a[4]>a[7] & a[4]>a[8])  
 	})
+
 	# Define Inits
 	inits <- list(theta=theta.init, alpha=alpha.init, delta=delta.init, a=init.a, b=init.b)
 	inits$gamma1  <- 10
 	inits$gamma2  <- 200
 
-	#Add constraint
-	d$constraint_dispersal  <- 1
-
-	#Compile and Run
+	# Compile and Run model	
 	model <- nimbleModel(model,constants = constants,data=d,inits=inits)
 	cModel <- compileNimble(model)
 	conf <- configureMCMC(model,control=list(adaptInterval=20000,adaptFactorExponent=0.1))
@@ -80,7 +75,6 @@ unif.model2 <- function(seed, d, theta.init, alpha.init, delta.init, constants, 
 	MCMC <- buildMCMC(conf)
 	cMCMC <- compileNimble(MCMC)
 	results <- runMCMC(cMCMC,niter = niter, thin=thin,nburnin = nburnin,samplesAsCodaMCMC = T, setSeed=seed) 
-	return(results)
 }
 
 # Run MCMCs ----
@@ -91,17 +85,17 @@ cl <- makeCluster(ncores)
 seeds <- c(12,34,56,78)
 niter  <- 8000000
 nburnin  <- 4000000
-thin  <- 400
+thin  <- 200
 
-out.unif.model2  <-  parLapply(cl = cl, X = seeds, fun = unif.model2, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  niter = niter, init.a = init.a, init.b = init.b, nburnin = nburnin,thin = thin)
+out.unif.model_a  <-  parLapply(cl = cl, X = seeds, fun = unif.model.a, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  init.a = init.a, init.b = init.b, niter = niter, nburnin = nburnin,thin = thin)
 
-out.unif.model2 <- mcmc.list(out.unif.model2)
+out.unif.model_a <- mcmc.list(out.unif.model_a)
 
 # Diagnostics ----
 
-rhat.unif.model2 <- gelman.diag(out.unif.model2,multivariate = FALSE)
-ess.unif.model2 <- effectiveSize(out.unif.model2)
-a.unif.model2 <- agreementIndex(d$cra,d$cra_error,calCurve='intcal20',theta=out.unif.model2[[1]][,grep("theta",colnames(out.unif.model2[[1]]))],verbose = F)
+rhat.unif.model_a <- gelman.diag(out.unif.model_a,multivariate = FALSE)
+ess.unif.model_a <- effectiveSize(out.unif.model_a)
+a.unif.model_a <- agreementIndex(d$cra,d$cra_error,calCurve='intcal20',theta=out.unif.model_a[[1]][,grep("theta",colnames(out.unif.model_a[[1]]))],verbose = F)
 
 # Save output ----
-save(out.unif.model2,rhat.unif.model2,ess.unif.model2,a.unif.model2,file=here("results","phase_model2.RData"))
+save(out.unif.model_a,rhat.unif.model_a,ess.unif.model_a,a.unif.model_a,file=here("results","phase_model_a.RData"))
