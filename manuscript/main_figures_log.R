@@ -19,9 +19,8 @@ library(pals)
 load(here('data','c14rice.RData'))
 load(here('results','gpqr_tau90.RData'))
 # load(here('results','gpqr_tau99.RData'))
-load(here('results','phase_model0.RData'))
-load(here('results','phase_model1.RData'))
-load(here('results','phase_model2.RData'))
+load(here('results','phase_model_a.RData'))
+load(here('results','phase_model_b.RData'))
 
 # Figure 1 (Sampling Site Distribution) ----
 
@@ -158,14 +157,13 @@ pdf(file=here('manuscript','main_figures','figure3.pdf'),width=7,height=3.9,poin
 par(mfrow=c(1,2),mar=c(3,3,3,1))
 # Map
 plot(win,xlim=c(127,143),ylim=c(31,43),col='lightgrey')
-legend('bottomright',legend='a',bty = 'n',cex=2)
 plot(japan.sf,col=main.col,border=NA,add=TRUE)
 axis(1,at=seq(129,143,2),tck=-0.01,padj=-0.8)
 axis(2,at=seq(30,42,2),tck=-0.01,padj=0.8)
 mtext(side=1,line =1.4,'Longitude')
 mtext(side=2,line=1.4,'Latitude')
 box()
-rect(xleft=127.5,xright=136,ybottom=37,ytop=43,col='white')
+rect(xleft=127.5,xright=136,ybottom=38.2,ytop=43,col='white')
 text(130,34,labels='I',cex=1.5)
 text(132,32,labels='II',cex=1.5)
 text(134,32.5,labels='III',cex=1.5)
@@ -178,23 +176,14 @@ text(142.3,41,labels='VIII',cex=1.5)
 # Model Diagrams
 aw = 0.05
 al = 0.1
-##Model 0
-text(x=129,y=42.5,labels='Model 0',cex=1)
+##Model a
+text(x=129,y=42.5,labels='Model a',cex=1)
 text(x=seq(128,by=1,length.out=8),y=rep(41.9,8),labels=c('I','II','III','IV','V','VI','VII','VIII'),cex=1)
-##Model 1
-text(x=129,y=41,labels='Model 1',cex=1)
-text(x=seq(128,by=1,length.out=8),y=rep(40.4,8),labels=c('I','II','III','IV','V','VI','VII','VIII'),cex=1)
-pos2 = cbind(seq(128,by=1,length.out=8),rep(40.4,8))
-straightarrow(from=pos2[1,],to=pos2[2,],arr.type='triangle',segment=c(0.3,0.8),endhead=TRUE,arr.width=aw,arr.length=al,lwd = 1)
-curvedarrow(from = pos2[1, ], to = pos2[3, ]-c(0,0.25),curve = 0.3, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
-for (i in 3:7)
-{
-  straightarrow(from = pos2[i, ], to = pos2[i+1, ],arr.type='triangle',segment=c(0.3,0.8),endhead=T,arr.width=aw,arr.length=al,lwd=1)
-}
-##Model 2
-text(x=129,y=39.2,labels='Model 2',cex=1)
-text(x=seq(128,by=1,length.out=8),y=rep(38.6,8),labels=c('I','II','III','IV','V','VI','VII','VIII'),cex=1)
-pos3 = cbind(seq(128,by=1,length.out=8),rep(38.6,8))
+##Model b
+text(x=129,y=40.6,labels='Model b',cex=1)
+text(x=seq(128,by=1,length.out=8),y=rep(40,8),labels=c('I','II','III','IV','V','VI','VII','VIII'),cex=1)
+pos3 = cbind(seq(128,by=1,length.out=8),rep(40,8))
+
 straightarrow(from=pos3[1,],to=pos3[2,],arr.type='triangle',segment=c(0.3,0.8),endhead=TRUE,arr.width=aw,arr.length=al,lwd=1)
 curvedarrow(from = pos3[1, ], to = pos3[3, ]-c(0,0.25),curve = 0.4, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1) 
 straightarrow(from=pos3[3,],to=pos3[4,],arr.type='triangle',segment=c(0.3,0.8),endhead=TRUE,arr.width=aw,arr.length=al,lwd=1)
@@ -204,26 +193,34 @@ curvedarrow(from = pos3[4, ], to = pos3[7, ]-c(0,0.25),curve = 0.42, arr.pos = 1
 curvedarrow(from = pos3[4, ], to = pos3[8, ]+c(0,0.25),curve = -0.3, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
 
 # Posterior Arrival Times
-plot(NULL,xlim=c(3600,1900),ylim=c(0.5,31.5),xlab='',ylab='',axes=F)
-legend('bottomright',legend='b',bty = 'n',cex=2)
-tmp0 = extract(out.unif.model0)
-tmp1 = extract(out.unif.model1)
-tmp2 = extract(out.unif.model2)
+plot(NULL,xlim=c(3600,1900),ylim=c(0.5,23.5),xlab='',ylab='',axes=F)
+tmp.a = extract(out.unif.model_a)
+tmp.b = extract(out.unif.model_b)
+iseq.a = seq(2,by=3,length.out=8)
+iseq.b = seq(1,by=3,length.out=8)
+abline(h=seq(3,by=3,length.out=7),col='darkgrey',lty=2)
 
-iseq0 = seq(1,by=4,length.out=8)
-iseq1 = seq(2,by=4,length.out=8)
-iseq2 = seq(3,by=4,length.out=8)
-abline(h=seq(4,by=4,length.out=7),col='darkgrey',lty=2)
 for (i in 1:8)
 {
-	post.bar(tmp0[,i],i=iseq0[i],h=0.7,col=main.col[i])
-	post.bar(tmp1[,i],i=iseq1[i],h=0.7,col=main.col[i])
-	post.bar(tmp2[,i],i=iseq2[i],h=0.7,col=main.col[i])
+	post.bar(tmp.a[,i],i=iseq.a[i],h=0.9,col=main.col[i])
+	post.bar(tmp.b[,i],i=iseq.b[i],h=0.9,col=main.col[i])
 }
-axis(2,at=iseq1,labels = c('I','II','III','IV','V','VI','VII','VIII'),las=2)
+
+
+axis(2,at=iseq.a+0.5,labels = c('I','II','III','IV','V','VI','VII','VIII'),las=2)
 axis(1,at=BCADtoBP(c(-1500,-1250,-1000,-750,-500,-250,1)),labels=c('1500BC','1250BC','1000BC','750BC','500BC','250BC','1AD'),tck=-0.01)
 axis(3,at=seq(3400,1800,-300),labels=paste0(seq(3400,1800,-300),'BP'),tck=-0.01)
 box()
-text(x=BCADtoBP(c(-400,-400,-400)),y=c(iseq0[1],iseq1[1],iseq2[1]),labels=c('Model0','Model1','Model2'))
+
+post.bar(c(2600,2500,2400,2300,2200,2100,2000),i=1.5,h=0.9,col='lightgrey')
+arrows(x0=2500,x1=2100,y0=0.3,y1=0.3,angle = 90,code = 3,length = 0.01)
+arrows(x0=2400,x1=2200,y0=0.8,y1=0.8,angle = 90,code = 3,length = 0.01)
+text(x=2080,y=0.8,"50% HPDI",cex=0.8)
+text(x=1980,y=0.3,"95% HPDI",cex=0.8)
+text(x=2070,y=2.3,"Median Posterior",cex=0.8)
+lines(x=c(2300,2230),y=c(2.1,2.3))
+text(x=3450,y=2,'Model a',cex=1.1)
+text(x=3450,y=1,'Model b',cex=1.1)
+
 dev.off()
 
