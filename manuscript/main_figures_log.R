@@ -65,7 +65,7 @@ f1 <-   ggplot() +
 	geom_raster(data = elevate , aes(x = x, y = y,fill = elevation_value )) +
 	annotation_custom(grob = grob.shade) +
 	geom_sf(data=japan.sf,alpha=0,lwd=0.5,lty=1,col='grey11') +
-	geom_sf(data=sites.sf,size=1.1,col='black',pch=21,fill='red') + 
+	geom_sf(data=sites.sf,size=1.5,col='black',pch=21,fill='red') + 
  	scale_fill_gradientn(colours = kovesi.linear_gow_65_90_c35(100), limits=c(0, 3500)) +
 	xlim(129,143) + 
 	ylim(31,42) +
