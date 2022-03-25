@@ -96,9 +96,9 @@ runFun <- function(seed, dat, theta.init, constants, nburnin, thin, niter)
 ncores  <-  4
 cl <- makeCluster(ncores)
 seeds  <-  c(12,34,56,78)
-niter  <- 4000000 #working 1000000 and 500000
-nburnin  <- 2000000
-thin  <- 200
+niter  <- 6000000 #working 1000000 and 500000
+nburnin  <- 3000000
+thin  <- 300
 
 chain_output = parLapply(cl = cl, X = seeds, fun = runFun, d = dat, constants = constants, theta = theta.init, niter = niter, nburnin = nburnin,thin = thin)
 stopCluster(cl)        
