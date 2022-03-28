@@ -15,10 +15,11 @@ library(raster)
 library(diagram)
 library(RColorBrewer)
 library(pals)
+library(latex2exp)
 # Load Data & Results ----
 load(here('data','c14rice.RData'))
 load(here('results','gpqr_tau90.RData'))
-# load(here('results','gpqr_tau99.RData'))
+load(here('results','gpqr_tau99.RData'))
 load(here('results','phase_model_a.RData'))
 load(here('results','phase_model_b.RData'))
 
@@ -50,6 +51,12 @@ hs <- hs[complete.cases(hs),]
 # Convert sites into sf 
 sites.sf  <- as(sites,'sf')
 
+# Key Sites
+key.sites  <- read.csv(here('data','key_sites_for_map.csv'))
+coordinates(key.sites)  <- c('lon','lat')
+proj4string(key.sites)  <- proj4string(sites)
+key.sites.sf  <- as(key.sites,'sf')
+
 # Distribution map
 shade <- ggplot(hs, aes(x, y)) +
 	geom_raster(aes(x=x,y=y,fill = hs_value), alpha = 0.5) +
@@ -61,68 +68,110 @@ grob.shade <- ggplotGrob(shade)
 grob.shade <- grob.shade$grobs[[6]]$children[[3]]
 
 f1 <-   ggplot() +
-	geom_sf(data=win,aes(),fill='grey55',show.legend=FALSE,lwd=0) +
-	geom_raster(data = elevate , aes(x = x, y = y,fill = elevation_value )) +
+	geom_sf(data=win,aes(),fill='grey65',show.legend=FALSE,lwd=0) +
+# 	geom_raster(data = elevate , aes(x = x, y = y,fill = elevation_value )) +
 	annotation_custom(grob = grob.shade) +
-	geom_sf(data=japan.sf,alpha=0,lwd=0.5,lty=1,col='grey11') +
-	geom_sf(data=sites.sf,size=1.5,col='black',pch=21,fill='red') + 
+	geom_sf(data=japan.sf,alpha=0,lwd=0.2,lty=1,col='white') +
+	geom_sf(data=sites.sf,size=1.5,col='black',pch=21,fill='darkorange') + 
+	geom_sf(data=key.sites.sf,size=2.5,col='black',fill='black',pch=24) +
  	scale_fill_gradientn(colours = kovesi.linear_gow_65_90_c35(100), limits=c(0, 3500)) +
 	xlim(129,143) + 
 	ylim(31,42) +
 	annotate(geom='text',x=138.7, y=39.5, label="Tohoku",size=4) +
 	annotate(geom='text',x=141.7, y=36, label="Kanto",size=4) +
-	annotate(geom='text',x=136.7, y=38, label="Chubu",size=4) +
-	annotate(geom='text',x=136.3, y=33, label="Kinki",size=4) +
+	annotate(geom='text',x=135.5, y=37, label="Chubu",size=4) +
+	annotate(geom='text',x=137.2, y=33.8, label="Kinki",size=4) +
 	annotate(geom='text',x=134.2, y=32.8, label="Shikoku",size=4) +
 	annotate(geom='text',x=133, y=31.8, label="Kyushu",size=4) +
-	annotate(geom='text',x=131.1, y=35.6, label="Chugoku",size=4) +
+	annotate(geom='text',x=131.5, y=36.2, label="Chugoku",size=4) +
+	annotate("point",x=139,y=31.5,pch=21,size=1.5,col='black',fill='darkorange') +
+	annotate("point",x=139,y=31,pch=24,size=2.5,col='black',fill='black')  +
+	annotate("text", x=139.6, y=31.5, label='Sampled sites',size=3,hjust=0) +
+	annotate("text", x=139.6, y=31, label='Key sites',size=3,hjust=0) +
 	labs(fill = "Elevation (meters)",x='',y='') +
 # 	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position=c(0.3,0.8),legend.text = element_text(size=7),legend.key.width= unit(0.2, 'in'),legend.key.size = unit(0.2, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=8),plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"),axis.title=element_blank())
 	theme(plot.title = element_text(hjust = 0.5), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.2),legend.position='none',plot.margin = unit(c(0.1,0.1,0.1,0.1), "in"),axis.title=element_blank())
+
+
+f1 = f1 +
+	annotate(geom='segment',x=c(137.99,140.13,129.99),y = c(36.63,40.81,33.71),xend = c(137.75,139.15,130.20),yend = c(37.47,41.12, 34.27)) +
+	geom_text(data = data.frame(x = c(130.50,138.77, 130.27, 139.31, 132.44, 137.68),
+				    y = c(34.02,41.23, 34.55, 35.00, 35.50, 37.72),
+				    label = c("3","7,8", "1,2", "6", "4", "5")),mapping = aes(x = x, y = y, label = label),inherit.aes=FALSE)
+
+yseq = seq(41.5,by=-0.35,length.out=nrow(key.sites.sf))
+for (i in 1:nrow(key.sites.sf))
+{
+f1 = f1 + annotate(geom='text',x=130.5,y=yseq[i],label=paste0(i,'. ',key.sites.sf$name[i]),size=3,hjust=0)
+}
+
 pdf(file=here('manuscript','main_figures','figure1.pdf'),width=5,height=5)
 f1
 dev.off()
 
 
 # Figure 2 (Posterior Mean of dispersal rate deviations) ----
-post.gpqr  <- do.call(rbind,gpqr_tau90)
-nmcmc  <- nrow(post.gpqr) #number of MCMC samples
-post.s  <- post.gpqr[,grep('s\\[',colnames(post.gpqr))]
+post.gpqr.tau90  <- do.call(rbind,gpqr_tau90)
+post.gpqr.tau99  <- do.call(rbind,gpqr_tau99)
+nmcmc  <- nrow(post.gpqr.tau90) #number of MCMC samples (same for tau90 and tau99)
+post.s.tau90  <- post.gpqr.tau90[,grep('s\\[',colnames(post.gpqr.tau90))]
+post.s.tau99  <- post.gpqr.tau99[,grep('s\\[',colnames(post.gpqr.tau99))]
+
 # post.arrival <- matrix(NA,nmcmc,constants$N.sites)
-post.rate <- matrix(NA,nmcmc,constants$N.sites)
+post.rate.tau90 <- post.rate.tau99  <-  matrix(NA,nmcmc,constants$N.sites)
 for (i in 1:nmcmc)
 {
-	post.rate[i,] = -1 / (post.s[i,]-post.gpqr[i,'beta1'])
-# 	post.arrival[i,]  <- BPtoBCAD(post.gpqr[i,'beta0'] + (post.gpqr[i,'beta1'] + post.s[i,]) * constants$dist_org)
+	post.rate.tau90[i,] = -1 / (post.s.tau90[i,]-post.gpqr.tau90[i,'beta1'])
+	post.rate.tau99[i,] = -1 / (post.s.tau99[i,]-post.gpqr.tau99[i,'beta1'])
 }
 
-sites@data$s.m <- apply(post.s,2,median)
-# sites@data$arrival.m  <- apply(post.arrival,2,median)
-sites@data$rate.m  <- apply(post.rate,2,median)
+sites@data$s.m.tau90 <- apply(post.s.tau90,2,median)
+sites@data$s.m.tau99 <- apply(post.s.tau99,2,median)
+sites@data$rate.m.tau90  <- apply(post.rate.tau90,2,median)
+sites@data$rate.m.tau99  <- apply(post.rate.tau99,2,median)
 
 sites.sf <- as(sites,'sf')
 
 f2a <- ggplot() +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=s.m),pch=21,col='darkgrey',size=1.2) + 
+	geom_sf(data=sites.sf,mapping = aes(fill=s.m.tau90),pch=21,col='darkgrey',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
-	labs(title='a',fill='s') + 
+	labs(title=TeX(r"(Posterior Median of s with $\tau = 0.90$)"),fill='s') + 
 	scale_fill_gradient2(low='blue',high='red',mid='white') +
-	theme(plot.title = element_text(hjust = 0.5,size=6), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=4),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=4.5),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
 
 
 f2b <- ggplot() +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=rate.m),pch=21,col='darkgrey',size=1.2) + 
+	geom_sf(data=sites.sf,mapping = aes(fill=s.m.tau99),pch=21,col='darkgrey',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
-	labs(title='b',fill='Dispersal Rate \n (km/yr)') + 
-	scale_fill_viridis(option="turbo") +
-	theme(plot.title = element_text(hjust = 0.5,size=6), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=4),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=4.5),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+	labs(title=TeX(r"(Posterior Median of s with $\tau = 0.99$)"),fill='s') + 
+	scale_fill_gradient2(low='blue',high='red',mid='white') +
+	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
 
-pdf(file=here('manuscript','main_figures','figure2.pdf'),width=2.9,height=4.7)
-grid.arrange(f2a,f2b,ncol=2,padding=0)
+
+f2c <- ggplot() +
+	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
+	geom_sf(data=sites.sf,mapping = aes(fill=rate.m.tau90),pch=21,col='darkgrey',size=2) + 
+	xlim(129,143) + 
+	ylim(31,42) +
+	labs(title=TeX(r"(Posterior median of dispersal rate with $\tau = 0.90$)"),fill='Dispersal Rate (km/year)') + 
+	scale_fill_viridis(option="turbo",limits=c(0,4)) +
+	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+
+f2d <- ggplot() +
+	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
+	geom_sf(data=sites.sf,mapping = aes(fill=rate.m.tau99),pch=21,col='darkgrey',size=2) + 
+	xlim(129,143) + 
+	ylim(31,42) +
+	labs(title=TeX(r"(Posterior median of dispersal rate with $\tau = 0.99$)"),fill='Dispersal Rate (km/year)') + 
+	scale_fill_viridis(option="turbo",limits=c(0,4)) +
+	theme(plot.title = element_text(hjust = 0.5,vjust=-1.5,size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+
+pdf(file=here('manuscript','main_figures','figure2.pdf'),width=7,height=7)
+grid.arrange(f2a,f2b,f2c,f2d,ncol=2,padding=0)
 dev.off()
 
 #Figure 3 Estimated Arrival Date ----
@@ -220,8 +269,8 @@ text(x=2080,y=0.8,"50% HPDI",cex=0.8)
 text(x=1980,y=0.3,"95% HPDI",cex=0.8)
 text(x=2070,y=2.3,"Median Posterior",cex=0.8)
 lines(x=c(2300,2230),y=c(2.1,2.3))
-text(x=3450,y=2,'Model a',cex=1.1)
-text(x=3450,y=1,'Model b',cex=1.1)
+text(x=3490,y=2,'Model a',cex=1.1)
+text(x=3490,y=1,'Model b',cex=1.1)
 
 dev.off()
 
