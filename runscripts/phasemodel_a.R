@@ -83,9 +83,9 @@ unif.model.a  <- function(seed, d, theta.init, alpha.init, delta.init, init.a, i
 ncores  <-  4
 cl <- makeCluster(ncores)
 seeds <- c(12,34,56,78)
-niter  <- 8000000
-nburnin  <- 4000000
-thin  <- 200
+niter  <- 6000000
+nburnin  <- 3000000
+thin  <- 300
 
 out.unif.model_a  <-  parLapply(cl = cl, X = seeds, fun = unif.model.a, d = d,constants = constants, theta.init = theta.init, alpha.init = alpha.init, delta.init = delta.init,  init.a = init.a, init.b = init.b, niter = niter, nburnin = nburnin,thin = thin)
 
