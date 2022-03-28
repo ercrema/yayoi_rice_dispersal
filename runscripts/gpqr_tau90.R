@@ -123,9 +123,9 @@ ncores <- 4
 cl <- makeCluster(ncores)
 # Run the model in parallel:
 seeds <- c(12,45,67,89)
-niter = 4000000
-nburnin = 2000000
-thin = 200
+niter = 2000000
+nburnin = 1000000
+thin = 100
 chain_output <- parLapply(cl = cl, X = seeds, fun = runFun, dat = dat,constants = constants, theta = theta.init, niter = niter, nburnin = nburnin,thin = thin)
 stopCluster(cl)
 # Convert into a mcmc.list object for diagnostic (see below)
