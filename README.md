@@ -23,6 +23,7 @@ Dataset required for all analyses are contained in the directory _data_. The mai
 ### data
 * `R14CDB.csv` ... Spreadsheet containing radiocarbon data on charred rice.
 * `prefecture_region_match.csv` ... lookup table defining the regions for the hierarchical phase model analyses. 
+* `key_sites_for_map.csv` ... contains coordinates of key site locations displayed on figure 1.
 * `prepare_data.R` ... R scripts for pre-processing `R14CDB.csv` and `prefecture_region_match.csv`. Generates the R image file `c14rice.RData`.
 * `c14rice.RData` ... R image file containing R objects required for analyses. Generated using `prepare_data.R`, `R14CDB.csv`, and `prefecture_region_match.csv`.
 * `tactical_sim_gpqr.RData` ... R image file containing simulated dataset for testing purposes. Generated using the script `tactical_gpqr_sim.R` in the `runscripts` directory.
@@ -35,7 +36,7 @@ Dataset required for all analyses are contained in the directory _data_. The mai
 
 ### runscripts
 * `quantreg.R` ... Contains the R script for running Bayesian and non-Bayesian quantile regression. Results are stored in the R image file `quantreg_res.RData` in the _results_ directory. 
-* `phasemodel.R` ... Contains the R script for running hierarhichal Bayesian phase models. Results are stored in the R image files `phase_model0.RData`, `phase_model1.RData`, and `phase_model2.RData` in the _results_ directory.
+* `phasemodel_a.R` and `phasemodel_b.R` ... Contains the R script for running the unconstrained (model a) and constrained (model b) versions of the hierarhichal Bayesian phase models. Results are stored in the R image files `phase_model_a.RData` and `phase_model_b.RData` in the _results_ directory.
 * `phasemodel_tactical.R` ... Contains the R script for running a hierarhichal Bayesian phase model on the simulated dataset `tactical_sim_phase.RData`. Results are stored in the R image file `phasemodel_tactsim.RData` in the _results_ directory. 
 * `tactical_phase_sim.R` ... Contains the R script for generating a simulated dataset for testing hierarchichal phase models. The output is stored in the R image file `tactical_sim_phase.RData` in the _data_ directory. 
 * `gpqr_tau90.R` ... Contains the R script for running a GPQR model with tau set at 0.90.  Results are stored in the R image file `gpqr_tau90.RData` in the _results_ directory. 
@@ -46,9 +47,8 @@ Dataset required for all analyses are contained in the directory _data_. The mai
 
 ### results
 * `quantreg_res.RData` ... Output of quantile regression analyses. Generated using the script contained in `quantreg.R` in the _runscripts_ directory. 
-* `phase_model0.RData` ... Output of hierarhichal Bayesian phase models with no constraints (model 0). Generated using the script contained in `phasemodel.R`  in the _runscripts_ directory. 
-* `phase_model1.RData` ... Output of hierarhichal Bayesian phase models with constraints (model 1). Generated using the script contained in `phasemodel.R`  in the _runscripts_ directory. 
-* `phase_model2.RData` ... Output of hierarhichal Bayesian phase models with constraints (model 2). Generated using the script contained in `phasemodel.R`  in the _runscripts_ directory. 
+* `phase_model_a.RData` ... Output of hierarhichal Bayesian phase models with no constraints (model a). Generated using the script contained in `phasemodel_a.R`  in the _runscripts_ directory. 
+* `phase_model_b.RData` ... Output of hierarhichal Bayesian phase models with constraints (model b). Generated using the script contained in `phasemodel_b.R`  in the _runscripts_ directory. 
 * `phasemodel_tactsim.RData` ... Output of the hierarhichal Bayesian phase model on simulated dataset. Generated using the script contained in `phasemodel_tactical.R` in the _runscripts_ directory. 
 * `gpqr_tau90.RData` ... Output of the GPQR model with tau=0.9. Generated using the script contained in `gpqr_tau90.R`  in the _runscripts_ directory. 
 * `gpqr_tau99.RData` ... Output of the GPQR model with tau=0.99. Generated using the script contained in `gpqr_tau99.R`  in the _runscripts_ directory. 
