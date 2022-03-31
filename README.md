@@ -9,14 +9,12 @@ The _data_ directory contains the rice radiocarbon database, pre-processing scri
 
 # Dataset
 
-Dataset required for all analyses are contained in the directory _data_. The main dataset is a CSV file `R14CDB.csv` which contains site location data and radiocarbon ages of charred rice (_O. sativa_) from the Japanese islands collated from excavation reports, online databases, and journal articles. `prefecture_region_match.csv` is a look-up table defining the regions for the hierarchichal phase model analyses (see below). The file `prepare_data.R` contains an R script that pre-processes information contained in these two files and generates the R image file `c14rice.RData`, which contains R objects required for the Bayesian analyses. Finally the R image files `tactical_sim_gpqr.RData` and `tactical_sim_phase.RData` contains simulated dataset that were used to assess the robustness of the proposed methods. These were generated using the R scripts `tactical_gpqr_sim.R` and `tactical_phase_sim.R` contained in the directory `runscripts`.    
-
+Dataset required for all analyses are contained in the directory _data_. The main dataset is a CSV file `R14CDB.csv` which contains site location data and radiocarbon ages of charred rice (_O. sativa_) from the Japanese islands collated from excavation reports, online databases, and journal articles. `prefecture_region_match.csv` is a look-up table defining the regions for the hierarchichal phase model analyses. The file `prepare_data.R` contains an R script that pre-processes information contained in these two files and generates the R image file `c14rice.RData`, which contains R objects required for the Bayesian analyses. Finally the R image files `tactical_sim_gpqr.RData` and `tactical_sim_phase.RData` contains simulated dataset that were used to assess the robustness of the proposed methods. These were generated using the R scripts `tactical_gpqr_sim.R` and `tactical_phase_sim.R` contained in the directory `runscripts`.    
 
 # Bayesian Analyses
+The repository contains scripts and results of three different sets of analyses: Bayesian Quantile Regression., Gaussian Process Quantile Regression, and Hierarchichal Bayesian Phase Model. All models were defined and fitted using the [nimble](https://r-nimble.org/) R package, with the additional support of custom distributions and utility functions of the [nimbleCarbon](https://CRAN.R-project.org/package=nimbleCarbon) R package. All scripts for running the analyses are contained as individual files in the directory `runscripts`. MCMC posterior samples of all analyses are stored as R image files in the direcotry `results`. **Please note that all analyses are computationally very intensive** As a ball-park figure some models took nearly 72 hours to complete on a multicore machine with Intel(R) Xeon(R) W-2295 CPU @ 3.00GH. 
 
-## Quantile Regression and Gaussian Process Quantile Regression
 
-## Hierarchichal Phase Model
 
 # File Structure
 
