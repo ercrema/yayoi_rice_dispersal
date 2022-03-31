@@ -14,6 +14,15 @@ Dataset required for all analyses are contained in the directory _data_. The mai
 # Bayesian Analyses
 The repository contains scripts and results of three different sets of analyses: Bayesian Quantile Regression., Gaussian Process Quantile Regression, and Hierarchichal Bayesian Phase Model. All models were defined and fitted using the [nimble](https://r-nimble.org/) R package, with the additional support of custom distributions and utility functions of the [nimbleCarbon](https://CRAN.R-project.org/package=nimbleCarbon) R package. All scripts for running the analyses are contained as individual files in the directory `runscripts`. MCMC posterior samples of all analyses are stored as R image files in the direcotry `results`. **Please note that all analyses are computationally very intensive** As a ball-park figure some models took nearly 72 hours to complete on a multicore machine with Intel(R) Xeon(R) W-2295 CPU @ 3.00GH. 
 
+| **Analysis**                                              | **Data Generating Script** | **Input Data**           | **Analyses Script**   | **R Image containing Results**    |
+|-----------------------------------------------------------|---------------------------|--------------------------|-----------------------|--------------------------|
+| Bayesian Quantile Regression (Observed, tau=0.90)                              | NA                        | c14rice.RData            | quantreg.R            | quantreg_res.RData       |
+| Gaussian Process Quantile Regression (Simulated)          | tactical_gpqr_sim.R       | tactical_sim_gpqr.RData  | gpqr_tactical.R       | gpqr_tactsim.RData       |
+| Gaussian Process Quantile Regression (Observed, tau=0.90) | NA                        | c14rice.RData            | gpqr_tau90.R          | gpqr_tau90.RData         |
+| Gaussian Process Quantile Regression (Observed, tau=0.99) | NA                        | c14rice.RData            | gpqr_tau99.R          | gpqr_tau99.RData         |
+| Hierarchical Phase Model (Simulated)                      | tactical_phase_sim.R      | tactical_sim_phase.RData | phasemodel_tactical.R | phasemodel_tactsim.RData |
+| Hierarchical Phase Model (observed, model a)              | NA                        | c14rice.RData            | phasemodel_a.R        | phase_model_a.RData      |
+| Hierarchical Phase Model (observed, model b)              | NA                        | c14rice.RData            | phasemodel_b.R        | phase_model_b.RData      |
 
 
 # File Structure
