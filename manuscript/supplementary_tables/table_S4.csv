@@ -1,9 +1,17 @@
-"Area","Prefectures","Number of Dates","Number of Sites"
-"I","Saga|Fukuoka|Nagasaki",32,19
-"II","Miyazaki|Oita|Kumamoto|Kagoshima",49,22
-"III","Ehime|Kochi|Hiroshima|Okayama|Tottori|Shimane|Yamaguchi",22,14
-"IV","Hyogo|Kagawa|Kyoto|Mie|Nara|Osaka|Shiga|Tokushima|Wakayama",32,11
-"V","Aichi|Gifu|Ishikawa|Fukui|Kanagawa|Niigata|Nagano|Toyama|Shizuoka|Yamanashi",94,35
-"VI","Chiba|Gunma|Ibaraki|Tokyo|Saitama|Tochigi",38,14
-"VII","Akita|Fukushima|Iwate|Miyagi|Yamagata",18,9
-"VIII","Aomori",9,8
+"Model","Area","Median Posterior","90% HPDI (low)","90% HPDI (high)","Rhat","ESS"
+"Model a","I","986 BC","1176 BC","845 BC",1,39981
+"Model a","II","572 BC","740 BC","430 BC",1,39424
+"Model a","III","887 BC","1176 BC","669 BC",1.001,11796
+"Model a","IV","905 BC","1179 BC","695 BC",1,30453
+"Model a","V","655 BC","771 BC","552 BC",1,38439
+"Model a","VI","273 BC","478 BC","122 BC",1,39026
+"Model a","VII","153 BC","458 BC","44 AD",1,40000
+"Model a","VIII","469 BC","943 BC","177 BC",1,38182
+"Model b","I","1039 BC","1251 BC","872 BC",1,39658
+"Model b","II","570 BC","735 BC","430 BC",1,40326
+"Model b","III","910 BC","1061 BC","779 BC",1,30742
+"Model b","IV","824 BC","946 BC","703 BC",1,23067
+"Model b","V","648 BC","754 BC","560 BC",1,36917
+"Model b","VI","271 BC","471 BC","124 BC",1,35089
+"Model b","VII","152 BC","434 BC","42 AD",1,39185
+"Model b","VIII","428 BC","709 BC","203 BC",1,37394

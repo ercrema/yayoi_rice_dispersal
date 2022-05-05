@@ -1,5 +1,9 @@
-"Parameter","Median Posterior","90% HPDI (low)","90% HPDI (high)","Rhat","ESS"
-"beta0",2825.24836891395,2776.21969932835,2880.81282728933,1.00138070058828,7432.89162157469
-"beta1",0.699690131741416,0.41601638779436,1.00956181776181,1.00617123539543,2704.22689002498
-"rho",112.320041244853,48.2568617336704,195.850112610325,1.00661634647754,765.192968900371
-"etasq",0.0998336463077358,0.0184956171862737,0.206298833455703,1.00614014636865,3475.74372123594
+"Area","Prefectures","Number of Dates","Number of Sites"
+"I","Saga|Fukuoka|Nagasaki",32,19
+"II","Miyazaki|Oita|Kumamoto|Kagoshima",49,22
+"III","Ehime|Kochi|Hiroshima|Okayama|Tottori|Shimane|Yamaguchi",22,14
+"IV","Hyogo|Kagawa|Kyoto|Mie|Nara|Osaka|Shiga|Tokushima|Wakayama",32,11
+"V","Aichi|Gifu|Ishikawa|Fukui|Kanagawa|Niigata|Nagano|Toyama|Shizuoka|Yamanashi",94,35
+"VI","Chiba|Gunma|Ibaraki|Tokyo|Saitama|Tochigi",38,14
+"VII","Akita|Fukushima|Iwate|Miyagi|Yamagata",18,9
+"VIII","Aomori",9,8
