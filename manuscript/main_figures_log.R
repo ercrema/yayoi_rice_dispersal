@@ -134,7 +134,7 @@ sites.sf <- as(sites,'sf')
 
 f2a <- ggplot() +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=s.m.tau90),pch=21,col='darkgrey',size=2) + 
+	geom_sf(data=sites.sf,mapping = aes(fill=s.m.tau90),pch=21,col='black',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title=TeX(r"(Posterior Median of s with $\tau = 0.90$)"),fill='s') + 
@@ -144,7 +144,7 @@ f2a <- ggplot() +
 
 f2b <- ggplot() +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=s.m.tau99),pch=21,col='darkgrey',size=2) + 
+	geom_sf(data=sites.sf,mapping = aes(fill=s.m.tau99),pch=21,col='black',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title=TeX(r"(Posterior Median of s with $\tau = 0.99$)"),fill='s') + 
@@ -154,7 +154,7 @@ f2b <- ggplot() +
 
 f2c <- ggplot() +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=rate.m.tau90),pch=21,col='darkgrey',size=2) + 
+	geom_sf(data=sites.sf,mapping = aes(fill=rate.m.tau90),pch=21,col='black',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title=TeX(r"(Posterior median of dispersal rate with $\tau = 0.90$)"),fill='Dispersal Rate (km/year)') + 
@@ -163,7 +163,7 @@ f2c <- ggplot() +
 
 f2d <- ggplot() +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
-	geom_sf(data=sites.sf,mapping = aes(fill=rate.m.tau99),pch=21,col='darkgrey',size=2) + 
+	geom_sf(data=sites.sf,mapping = aes(fill=rate.m.tau99),pch=21,col='black',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title=TeX(r"(Posterior median of dispersal rate with $\tau = 0.99$)"),fill='Dispersal Rate (km/year)') + 
@@ -180,7 +180,7 @@ extract <- function(x)
 {
 	tmp = do.call(rbind,x)
 	tmp2 = tmp[,grep('^a\\[',colnames(tmp))]
-	qta = apply(tmp2,2,quantile,prob=c(0,0.025,0.25,0.5,0.75,0.975,1))
+	qta = apply(tmp2,2,quantile,prob=c(0,0.05,0.25,0.5,0.75,0.95,1))
 	return(qta)
 }
 
@@ -266,7 +266,7 @@ post.bar(c(2600,2500,2400,2300,2200,2100,2000),i=1.5,h=0.9,col='lightgrey')
 arrows(x0=2500,x1=2100,y0=0.3,y1=0.3,angle = 90,code = 3,length = 0.01)
 arrows(x0=2400,x1=2200,y0=0.8,y1=0.8,angle = 90,code = 3,length = 0.01)
 text(x=2080,y=0.8,"50% HPDI",cex=0.8)
-text(x=1980,y=0.3,"95% HPDI",cex=0.8)
+text(x=1980,y=0.3,"90% HPDI",cex=0.8)
 text(x=2070,y=2.3,"Median Posterior",cex=0.8)
 lines(x=c(2300,2230),y=c(2.1,2.3))
 text(x=3490,y=2,'Model a',cex=1.1)
