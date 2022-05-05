@@ -67,7 +67,7 @@ The repository contains scripts and results of three different sets of analyses:
 * `supplementary_figures_log.R` ... R scripts for generating supplementary figures.
 * `/supplementary_figures/*.pdf` ... Sub-directory containing pdf files of supplementary figures. 
 * `supplementary_tables_log.R` ... R scripts for generating supplementary tables.
-* `/supplementary_tables/*.csv` ... Sub-directory containing CSV files of supplementary tables. 
+* `/supplementary_tables/*.csv` ... Sub-directory containing CSV files of supplementary tables and data file. 
 
 # R Session Info
 ```
