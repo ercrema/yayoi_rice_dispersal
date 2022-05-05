@@ -26,7 +26,7 @@ hi90 = apply(gpqr.tau90.comb[,params],2,function(x){HPDinterval(as.mcmc(x),prob=
 rhats = gelman.diag(gpqr_tau90)$psrf[params,1]
 ess = effectiveSize(gpqr_tau90)[params]
 table.S2 = data.frame(params,meds,lo90,hi90,rhats,ess)
-write.table(table.S2,file=here('manuscript','supplementary_tables','table_S1.csv'),col.names=c('Parameter','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
+write.table(table.S2,file=here('manuscript','supplementary_tables','table_S2.csv'),col.names=c('Parameter','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
 
 
 # Table S3 (Rhat, ESS, and Posterior Summaries of beta0, beta1, rhosq, and etasq for tau=0.99) ----
@@ -39,7 +39,7 @@ hi90 = apply(gpqr.tau99.comb[,params],2,function(x){HPDinterval(as.mcmc(x),prob=
 rhats = gelman.diag(gpqr_tau99)$psrf[params,1]
 ess = effectiveSize(gpqr_tau99)[params]
 table.S3 = data.frame(params,meds,lo90,hi90,rhats,ess)
-write.table(table.S3,file=here('manuscript','supplementary_tables','table_S2.csv'),col.names=c('Parameter','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
+write.table(table.S3,file=here('manuscript','supplementary_tables','table_S3.csv'),col.names=c('Parameter','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
 
 # Table S4 Summary Data Per Region ----
 load(here('data','c14rice.RData'))
@@ -54,26 +54,21 @@ n.sites <- as.numeric(aggregate(SiteID~Area,data=SiteInfo,length)$SiteID)
 n.dates <- as.numeric(aggregate(N_dates~Area,data=SiteInfo,sum)$N_dates)
 table.S4  <- data.frame(Area=region.names,Prefectures=region.prefs,n_dates=n.dates,n_sites=n.sites)
 
-write.table(table.S4,file=here('manuscript','supplementary_tables','table_S3.csv'),col.names=c('Area','Prefectures','Number of Dates','Number of Sites'),sep=',',row.names=FALSE)
+write.table(table.S4,file=here('manuscript','supplementary_tables','table_S4.csv'),col.names=c('Area','Prefectures','Number of Dates','Number of Sites'),sep=',',row.names=FALSE)
 
 
 
-# Table S5 posterior estimates for nu and upsilon ----
-load(here("results","phase_model0.RData"))
-load(here("results","phase_model1.RData"))
-load(here("results","phase_model2.RData"))
-out.comb.unif.model0  <- do.call(rbind,out.unif.model0)
-out.comb.unif.model1  <- do.call(rbind,out.unif.model1)
-out.comb.unif.model2  <- do.call(rbind,out.unif.model2)
-post.nu.model0  <- out.comb.unif.model0[,paste0('a[',1:8,']')] |> round()
-post.nu.model1  <- out.comb.unif.model1[,paste0('a[',1:8,']')] |> round()
-post.nu.model2  <- out.comb.unif.model2[,paste0('a[',1:8,']')] |> round()
-hpdi.model0  <- apply(post.nu.model0,2,function(x){HPDinterval(as.mcmc(x),prob = .90)}) 
-hpdi.model1  <- apply(post.nu.model1,2,function(x){HPDinterval(as.mcmc(x),prob = .90)}) 
-hpdi.model2  <- apply(post.nu.model2,2,function(x){HPDinterval(as.mcmc(x),prob = .90)}) 
-med.model0  <- apply(post.nu.model0,2,median)
-med.model1  <- apply(post.nu.model1,2,median)
-med.model2  <- apply(post.nu.model2,2,median)
+# Table S5 posterior estimates for nu ----
+load(here("results","phase_model_a.RData"))
+load(here("results","phase_model_b.RData"))
+out.comb.unif.modela  <- do.call(rbind,out.unif.model_a)
+out.comb.unif.modelb  <- do.call(rbind,out.unif.model_b)
+post.nu.modela  <- out.comb.unif.modela[,paste0('a[',1:8,']')] |> round()
+post.nu.modelb  <- out.comb.unif.modelb[,paste0('a[',1:8,']')] |> round()
+hpdi.modela  <- apply(post.nu.modela,2,function(x){HPDinterval(as.mcmc(x),prob = .90)}) 
+hpdi.modelb  <- apply(post.nu.modelb,2,function(x){HPDinterval(as.mcmc(x),prob = .90)}) 
+med.modela  <- apply(post.nu.modela,2,median)
+med.modelb  <- apply(post.nu.modelb,2,median)
 
 
 foo  <- function(x)
@@ -81,12 +76,12 @@ foo  <- function(x)
 	x = BPtoBCAD(x)
 	ifelse(x<0,paste(abs(x),'BC'),paste(x,'AD'))
 }
-models  <- rep(c('Model 0','Model 1','Model 2'),each=8) 
-area  <- rep(as.character(as.roman(1:8)),3)
-meds  <- c(foo(med.model0),foo(med.model1),foo(med.model2))
-hi90  <- c(foo(hpdi.model0[1,]),foo(hpdi.model1[1,]),foo(hpdi.model2[1,]))
-lo90  <- c(foo(hpdi.model0[2,]),foo(hpdi.model1[2,]),foo(hpdi.model2[2,]))
-rhat  <- c(rhat.unif.model0$psrf[1:8,1],rhat.unif.model1$psrf[1:8,1],rhat.unif.model2$psrf[1:8,1]) |> round(digits=3)
-ess  <- c(ess.unif.model0[1:8],ess.unif.model1[1:8],ess.unif.model2[1:8]) |> round()
+models  <- rep(c('Model a','Model b'),each=8) 
+area  <- rep(as.character(as.roman(1:8)),2)
+meds  <- c(foo(med.modela),foo(med.modelb))
+hi90  <- c(foo(hpdi.modela[1,]),foo(hpdi.modelb[1,]))
+lo90  <- c(foo(hpdi.modela[2,]),foo(hpdi.modelb[2,]))
+rhat  <- c(rhat.unif.model_a$psrf[1:8,1],rhat.unif.model_b$psrf[1:8,1]) |> round(digits=3)
+ess  <- c(ess.unif.model_a[1:8],ess.unif.model_b[1:8]) |> round()
 table.S5  = data.frame(models,area,meds,lo90,hi90,rhat,ess)
-write.table(table.S5,file=here('manuscript','supplementary_tables','table_S4.csv'),col.names=c('Model','Area','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
+write.table(table.S5,file=here('manuscript','supplementary_tables','table_S5.csv'),col.names=c('Model','Area','Median Posterior','90% HPDI (low)','90% HPDI (high)','Rhat','ESS'),sep=',',row.names=FALSE)
