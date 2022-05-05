@@ -133,42 +133,47 @@ sites@data$rate.m.tau99  <- apply(post.rate.tau99,2,median)
 sites.sf <- as(sites,'sf')
 
 f2a <- ggplot() +
+ 	geom_text(data=data.frame(x=142.71,y=31.31,label='A'),aes(x=x,y=y,label=label)) +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
 	geom_sf(data=sites.sf,mapping = aes(fill=s.m.tau90),pch=21,col='black',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title=TeX(r"(Posterior Median of s with $\tau = 0.90$)"),fill='s') + 
 	scale_fill_gradient2(low='blue',high='red',mid='white') +
-	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"),axis.title.x = element_blank(),axis.title.y = element_blank())
 
 
 f2b <- ggplot() +
+ 	geom_text(data=data.frame(x=142.71,y=31.31,label='B'),aes(x=x,y=y,label=label)) +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
 	geom_sf(data=sites.sf,mapping = aes(fill=s.m.tau99),pch=21,col='black',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title=TeX(r"(Posterior Median of s with $\tau = 0.99$)"),fill='s') + 
 	scale_fill_gradient2(low='blue',high='red',mid='white') +
-	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"),axis.title.x = element_blank(),axis.title.y = element_blank())
 
 
 f2c <- ggplot() +
+ 	geom_text(data=data.frame(x=142.71,y=31.31,label='C'),aes(x=x,y=y,label=label)) +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
 	geom_sf(data=sites.sf,mapping = aes(fill=rate.m.tau90),pch=21,col='black',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title=TeX(r"(Posterior median of dispersal rate with $\tau = 0.90$)"),fill='Dispersal Rate (km/year)') + 
 	scale_fill_viridis(option="turbo",limits=c(0,4)) +
-	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"),axis.title.x = element_blank(),axis.title.y = element_blank())
+
 
 f2d <- ggplot() +
+ 	geom_text(data=data.frame(x=142.71,y=31.31,label='D'),aes(x=x,y=y,label=label)) +
 	geom_sf(data=win,aes(),fill='grey66',show.legend=FALSE,lwd=0) +
 	geom_sf(data=sites.sf,mapping = aes(fill=rate.m.tau99),pch=21,col='black',size=2) + 
 	xlim(129,143) + 
 	ylim(31,42) +
 	labs(title=TeX(r"(Posterior median of dispersal rate with $\tau = 0.99$)"),fill='Dispersal Rate (km/year)') + 
 	scale_fill_viridis(option="turbo",limits=c(0,4)) +
-	theme(plot.title = element_text(hjust = 0.5,vjust=-1.5,size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"))
+	theme(plot.title = element_text(hjust = 0.5,vjust = -1.5, size=10), panel.background = element_rect(fill='lightblue'),panel.grid.major = element_line(size = 0.1),legend.position=c(0.2,0.8),legend.text = element_text(size=6),legend.key.width= unit(0.1, 'in'),legend.key.size = unit(0.08, "in"),legend.background=element_rect(fill = alpha("white", 0.5)),legend.title=element_text(size=7),axis.text=element_blank(),axis.ticks=element_blank(),plot.margin = unit(c(0,0,0,0), "in"),axis.title.x = element_blank(),axis.title.y = element_blank())
 
 pdf(file=here('manuscript','main_figures','figure2.pdf'),width=7,height=7)
 grid.arrange(f2a,f2b,f2c,f2d,ncol=2,padding=0)
@@ -241,6 +246,7 @@ straightarrow(from=pos3[4,],to=pos3[5,],arr.type='triangle',segment=c(0.3,0.8),e
 curvedarrow(from = pos3[4, ], to = pos3[6, ]-c(0,0.25),curve = 0.4, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
 curvedarrow(from = pos3[4, ], to = pos3[7, ]-c(0,0.25),curve = 0.42, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
 curvedarrow(from = pos3[4, ], to = pos3[8, ]+c(0,0.25),curve = -0.3, arr.pos = 1,endhead = TRUE,segment=c(0.1,0.5),arr.width=aw,arr.length=al,lwd=1)
+legend('topleft',legend=c('A'),bty='n',cex=1.7)
 
 # Posterior Arrival Times
 plot(NULL,xlim=c(3600,1900),ylim=c(0.5,23.5),xlab='',ylab='',axes=F)
@@ -271,6 +277,6 @@ text(x=2070,y=2.3,"Median Posterior",cex=0.8)
 lines(x=c(2300,2230),y=c(2.1,2.3))
 text(x=3490,y=2,'Model a',cex=1.1)
 text(x=3490,y=1,'Model b',cex=1.1)
-
+legend('topleft',legend=c('B'),bty='n',cex=1.7)
 dev.off()
 
