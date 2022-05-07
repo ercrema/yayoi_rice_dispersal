@@ -81,7 +81,7 @@ polygon(x=c(0:1300,1300:0),c(rq.ci[,2],rev(rq.ci[,3])),col=col.alpha('lightblue'
 lines(0:1300,post.ci[,2],lty=1,lwd=2,col='indianred')
 polygon(x=c(0:1300,1300:0),c(post.ci[,1],rev(post.ci[,3])),col=col.alpha('indianred',0.2),border=NA)
 
-text(x=245,y=2400,labels='Hallstat Plateau')
+text(x=245,y=2400,labels='Calibration Plateau')
 legend('bottomright',legend=c('Median Calibrated Date',TeX('Median Posterior $\\theta$'),'Quantile Regression on Median Dates','Bayesian Quantile Regression with Measurement Error'),pch=c(1,20,NA,NA),lwd=c(NA,NA,2,2),col=c(1,1,'blue','indianred'),cex=0.8)
 box()
 dev.off()
@@ -274,7 +274,7 @@ dev.off()
 
 # Figure S11 (Posterior vs True values of beta0,beta1,rho,etasq for Tactical Simulation) ----
 tactsim_post_beta0  <- gpqr_tactsim_post[,'beta0']
-tactsim_post_beta1_reciprocal <- 1/gpqr_tactsim_post[,'beta1']
+tactsim_post_beta1 <- gpqr_tactsim_post[,'beta1']
 tactsim_post_etasq  <- gpqr_tactsim_post[,'etasq']
 tactsim_post_rho  <- gpqr_tactsim_post[,'rho']
 true_beta0_with_tau09  <- qnorm(0.9,true.param$beta0,true.param$sigma) 
@@ -284,7 +284,7 @@ pdf(here('manuscript','supplementary_figures','figureS11.pdf'),height=8,width=8)
 par(mfrow=c(2,2))
 postHPDplot(tactsim_post_beta0,xlab='Cal BP',ylab='Posterior Probability',main=TeX('$\\beta_0$'),prob = 0.95)
 abline(v=true_beta0_with_tau09,lty=2)
-postHPDplot(tactsim_post_beta1_reciprocal,xlab='km/year',ylab='Posterior Probability',main=TeX('$1/\\beta_1$'),prob=0.95)
+postHPDplot(tactsim_post_beta1,xlab='',ylab='Posterior Probability',main=TeX('$\\beta_1$'),prob=0.95)
 abline(v=true.param$beta1,lty=2)
 postHPDplot(tactsim_post_etasq,xlab='',ylab='Posterior Probability',main=TeX('$\\eta^2$'),prob=0.95)
 abline(v=true.param$etasq,lty=2)
@@ -321,7 +321,7 @@ gpqr.tau90.comb  <- do.call(rbind,gpqr_tau90)
 pdf(file=here('manuscript','supplementary_figures','figureS14.pdf'),width=8,height=8)
 par(mfrow=c(2,2))
 postHPDplot(gpqr.tau90.comb[,'beta0'],main=TeX('$\\beta_0$'),xlab='Cal BP',ylab='')
-postHPDplot(1/gpqr.tau90.comb[,'beta1'],main=TeX('$1/\\beta_1$'),xlab='km/year',ylab='')
+postHPDplot(gpqr.tau90.comb[,'beta1'],main=TeX('$\\beta_1$'),xlab='',ylab='')
 postHPDplot(gpqr.tau90.comb[,'rho'],main=TeX('$\\rho$'),xlab='km',ylab='')
 postHPDplot(gpqr.tau90.comb[,'etasq'],main=TeX('$\\eta^2$'),xlab='',ylab='')
 dev.off()
@@ -331,7 +331,7 @@ gpqr.tau99.comb  <- do.call(rbind,gpqr_tau99)
 pdf(file=here('manuscript','supplementary_figures','figureS15.pdf'),width=8,height=8)
 par(mfrow=c(2,2))
 postHPDplot(gpqr.tau99.comb[,'beta0'],main=TeX('$\\beta_0$'),xlab='Cal BP',ylab='')
-postHPDplot(1/gpqr.tau99.comb[,'beta1'],main=TeX('$\\beta_1$'),xlab='km/year',ylab='')
+postHPDplot(gpqr.tau99.comb[,'beta1'],main=TeX('$\\beta_1$'),xlab='',ylab='')
 postHPDplot(gpqr.tau99.comb[,'rho'],main=TeX('$\\rho$'),xlab='km',ylab='')
 postHPDplot(gpqr.tau99.comb[,'etasq'],main=TeX('$\\eta^2$'),xlab='',ylab='')
 dev.off()
