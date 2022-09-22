@@ -1,8 +1,10 @@
 # Data and R scripts for the paper 'Bayesian analyses of direct radiocarbon dates reveal geographic variations in the rate of rice farming dispersal in prehistoric Japan'
+[![DOI](https://zenodo.org/badge/414298295.svg)](https://zenodo.org/badge/latestdoi/414298295)
+
 
 This repository contains data and scripts used in the following paper:
 
-Crema, E.R., Stevens, C.J, Shoda, S. (2022) "Bayesian analyses of direct radiocarbon dates reveal geographic variations in the rate of rice farming dispersal in prehistoric Japan".
+Crema, E. R., Stevens, C. J., & Shoda, S. (2022). Bayesian analyses of direct radiocarbon dates reveal geographic variations in the rate of rice farming dispersal in prehistoric Japan. _Science Advances_, 8(38), eadc9171. https://doi.org/10.1126/sciadv.adc9171
 
 The repository is organised into four main directories: data, runscripts, results, and manuscript. 
 The _data_ directory contains the rice radiocarbon database, pre-processing scripts, and simulated datasets; _runscript_  contains all scripts for running the analyses in the paper, _src_ contains custom R functions, _results_ contains R image files with the analyses output, and _manuscript_ contains scripts for reproducing figures and tables included in the manuscript. 
