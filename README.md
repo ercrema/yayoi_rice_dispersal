@@ -1,5 +1,5 @@
 # Data and R scripts for the paper 'Bayesian analyses of direct radiocarbon dates reveal geographic variations in the rate of rice farming dispersal in prehistoric Japan'
-[![DOI](https://zenodo.org/badge/414298295.svg)](https://zenodo.org/badge/latestdoi/414298295)
+[![DOI](https://zenodo.org/badge/518840549.svg)](https://zenodo.org/badge/latestdoi/518840549)
 
 
 This repository contains data and scripts used in the following paper:
